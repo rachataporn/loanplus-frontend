@@ -1,0 +1,190 @@
+<modal-layout (onClose)="close()">
+  <card header="{{ 'Label.LOTS14.ResultVerify'| translate}}">
+    <div class="card-content">
+      <form [formGroup]="verifyForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <div class="row">
+          <div class="col-12">
+            <div class="form-group">
+              <label class="require">{{ 'Label.LOTS14.SecuritiesStatus'| translate}}</label>
+              <div class="btn-group d-block" btnRadioGroup formControlName="securitiesStatus">
+                <button [btnRadio]="status.Value" *ngFor="let status of securitiesStatus"
+                  class="btn btn-outline-warning" tabindex="0">{{ status['Text'+lang.CURRENT]}}
+                </button>
+              </div>
+              <div class="invalid-feedback">
+                {{ 'Message.STD00000' | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label>{{ 'Label.LOTS14.VerifyDate'| translate}}</label>
+            <input bsDatepicker class="form-control" type="text" formControlName="verifyDate" />
+          </div>
+          <div class="form-group col-md-6">
+            <label>{{ 'Label.LOTS14.VerifyName'| translate}}</label>
+            <input type="text" class="form-control" formControlName="verifyName" readonly>
+          </div>
+        </div>
+        <div class="row" *ngIf="this.verifyForm.controls.securitiesStatus.value == '6'">
+          <div class="form-group col-md-4">
+            <label class="require">{{ 'จังหวัดที่อยู่นอกเขต'| translate}}</label>
+            <ng-select [items]="provinceList" bindLabel="TextTha" bindValue="Value" formControlName="provinceOutOfBound"
+              placeholder="กรุณาเลือก">
+            </ng-select>
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="this.verifyForm.controls.securitiesStatus.value == '8'">
+          <div class="form-group col-md-4">
+            <label class="require">{{ 'วันที่สิ้นสุดห้ามโอน'| translate}}</label>
+            <input bsDatepicker class="form-control" type="text" formControlName="endNotTransferDate" />
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row" *ngIf="this.verifyForm.controls.securitiesStatus.value == '9'">
+          <div class="form-group col-md-4">
+            <label class="require">{{ 'วันที่สิ้นสุดโอนมรดก'| translate}}</label>
+            <input bsDatepicker class="form-control" type="text" formControlName="endTransferInheritanceDate" />
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4" *ngIf="securitiesCategoryId == 2 || securitiesCategoryId ==3">
+            <label class="require">{{ 'Label.LOTS13.EstimateAmount'| translate}}</label>
+            <ngx-numeric-textbox inputClass="form-control" [max]="2147483647" formControlName="estimateAmount"
+              [decimals]="2">
+            </ngx-numeric-textbox>
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+          <div class="form-group col-md-4">
+            <label class="require">{{ 'Label.LOTS13.LoanLimitAmount'| translate}}</label>
+            <ngx-numeric-textbox inputClass="form-control" [max]="2147483647" formControlName="loanLimitAmount"
+              [decimals]="2">
+            </ngx-numeric-textbox>
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label>{{ 'จดจำนอง วงเงิน'| translate}}</label>
+            <ngx-numeric-textbox inputClass="form-control" [max]="2147483647" formControlName="mortgageAmount"
+              [decimals]="2">
+            </ngx-numeric-textbox>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label *ngIf="securitiesStatusSelect==statusPass">{{ 'Label.LOTS14.ReasonCode'|
+              translate}}</label>
+            <label *ngIf="securitiesStatusSelect!=statusPass" class="require">{{ 'Label.LOTS14.ReasonCode'|
+              translate}}</label>
+            <textarea formControlName="reasoncode" id="reasoncode" name="reasoncode" rows="2" class="form-control"
+              maxlength="500"></textarea>
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <label>{{ 'Label.LOTS14.Remark'| translate}}</label>
+            <textarea formControlName="remark" id="remark" name="remark" rows="2" class="form-control"
+              maxlength="500"></textarea>
+          </div>
+        </div>
+      </form>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col text-center">
+            <button class="btn btn-primary" (click)="saveVerify()" [disabled]="savingVerify">
+              <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+              <i class="far fa-check-circle" [hidden]="saving"></i>
+              {{ 'Label.GLOBAL.Save'| translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </card>
+  <card header="{{ 'Label.LOTS14.HistoryVerify'| translate}}">
+    <div class="card-content">
+      <aaa-table [rows]="verifydetail" [page]="page" (onTableEvent)="onTableEvent($event)">
+        <ngx-datatable-column prop="verify.CreatedDate" [cellClass]="'text-center'" width="200">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS14.VerifyDate'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.CreatedDate | thaidate:'datetime' }}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="employee.EmployeeName{lang}" [cellClass]="'text-left'" width="200">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS14.VerifyName'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row['EmployeeName'+lang.CURRENT]}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="status.StatusDesc{lang}" [cellClass]="'text-center'" width="200">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS14.SecuritiesStatus'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row['StatusDesc'+ lang.CURRENT]}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="verify.ReasonCode" [cellClass]="'text-left'" width="250">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS14.ReasonCode'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.ReasonCode}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="EstimateAmount" [cellClass]="'text-right'" width="150"
+          *ngIf="securitiesCategoryId == 2 || securitiesCategoryId == 3">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS13.EstimateAmount'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.EstimateAmount | number:'1.2-2'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="LoanLimitAmount" [cellClass]="'text-right'" width="150">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS13.LoanLimitAmount'|
+              translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.LoanLimitAmount | number:'1.2-2'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column prop="verify.Remark" [cellClass]="'text-left'">
+          <ng-template let-sort="sortFn" ngx-datatable-header-template>
+            <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS14.Remark'| translate}}</label>
+          </ng-template>
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            {{row.Remark}}
+          </ng-template>
+        </ngx-datatable-column>
+      </aaa-table>
+    </div>
+  </card>
+</modal-layout>

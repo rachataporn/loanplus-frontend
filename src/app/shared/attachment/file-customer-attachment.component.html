@@ -1,0 +1,9 @@
+<div class="custom-file" [class.custom-file-sm]="small">
+    <input type="file" [disabled]="isDisable" class="custom-file-input" id="customFile" (change)="onFileChange($event)">
+    <label class="custom-file-label" for="customFile">
+        {{ fileName }}
+    </label>
+    <button (click)="open()" type="button" class="btn btn btn-link rounded-0 file-link"><i
+            class="fas fa-paperclip"></i></button>
+</div>
+<small *ngIf="error" class="text-danger">{{error}}</small>

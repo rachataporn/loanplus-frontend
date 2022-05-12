@@ -1,0 +1,284 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{'Label.LOTS05.Branch'| translate}}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="inputSearch" (change)="search()">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{'Label.LOTS05.ContractNo'| translate}}</label>
+                <ng-select [items]="contractNoList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="ContractNo" (change)="search()">
+                </ng-select>
+              </div>
+            </div>
+            <!-- <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'สถานะอนุมัติสัญญา'| translate }}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="ApproveStatus">
+                  <button type="button" [btnRadio]="approvePaymentOnlineStatus.Value"
+                    *ngFor="let approvePaymentOnlineStatus of approvePaymentOnlineStatusList"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ approvePaymentOnlineStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3" *ngIf="this.searchForm.controls.ApproveStatus.value == '2'">
+                <label class="require">{{"ช่วงวันที่(อนุมัติสัญญา)" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-left" formControlName="ApproveDateFrom"
+                  [maxDate]=this.searchForm.controls.ApproveDateTo.value />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3" *ngIf="this.searchForm.controls.ApproveStatus.value == '2'">
+                <label class="require">{{"ถึง" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ApproveDateTo"
+                  [minDate]=this.searchForm.controls.ApproveDateFrom.value />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div> -->
+          </form>
+        </div>
+      </card>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS05.ApproveLoanAgreement'| translate}}">
+        <div class="card-menu">
+          <!-- <button type="button" (click)="onPrint()" [disabled]="printing" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'พิมพ์รายงาน' | translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+            <i class="fas fa-print" [hidden]="printing"></i>
+          </button> -->
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanAgreementData" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="150">
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button class="btn btn-primary btn-sm" (click)="popupContactCustomer(row, ContactCustomer)"
+                      *ngIf="row.CustomerType">
+                      {{'Label.LOTS05.ContactCustomer'| translate}}
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop=" ContractDate" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Date: S'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractDate | thaidate}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Time: S'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractTime}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <!-- <ngx-datatable-column prop=" ContractApproveDate" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Date: A'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractApproveDate }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractApproveTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Time: A'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractApproveTime}}</span>
+                  </ng-template>
+                </ngx-datatable-column> -->
+                <ngx-datatable-column prop="ContractNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS05.ContractNo'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="seeContractDetail(row.ContractHeadId)">{{row.ContractNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName" [cellClass]="'text-left'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ชื่อผู้กู้'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CustomerName}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="AppLoanPrincipleAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ยอดเงินต้น'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.AppLoanPrincipleAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="AppLoanInterestAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ยอดดอกเบี้ย'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.AppLoanInterestAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CommercialAccountAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จ่ายเงินกู้'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CommercialAccountAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerAccountNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่บัญชี'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CustomerAccountNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="BankName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ธนาคาร'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.BankName}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+          <hr>
+          <br>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+
+<ng-template #ContactCustomer>
+  <modal-layout (onClose)="closePopup()" header="{{'Label.LOTS05.ContactCustomer'| translate}}">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <tabset>
+            <tab heading="{{'Label.LOTS05.CustomerInfo'| translate}}">
+              <form [formGroup]="contactForm">
+                <div class="form-row" [class.validated]="submitted">
+                  <div class="form-group col-md-4">
+                    <label>{{'Label.LOTS05.ContractNo'| translate}}</label>
+                    <input type="text" class="form-control" formControlName="ContractNo">
+                  </div>
+                  <div class="form-group col-md-8">
+                    <label>{{'Label.LOTS05.CustomerName'| translate}}</label>
+                    <input type="text" class="form-control" formControlName="CustomerName">
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-4">
+                    <label>{{'Label.LOTS05.AppLoanPrincipleAmount'| translate}}</label>
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="AppLoanPrincipleAmount"
+                      [decimals]="2">
+                    </ngx-numeric-textbox>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>{{'Label.LOTS05.AppLoanInterestAmount'| translate}}</label>
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="AppLoanInterestAmount"
+                      [decimals]="2">
+                    </ngx-numeric-textbox>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label>{{'Label.LOTS05.Amount'| translate}}</label>
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="Amount" [decimals]="2">
+                    </ngx-numeric-textbox>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label>{{'Label.LOTS05.PhoneNumber'| translate}}</label>
+                    <textarea formControlName="MobileNumber" id="textarea-input" name="textarea-input" rows="3"
+                      class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="form-row text-center">
+                  <div class="form-group col-md-12">
+                    <button class="btn btn-primary" (click)="approveLoan(true)">
+                      {{ 'Label.LOTS05.Allowed'| translate}}
+                    </button>
+                    <button class="btn btn-danger" (click)="approveLoan(false)">
+                      {{ 'Label.LOTS05.NotAllowed'| translate}}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </tab>
+            <tab heading="{{'Label.LOTS05.AssessmentQuestion'| translate}}">
+              <form [formGroup]="contactForm">
+                <div class="form-row" *ngFor="let question of assessmentList">
+                  <app-sub-dynamic-form *ngIf="question.controlType != 'Main' && question.controlType != 'Radio'"
+                    class="form-group col-md-7" [formsBase]="question" [form]="assessmentQuestion">
+                  </app-sub-dynamic-form>
+                  <app-sub-dynamic-form *ngIf="question.controlType != 'Main'  && question.controlType == 'Radio'"
+                    class="form-group col-md-12" [formsBase]="question" [form]="assessmentQuestion">
+                  </app-sub-dynamic-form>
+                  <div class="form-group col-md-8" *ngIf="question.controlType == 'Main'">
+                    <label>{{question['label'+ lang.CURRENT]}}</label>
+                    <div class="form-row" *ngFor="let subQuestion of question.options" style="padding-left: 20px;">
+                      <app-sub-dynamic-form class="form-group col-md-12" [formsBase]="subQuestion"
+                        [form]="assessmentQuestion">
+                      </app-sub-dynamic-form>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <label>{{'หมายเหตุประเมินความพึงพอใจ'| translate}}</label>
+                    <textarea class="form-control" formControlName="Remark" rows="4"></textarea>
+                  </div>
+                </div>
+                <div class="form-row text-center">
+                  <div class="form-group col-md-12">
+                    <button class="btn btn-primary" (click)="approveLoan(true)">
+                      {{ 'Label.LOTS05.Allowed'| translate}}
+                    </button>
+                    <button class="btn btn-danger" (click)="approveLoan(false)">
+                      {{ 'Label.LOTS05.NotAllowed'| translate}}
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </tab>
+          </tabset>
+        </div>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>

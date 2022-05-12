@@ -1,0 +1,245 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{'Label.LOTS06.Branch'| translate}}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  (change)="search()" placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="inputSearch">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{'Label.LOTS06.ContractNo'| translate}}</label>
+                <input type="text" class="form-control" formControlName="ContractNo">
+                <!-- <ng-select [items]="contractNoList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  (change)="search()" placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="">
+                </ng-select> -->
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'สถานะโอนเงิน'| translate }}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="ApprovePaymentOnlineStatus">
+                  <button type="button" [btnRadio]="approvePaymentOnlineStatus.Value"
+                    *ngFor="let approvePaymentOnlineStatus of approvePaymentOnlineStatusList"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ approvePaymentOnlineStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3"
+                *ngIf="this.searchForm.controls.ApprovePaymentOnlineStatus.value == '2'">
+                <label class="require">{{"ช่วงวันที่(โอนเงิน)" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-left"
+                  formControlName="ApprovePaymentOnlineDateFrom"
+                  [maxDate]=this.searchForm.controls.ApprovePaymentOnlineDateTo.value />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3"
+                *ngIf="this.searchForm.controls.ApprovePaymentOnlineStatus.value == '2'">
+                <label class="require">{{"ถึง" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="ApprovePaymentOnlineDateTo"
+                  [minDate]=this.searchForm.controls.ApprovePaymentOnlineDateFrom.value />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS06.ApproveLoanTranferAgreement'| translate}}">
+        <div class="card-menu">
+          <!-- <button class="btn btn-primary btn-sm" (click)="confirmApproveLoanTranfer()">
+            อนุมัติโอนเงิน ( {{selected.length}} รายการ )
+          </button> -->
+          <button type="button" (click)="onPrint()" [disabled]="printing" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'พิมพ์รายงาน' | translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+            <i class="fas fa-print" [hidden]="printing"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanAgreementData" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <!-- <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                  [resizeable]="false" [headerCheckboxable]="false" [checkboxable]="true">
+                </ngx-datatable-column> -->
+                <!-- <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="30"
+                  *ngIf="this.searchForm.controls.ApprovePaymentOnlineStatus.value == '1'">
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <input type="checkbox" *ngIf="row.CustomerType && row.ApprovePaymentOnlineStatus == '-'"
+                      (click)="onClickRow(row, $event)">
+                  </ng-template>
+                </ngx-datatable-column> -->
+                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="100"
+                  *ngIf="this.searchForm.controls.ApprovePaymentOnlineStatus.value == '1'">
+                  <ng-template ngx-datatable-header-template>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button class="btn btn-primary btn-sm" (click)="approveLoanTranfer(row)"
+                      *ngIf="row.CustomerType && row.ApprovePaymentOnlineStatus == '-'">
+                      {{ 'โอนเงิน'| translate}}
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractDate" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Date: S'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractDate | thaidate}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractTime" [cellClass]="'text-center'" width="80">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Time: S'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ContractTime}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ApproveContractDate" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Date: A'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ApproveContractDate | thaidate}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ApproveContractTime" [cellClass]="'text-center'" width="80">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Time: A'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ApproveContractTime}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS06.ContractNo'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="seeContractDetail(row.ContractHeadId)">{{row.ContractNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName" [cellClass]="'text-left'" width="200">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS06.CustomerName'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CustomerName}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="AppLoanPrincipleAmount" [cellClass]="'text-center'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ยอดเงินต้น'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.AppLoanPrincipleAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="AppLoanInterestAmount" [cellClass]="'text-center'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ยอดดอกเบี้ย'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.AppLoanInterestAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CommercialAccountAmount" [cellClass]="'text-center'" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จ่ายเงินกู้'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CommercialAccountAmount | number:'1.2-2'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerAccountNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่บัญชี'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.CustomerAccountNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="BankName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ธนาคาร'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.BankName}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="300">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{ 'ไฟล์บัญชีธนาคาร'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <file-customer-attachment [file]="row.AttahmentId" [fileName]="row.FileName" [small]="true"
+                      [category]="categoryCustomer" [isDisable]="true" *ngIf="row.AttahmentId != null">
+                    </file-customer-attachment>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ApprovePaymentOnlineStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สถานะโอนเงิน'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ApprovePaymentOnlineStatus}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ApprovePaymentOnlineDate" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Date: T'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span *ngIf="row.ApprovePaymentOnlineDate == null">-</span>
+                    <span *ngIf="row.ApprovePaymentOnlineDate != null">{{row.ApprovePaymentOnlineDate |
+                      thaidate}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ApprovePaymentOnlineTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Time: T'|
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>{{row.ApprovePaymentOnlineTime}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+          <hr>
+          <br>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

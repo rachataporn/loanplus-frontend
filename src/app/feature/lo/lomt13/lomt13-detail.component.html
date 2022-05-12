@@ -1,0 +1,63 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card-content">
+                <form [formGroup]="motorcyclePriceFrom" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                    <card header="{{'Label.LOMT13.ManagerMiddleMotorcyclePrice'| translate}}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label class="require">{{'Label.LOMT13.BrandName'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="BrandName" placeholder="{{'Label.LOMT13.BrandName' | translate}}">
+                                </div>
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label>{{'Label.LOMT13.ModelCode'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ModelCode" placeholder="{{'Label.LOMT13.ModelCode' | translate}}">
+                                </div>
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label class="require">{{'Label.LOMT13.ModelName'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ModelName" placeholder="{{'Label.LOMT13.ModelName' | translate}}">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label>{{'Label.LOMT13.IdentificationNo'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="IdentificationNo" placeholder="{{'Label.LOMT13.IdentificationNo' | translate}}">
+                                </div>
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label>{{'Label.LOMT13.EngineNo'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="EngineNo" placeholder="{{'Label.LOMT13.EngineNo' | translate}}">
+                                </div>
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label class="require">{{'Label.LOMT13.Year'| translate}}</label>
+                                    <year-input formControlName="Year" max="9999"></year-input>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-4">
+                                    <label class="require">{{'Label.LOMT13.MiddleMotorcyclePrice'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control" [decimals]="2" formControlName="Price"></ngx-numeric-textbox>
+                                </div>
+                            </div>   
+                        </div>
+                    </card>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button type="button" class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

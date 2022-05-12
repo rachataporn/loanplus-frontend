@@ -1,0 +1,203 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-content">
+        <form [formGroup]="securitiesCategoryFrom" [class.validated]="submitted" [focusInvalid]="focusToggle">
+          <card header="{{'Label.LOMT01.CategoryDetail' | translate}}">
+            <div class="card-content">
+              <div class="form-row">
+                <div class="form-group col-sm-6 col-md-4">
+                  <label class="require">{{ 'Label.LOMT01.NameSecurities(TH)'| translate}}</label>
+                  <input type="text" required class="form-control" formControlName="CategoryNameTha" maxlength="200">
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <label>{{ 'Label.LOMT01.NameSecurities(EN)'| translate}}</label>
+                  <input type="text" class="form-control" formControlName="CategoryNameEng" maxlength="200">
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                    <input class="custom-control-input" type="checkbox" id="Active" formControlName="Active">
+                    <label class="custom-control-label" for="Active">
+                      {{ 'Label.LOMT01.Active'| translate}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-sm-6 col-md-4">
+                  <label class="require">{{ 'Label.LOMT01.SecuritiesTypeGroup'| translate}}</label>
+                  <ng-select [items]="securitiesGroupList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                    formControlName="SecuritiesTypeGroup" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                  </ng-select>
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <label class="require">{{ 'Label.LOMT01.TemplateViewFormat'| translate}}</label>
+                  <ng-select [items]="viewList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                    formControlName="TemplateViewId" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                  </ng-select>
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-4">
+                  <label>{{ 'ลำดับ'| translate}}</label>
+                  <ngx-numeric-textbox inputClass="form-control" formControlName="Priority" [decimals]="0" [max]="100">
+                  </ngx-numeric-textbox>
+                </div>
+
+              </div>
+            </div>
+          </card>
+          <card header="{{ 'Label.LOMT01.SecuritiesCodeFormat'| translate}}">
+            <div class="card-content">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="form-row">
+                    <div class="form-group col-sm-6 col-md-3">
+                      <label class="require">{{ 'Label.LOMT01.Abbreviation'| translate}}</label>
+                      <input type="text" class="form-control" formControlName="RunningType">
+                      <div class="invalid-feedback">
+                        {{ 'Message.STD00000' | translate }}
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-3">
+                      <label>{{ 'Label.LOMT01.YearFormat'| translate}}</label>
+                      <div class="btn-group d-block" btnRadioGroup formControlName="FormatYear">
+                        <button type="button" [btnRadio]="year.Value" *ngFor="let year of formatYearList"
+                          class="btn btn-outline-warning" tabindex="0">{{
+                                                            year['Text'+lang.CURRENT]}}</button>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-3">
+                      <label>{{ 'Label.LOMT01.MonthFormat'| translate}}</label>
+                      <div class="btn-group d-block" btnRadioGroup formControlName="FormatMonth">
+                        <button type="button" [btnRadio]="month.Value" *ngFor="let month of formatMonthList"
+                          class="btn btn-outline-warning" tabindex="0">{{
+                                                            month['Text'+lang.CURRENT]}}</button>
+                      </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-3">
+                      <label class="require">{{ 'Label.LOMT01.Running'| translate}}</label>
+                      <ngx-numeric-textbox inputClass="form-control text-right" formControlName="RunningNoDigit"
+                        [min]="0" [decimals]="0">
+                      </ngx-numeric-textbox>
+                      <div class="invalid-feedback">
+                        {{ 'Message.STD00000' | translate }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-sm-6 col-md-3">
+                      <label>{{ 'Label.LOMT01.SecuritiesCodeFormat'| translate}}</label>
+                      <input type="text" class="form-control" formControlName="RunningNoFormatForDisplay">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </card>
+          <card header="{{ 'Label.LOMT01.Attribute'| translate}}">
+            <div class="card-menu">
+              <button class="btn btn-sm btn-circle btn-secondary" (click)="addAttribute()"
+                tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="card-content">
+              <div class="row">
+                <div class="col-12" formArrayName="SecuritiesAttributeFrom">
+                  <aaa-grid #detailgrd [rows]="getSecuritiesAttribute.value" [formArray]="getSecuritiesAttribute">
+                    <ngx-datatable-column>
+                      <ng-template ngx-datatable-header-template>
+                        <label
+                          class="datatable-header-cell-wrapper">{{ 'Label.LOMT01.AttributeNameTha'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        {{ row.AttributeNameTha }}
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column>
+                      <ng-template ngx-datatable-header-template>
+                        <label
+                          class="datatable-header-cell-wrapper">{{ 'Label.LOMT01.AttributeNameEng'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        {{ row.AttributeNameEng }}
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [cellClass]="'text-center'">
+                      <ng-template ngx-datatable-header-template>
+                        <label
+                          class="datatable-header-cell-wrapper">{{ 'Label.LOMT01.AttributeType'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        {{ row['AttributeType'+lang.CURRENT] }}
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [cellClass]="'text-center'">
+                      <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOMT01.MustSpecify'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <div [formGroupName]="rowIndex">
+                          <label class="datatable-checkbox">
+                            <input type="checkbox" formControlName="RequireFlag">
+                          </label>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [cellClass]="'text-right'">
+                      <ng-template ngx-datatable-header-template>
+                        <label
+                          class="require datatable-header-cell-wrapper">{{ 'Label.LOMT01.OrderOfTopic'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <div [formGroupName]="rowIndex">
+                          <ngx-numeric-textbox inputClass="form-control form-control-sm text-right"
+                            formControlName="TitleSeq" [decimals]="0">
+                          </ngx-numeric-textbox>
+                        </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [cellClass]="'text-center'" width="40">
+                      <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'| translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <button class="btn btn-outline-primary btn-sm" (click)="removeRow(rowIndex);"
+                          [disabled]="disable">
+                          <i class="far fa-trash-alt"></i>
+                        </button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </aaa-grid>
+                </div>
+              </div>
+            </div>
+          </card>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-center">
+        <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+          <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+          <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+      </div>
+      <div class="col text-center">
+        <button type="button" class="btn btn-footer" [disabled]="saving" (click)="back()">
+          <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate}}</button>
+      </div>
+    </div>
+  </div>
+</footer>

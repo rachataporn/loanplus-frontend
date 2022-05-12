@@ -1,0 +1,72 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.SUMT08.ParameterInformation' | translate }}">
+                <div class="card-content">
+                    <form [formGroup]="parameterFrom" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-12">
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6">
+                                                <label>{{ 'Label.SUMT08.ParameterGroup' | translate }}</label>
+                                                <input type="text" class="form-control"
+                                                    formControlName="ParameterGroupCode" maxlength="100" disabled>
+                                            </div>
+                                            <div class="form-group col-sm-4">
+                                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                                    <input class="custom-control-input" type="checkbox" id="Active"
+                                                        formControlName="Active">
+                                                    <label class="custom-control-label" for="Active">
+                                                        {{ 'Label.SUMT08.Active' | translate }}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3">
+                                                <label>{{ 'Label.SUMT08.ParameterCode' | translate }}</label>
+                                                <input type="text" class="form-control text-center" formControlName="ParameterCode"
+                                                    maxlength="100" disabled>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3">
+                                                <label>{{ 'Label.SUMT08.ParameterValue' | translate }}</label>
+                                                <input type="text" class="form-control" formControlName="ParameterValue"
+                                                    maxlength="200">
+                                            </div>
+                                            <div class="form-group col-sm-6">
+                                                <label>{{ 'Label.SUMT08.Detail' | translate }}</label>
+                                                <input type="text" class="form-control" formControlName="Remark"
+                                                    maxlength="200">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button type="button" class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

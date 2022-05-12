@@ -1,0 +1,57 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP26.AssessmentQuestionReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-6" style="padding-right: 15px;">
+                <label>{{ 'Label.LORP26.FromDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="StartDate"
+                  [maxDate]="this.searchForm.controls.EndDate.value == null ? now : this.searchForm.controls.EndDate.value" bsDatepicker />
+              </div>
+              <div class="form-group col-sm-12 col-md-6" style="padding-left: 15px;">
+                <label>{{ 'Label.LORP26.ToDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control ชtext-center" formControlName="EndDate"
+                  [minDate]="this.searchForm.controls.StartDate.value" [maxDate]="now" bsDatepicker />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'Label.LORP26.FromBranch'| translate}}</label>
+                <ng-select [items]="FromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'Label.LORP26.ToBranch'| translate}}</label>
+                <ng-select [items]="ToBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP26.AssessmentQuestion'| translate}}</label>
+                <ng-select [items]="AssessmentList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="Assessment" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

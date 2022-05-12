@@ -1,0 +1,117 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="รายการเบิกเอกสาร">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="TrackingDoc" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column prop="ReqDocumentDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.TakeDocDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqDocumentDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqDocumentTypeCode" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.TypeTakeCode' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqDocumentTypeCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqCompanyDocument">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สาขาที่ทำเรื่องเบิก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqCompanyDocument}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">จัดการเอกสาร</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link"
+                      (click)="PrepareDoc(row.ReqCompanyCode,row.ReqCompanyCreatedDocument)">จัดการเอกสาร</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS20.PackageSendList' | translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="PackageList" [page]="page2" (onTableEvent)="onTableEvent2($event)">
+                <ngx-datatable-column prop="CompanyDestination">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS20.CompanyDestination' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanyDestination}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PackagePrepareDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS20.DocumentPrepareDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PackagePrepareDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PackageSendDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS20.DocumentSendDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PackageSendDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="RefNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS20.RefNo' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.TrackingDocumentPackageId)"> {{row.RefNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PackageStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS20.Status' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PackageStatus}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

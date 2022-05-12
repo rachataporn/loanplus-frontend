@@ -1,0 +1,50 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted">
+        <card header="{{ 'Label.TRRP02.Header' | translate }}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-print"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="form-group col-md-6 col-sm-12">
+                <label>{{ 'Label.TRRP02.Branch' | translate }}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{ 'Label.GLOBAL.All' | translate }}" formControlName="Branch">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-3">
+                <label for="strat">{{ 'Label.TRRP02.Strat' | translate }}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="Strat" />
+              </div>
+              <div class="form-group col-md-3">
+                <label for="end">{{ 'Label.TRRP02.End' | translate }}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="End" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.TRTS01.StatusTracking" | translate }}</label>&nbsp;<label
+                  class="text-danger">{{ "Label.LORP02.SelectAll" | translate }}</label>
+                <div formArrayName="ContractStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of contractStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChkcontractStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChkcontractStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

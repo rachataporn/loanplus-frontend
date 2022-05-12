@@ -1,0 +1,104 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="บังคับคดี">
+                <div class="card-menu">
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="form-group col-sm-1"></div>
+                            <div class="form-group col-sm-4">
+                                <input type="text" class="form-control" formControlName="input1" placeholder="ค้นหา">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <ng-select [items]="DDL" bindLabel="text" bindValue="value" placeholder="กรุณาระบุ"
+                                    formControlName="input2">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <button class="btn btn-primary form-group col-sm-12" type="button">ดูข้อมูลทั้งหมด</button>
+                                <!-- (click)="onViewInformation(row)" -->
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <br />
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="dataList" [count]="count"  [page]="page"
+                                (onTableEvent)="onTableEvent($event)">
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column1" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสสาขา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column1}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column2" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">วันที่ค้างงวดแรก</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column2}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column3" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">เลขที่สัญญา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column3}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column4" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template
+                                        style="white-space:nowrap;overflow:hidden;">
+                                        {{row.column4}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-left'" name="column5" [width]="40">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column5}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column6" [width]="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">พิมพ์</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i class="fas fa-print text-center"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="10" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">ดูข้อมูล</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i class="fas fa-search text-center"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

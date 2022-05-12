@@ -1,0 +1,19 @@
+<div class="upload-container">
+    <div class="img-container" *ngIf="fileName">
+        <div class="img-wrapper">
+            <img class="img-preview" [src]="uploaded ? image.encode(dataUrl) : dataUrl">
+            <div class="img-remove">
+                <button type="button" class="btn btn-primary btn-sm" [disabled]="isDisable" (click)="onRemove(fileInput)">
+                    <i class="fas fa-trash-alt"></i></button>
+            </div>
+        </div>
+    </div> 
+    <div [hidden]="fileName" class="area" [class.disabled]="isDisable" [class.over]="isOver" (click)="onClick(fileInput)">
+        <div *ngIf="placeholder" class="file-placeholder">{{placeholder}}</div>
+        <div><i class="fas fa-plus fa-2x"></i></div>
+    </div>
+    <input type="file" accept="image/*,.svg" #fileInput (change)="onFileChange($event)" style="display:none"/>
+</div>
+<div class="image-error text-danger" *ngIf="errors.length">
+   <small *ngFor="let error of errors">{{ error }}</small>
+</div>

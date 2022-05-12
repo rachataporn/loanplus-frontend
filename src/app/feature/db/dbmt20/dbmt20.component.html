@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+                <div class="card-menu">
+                    <button (click)="search()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.GLOBAL.Search' | translate}}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="nameForm" (keyup.enter)="search()">
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>จังหวัด</label>
+                                <ng-select [items]="provinceList" placeholder="เลือกจังหวัด" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" formControlName="ProvinceName" ng-module="selectedCountryId">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label>ตั้งแต่</label>
+                                <input type="text" placeholder="ตั้งแต่" class="form-control" formControlName="DateStart" [maxDate]="nameForm.controls['DateEnd'].value" bsDatepicker/>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>ถึง</label>
+                                <input type="text" placeholder="ถึง" class="form-control" formControlName="DateEnd" [minDate]="nameForm.controls['DateStart'].value" bsDatepicker/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+
+            <card header="แผนที่">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="frugalmap" style="height: 800px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </card>
+
+
+
+            <card header="รายละเอียด">
+                <div class="card-content">
+                    <form [formGroup]="nameForm">
+                        <div class="form-group" >
+                            <div class="col-12">
+                                <aaa-table [rows]="userTrackingList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                    <ngx-datatable-column [cellClass]="'text-left'" prop="provinceLocal">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper">{{ 'จังหวัด' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link">{{row.provinceLocal}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [cellClass]="'text-left'" prop="districtLocal">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper">{{ 'อำเภอ/เขต' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link">{{row.districtLocal}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [cellClass]="'text-left'" prop="subDistrictLocal">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper">{{ 'ตำบล/แขวง' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link">{{row.subDistrictLocal}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [cellClass]="'text-center'">
+                                        <ngx-datatable-column [cellClass]="'text-center'" prop="count">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper">{{ 'จำนวนผู้ใช้งาน (อุปกรณ์)' | translate }}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <span>{{row.count}}</span>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </ngx-datatable-column>
+                                </aaa-table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,139 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="เปลี่ยนสถานะ">
+        <!-- <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary" tooltip="เพิ่ม">
+                  <i class="fas fa-plus"></i>
+                </button>
+        </div> -->
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="input-group">
+                    <div class="col-sm-5 col-5 form-group">
+                  <input type="text" class="form-control" formControlName="inputSearch" placeholder="ค้นหา">
+                </div>
+                  <div class="col-sm-3 col-3 form-group">
+                    <ng-select [items]="A1" required bindLabel="text" bindValue="value" placeholder="----เลือกสาขา----">
+                    </ng-select>
+                  </div>
+                  <div class="col-sm-4 col-4 form-group">
+                  <button class="btn btn-primary form-group col-sm-4" type="button">ดูข้อมูลทั้งหมด</button>
+                </div>
+
+              </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+          <div class="col-12">
+            <aaa-table [rows]="menuList" [count]="count" 
+              [rowSelect]="selected">
+
+              <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+              </ngx-datatable-column>
+
+
+
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสสาขา</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.id}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">วันที่</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.day}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่สัญญา</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.id2}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสผู้กู้</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.id3}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อผู้กู้</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.name}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดรวม</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.sum}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ผลการติดตามก่อนหน้า</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.status}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="MenuCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ดูข้อมูล</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <!-- <span class="link" (click)="edit(row)">ดูข้อมูล</span> -->
+                  <i class="fas fa-folder-open"></i>
+                </ng-template>
+              </ngx-datatable-column>
+
+            </aaa-table>
+          </div>
+        </div>
+
+        </form>
+    </div>
+    </card>
+
+    <div class="row">
+      <div class="form-group col-sm-6">
+      </div>
+      <div class="col-sm-12 text-center">
+        <br>
+        <button class="btn btn-primary form-group col-sm-2" type="button">เปลี่ยนสถานะ</button>
+      </div>
+      <div class="form-group col-sm-5">
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>

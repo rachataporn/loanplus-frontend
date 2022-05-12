@@ -1,0 +1,717 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate }}" *ngIf="IsSuperUser">
+        <div class="card-menu">
+          <button type="button" (click)="search();searchKKP();searchCS()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search()">
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>ค้นหา</label>
+                <input type="text" class="form-control" formControlName="Keyword"
+                  placeholder="เลขที่สัญญา, ชื่อ - นามสกุล, เลขที่บัตรประชาชน">
+              </div>
+              <div class="form-group col-md-8">
+                <label>จังหวัด</label>
+                <ng-select [items]="province" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="ProvinceId" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>ตั้งแต่ สาขา</label>
+                <ng-select [items]="company" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="CompanyCodeFrom" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-6">
+                <label>ถึง สาขา</label>
+                <ng-select [items]="company" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="CompanyCodeTo" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label>วันที่จ่าย (ลูกค้าโอนเงิน)</label>
+                &nbsp;<label class="text-danger">(
+                  ถ้าไม่เลือก คือ ทุกวันโดยเรียงลำดับจากวันที่เก่ากว่ามาก่อน )</label>
+                <input type="text" class="form-control text-center" formControlName="PayDate" bsDatepicker>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="รายการรับชำระ ( Matched )">
+        <div class="card-content">
+          <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label>วันที่ทำรายการ (วันที่ใบเสร็จรับเงิน)</label>
+                <input type="text" class="form-control text-center" formControlName="ProcessDateFrom" bsDatepicker>
+              </div>
+              <div class="form-group col-md-3">
+                <label>ถึง</label>
+                <input type="text" class="form-control text-center" formControlName="ProcessDateTo" bsDatepicker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label class="require">ประเภทรายงาน (ช่องทางการชำระ)</label>
+                <ng-select [items]="reportTypeList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="ReportType" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <button type="button" (click)="print()" class="btn btn-warning">
+                  Export ข้อมูลรับชำระออนไลน์ (Matched)
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="รายการรับชำระ BAY ( Unmatched )" *ngIf="IsSuperUser">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="billPaymentList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">สาขา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanyCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo1">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่สัญญา (Ref1.)</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkContractDetail(row.ContractHeadId)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '1'">{{row.ReferenceNo1}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '1'">
+                      {{row.ReferenceNo1}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo2">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่บัตรประชาชน (Ref2.) </label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkCustomerDetail(row.CustomerCode)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '2'">{{row.ReferenceNo2}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '2'">
+                      {{row.ReferenceNo2}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อ - นามสกุล</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PayDateTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">วัน - เวลา ที่จ่าย</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PayDateTime | thaidate: 'datetime' }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="Amount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">จำนวนเงิน</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Amount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="CloseContractAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดปิดสัญญา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CloseContractAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="DiffCloseAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดส่วนต่าง</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.DiffCloseAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ตรวจสอบ</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button type="button" class="btn btn-outline-primary btn-sm"
+                      (click)="editUnmatched(row, fixUnmatchedModalBay)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+      <card header="รายการรับชำระ KKP ( Unmatched )" *ngIf="IsSuperUser">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="billPaymentListKKP" [page]="pageKKP" (onTableEvent)="onTableEventKKP($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">สาขา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanyCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo1">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่สัญญา (Ref1.)</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkContractDetail(row.ContractHeadId)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '1'">{{row.ReferenceNo1}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '1'">
+                      {{row.ReferenceNo1}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo2">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่บัตรประชาชน (Ref2.) </label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkCustomerDetail(row.CustomerCode)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '2'">{{row.ReferenceNo2}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '2'">
+                      {{row.ReferenceNo2}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อ - นามสกุล</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PayDateTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">วัน - เวลา ที่จ่าย</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PayDateTime | thaidate: 'datetime' }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="Amount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">จำนวนเงิน</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Amount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="CloseContractAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดปิดสัญญา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CloseContractAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="DiffCloseAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดส่วนต่าง</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.DiffCloseAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ตรวจสอบ</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button type="button" class="btn btn-outline-primary btn-sm"
+                      (click)="editUnmatched(row, fixUnmatchedModalKkp)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+      <card header="ตรวจสอบรายการรับชำระจากธนาคารเกียรตินาคิน(KKP)">
+        <div class="card-menu">
+          <button type="button" (click)="inqKkp()" class="btn btn-sm btn-circle btn-secondary" tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="kkpForm" [class.validated]="submitted3" [focusInvalid]="focusToggle3">
+            <div class="form-row">
+              <div class="form-group col-sms-9 col-md-6">
+                <label class="require">เลขที่สัญญา (Ref1.)</label>
+                <input type="text" class="form-control text-center" formControlName="BillReference1">
+              </div>
+              <div class="form-group col-sm-9 col-md-6">
+                <label class="require">เลขที่บัตรประชาชน (Ref2.)</label>
+                <input type="text" class="form-control text-center" formControlName="BillReference2">
+              </div>
+            </div>
+          </form>
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="dataForPaymentKKPList" [page]="pageKKPInq">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="PaymentDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">วันที่ชำระ</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>
+                      {{getDate(row.PaymentDate) | thaidate: 'datetime'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อ - นามสกุล</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span>
+                      {{row.CustomerName}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PaymentAmount" [cellClass]="'text-right'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">จำนวนเงิน</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PaymentAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PayDateTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">BillerReferenceNo</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.BillerReferenceNo }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ชำระ</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="payByKKP(row)">
+                      <i class="fas fa-money-bill"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+
+      <card header="รายการรับชำระ Counter Service ( Unmatched )" *ngIf="IsSuperUser">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="billPaymentListCS" [page]="pageCS" (onTableEvent)="onTableEventCS($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">สาขา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanyCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo1">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่สัญญา (Ref1.)</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkContractDetail(row.ContractHeadId)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '1'">{{row.ReferenceNo1}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '1'">
+                      {{row.ReferenceNo1}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReferenceNo2">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่บัตรประชาชน (Ref2.) </label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkCustomerDetail(row.CustomerCode)"
+                      *ngIf="row.UnmatchedStatus == '0' || row.UnmatchedStatus == '2'">{{row.ReferenceNo2}}</span>
+                    <span *ngIf="row.UnmatchedStatus != '0' && row.UnmatchedStatus != '2'">
+                      {{row.ReferenceNo2}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อ - นามสกุล</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PayDateTime" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">วัน - เวลา ที่จ่าย</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PayDateTime | thaidate: 'datetime' }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="Amount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">จำนวนเงิน</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Amount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="CloseContractAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดปิดสัญญา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CloseContractAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="DiffCloseAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดส่วนต่าง</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.DiffCloseAmount | number:'1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ตรวจสอบ</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button type="button" class="btn btn-outline-primary btn-sm"
+                      (click)="editUnmatched(row, fixUnmatchedModalCS)">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+
+<ng-template #fixUnmatchedModalBay>
+  <modal-layout (onClose)="close()" header="แก้ไขรายการรับชำระจากธนาคาร BAY">
+    <form [formGroup]="unmatchedForm" [class.validated]="submitted2" [focusInvalid]="focusToggle2">
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่สัญญา (Ref1.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '1'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '1'">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่บัตรประชาชน (Ref2.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '2'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '2'">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>วัน - เวลา ที่จ่าย</label>
+          <input type="text" class="form-control text-center" formControlName="PayDateTimeText">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงิน</label>
+          <input type="text" class="form-control text-right" formControlName="Amount">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่สัญญา (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="ContractNo" keyColumn="ContractNo"
+            searchUrl="loan/BillPayment/getContractLOV" [content]="Lots18ContractLookupContent"
+            formControlName="ReferenceNo1New" [detailCheck]="true" [detailFlag]="true"
+            (detail)="contractDetailOutputBay($event)"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่บัตรประชาชน (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="IdCard" keyColumn="IdCard"
+            searchUrl="loan/BillPayment/getCustomerLOV" [content]="Lots18CustomerLookupContent"
+            formControlName="ReferenceNo2New"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCompany">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="color-danger require">เลขที่สัญญาที่เลือกไม่ตรงกับบริษัทที่ทางธนาคารส่งมาให้
+            กรุณาเลือกเลขที่บัญชีให้ถูกต้อง</label>
+          <ng-select [items]="bankAccount" bindLabel="AccountNo" bindValue="CompanyAccountId"
+            formControlName="CompanyAccountId" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>ธนาคาร</label>
+          <input type="text" class="form-control" formControlName="BankName">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCompany">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>สาขา</label>
+          <input type="text" class="form-control" formControlName="BranchName">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">รหัสรายการรับ/จ่าย</label>
+          <ng-select [items]="accCodeList" bindLabel="expDesc" bindValue="expCode" formControlName="ExpCode"
+            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงินส่วนต่างยอดปิดบัญชี</label>
+          <input type="text" class="form-control text-right" formControlName="OverAmount">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>รหัสบัญชี</label>
+          <input type="text" class="form-control text-center" formControlName="AccCode">
+        </div>
+      </div>
+    </form>
+    <div class="form-row">
+      <div class="form-group col-12 col-md-12 text-center">
+        <button type="button" class="btn btn-primary" (click)="onSubmitUnmatchBillPaymentBAY()" [disabled]="saving">
+          <i class="fas fa-save"></i> {{'Label.GLOBAL.Save'| translate}}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="close()" [disabled]="saving">
+          <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+        </button>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>
+
+<ng-template #fixUnmatchedModalKkp>
+  <modal-layout (onClose)="close()" header="แก้ไขรายการรับชำระจากธนาคาร KKP">
+    <form [formGroup]="unmatchedForm" [class.validated]="submitted4" [focusInvalid]="focusToggle4">
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่สัญญา (Ref1.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '1'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '1'">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่บัตรประชาชน (Ref2.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '2'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '2'">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>วัน - เวลา ที่จ่าย</label>
+          <input type="text" class="form-control text-center" formControlName="PayDateTimeText">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงิน</label>
+          <input type="text" class="form-control text-right" formControlName="Amount">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่สัญญา (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="ContractNo" keyColumn="ContractNo"
+            searchUrl="loan/BillPayment/getContractLOV" [content]="Lots18ContractLookupContent"
+            formControlName="ReferenceNo1New" [detailCheck]="true" [detailFlag]="true"
+            (detail)="contractDetailOutputKkp($event)"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่บัตรประชาชน (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="IdCard" keyColumn="IdCard"
+            searchUrl="loan/BillPayment/getCustomerLOV" [content]="Lots18CustomerLookupContent"
+            formControlName="ReferenceNo2New"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">รหัสรายการรับ/จ่าย</label>
+          <ng-select [items]="accCodeList" bindLabel="expDesc" bindValue="expCode" formControlName="ExpCode"
+            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงินส่วนต่างยอดปิดบัญชี</label>
+          <input type="text" class="form-control text-right" formControlName="OverAmount">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>รหัสบัญชี</label>
+          <input type="text" class="form-control text-center" formControlName="AccCode">
+        </div>
+      </div>
+    </form>
+    <div class="form-row">
+      <div class="form-group col-12 col-md-12 text-center">
+        <button type="button" class="btn btn-primary" (click)="onSubmitUnmatchBillPaymentKKP()" [disabled]="saving">
+          <i class="fas fa-save"></i> {{'Label.GLOBAL.Save'| translate}}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="close()" [disabled]="saving">
+          <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+        </button>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>
+
+<ng-template #fixUnmatchedModalCS>
+  <modal-layout (onClose)="close()" header="แก้ไขรายการรับชำระจากธนาคาร Counter Service">
+    <form [formGroup]="unmatchedForm" [class.validated]="submitted5" [focusInvalid]="focusToggle5">
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่สัญญา (Ref1.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '1'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo1"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '1'">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>เลขที่บัตรประชาชน (Ref2.)</label>
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value != '0' && unmatchedForm.controls.UnmatchedStatus.value != '2'">
+          <input type="text" class="form-control text-center text-danger" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '0'">
+          <input type="text" class="form-control text-center" formControlName="ReferenceNo2"
+            *ngIf="unmatchedForm.controls.UnmatchedStatus.value == '2'">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>วัน - เวลา ที่จ่าย</label>
+          <input type="text" class="form-control text-center" formControlName="PayDateTimeText">
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงิน</label>
+          <input type="text" class="form-control text-right" formControlName="Amount">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่สัญญา (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="ContractNo" keyColumn="ContractNo"
+            searchUrl="loan/BillPayment/getContractLOV" [content]="Lots18ContractLookupContent"
+            formControlName="ReferenceNo1New" [detailCheck]="true" [detailFlag]="true"
+            (detail)="contractDetailOutputKkp($event)"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">เลขที่บัตรประชาชน (ที่ถูกต้อง)</label>
+          <lookup-input [small]="false" lookupName="IdCard" keyColumn="IdCard"
+            searchUrl="loan/BillPayment/getCustomerLOV" [content]="Lots18CustomerLookupContent"
+            formControlName="ReferenceNo2New"></lookup-input>
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label class="require">รหัสรายการรับ/จ่าย</label>
+          <ng-select [items]="accCodeList" bindLabel="expDesc" bindValue="expCode" formControlName="ExpCode"
+            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+          </ng-select>
+        </div>
+        <div class="form-group col-sm-9 col-md-6">
+          <label>จำนวนเงินส่วนต่างยอดปิดบัญชี</label>
+          <input type="text" class="form-control text-right" formControlName="OverAmount">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="IsDiffCloseAmount">
+        <div class="form-group col-sm-9 col-md-6">
+          <label>รหัสบัญชี</label>
+          <input type="text" class="form-control text-center" formControlName="AccCode">
+        </div>
+      </div>
+    </form>
+    <div class="form-row">
+      <div class="form-group col-12 col-md-12 text-center">
+        <button type="button" class="btn btn-primary" (click)="onSubmitUnmatchBillPaymentCS()" [disabled]="saving">
+          <i class="fas fa-save"></i> {{'Label.GLOBAL.Save'| translate}}
+        </button>
+        <button type="button" class="btn btn-primary" (click)="close()" [disabled]="saving">
+          <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+        </button>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>

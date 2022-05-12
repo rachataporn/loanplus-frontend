@@ -1,0 +1,128 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="โทรติดตามหนี้">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-sm-6 col-12">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="ค้นหา">
+              </div>
+            </div>
+            <div class="col-sm-4 col-12">
+              <ng-select [items]="[]" required bindLabel="text" bindValue="value" placeholder="เลือกสาขา">
+              </ng-select>
+            </div>
+            <div class="col-sm-2 col-12">
+              <div class="input-group">
+                <button class="btn btn-warning" type="button">ดูข้อมูลทั้งหมด</button>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-sm-12 col-12">
+              <aaa-table [rows]="newLoan" [count]="countNewLoant" [page]="pageNewLoant" [loading]="loadingNewLoan">
+                <ngx-datatable-column name="code" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">รหัสสาขา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.code}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="date" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">วันที่</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.date}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="lastName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">เลขที่สัญญา</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.lastName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="borrower" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">รหัสผู้กู้</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.borrower}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="name">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ชื่อผู้กู้</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.name}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="amount" [cellClass]="'text-right'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ยอดเงินรวม</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.amount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="status" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ผลการติดตามก่อนหน้า</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.status}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="present" [cellClass]="'text-right'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ผลการติดตามปัจจุบัน</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.present}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="loanType" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ติดตาม</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="pay()"><i class="fas fa-map-marker-alt"></i></span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">ดูข้อมูล</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="pay()"><i class="far fa-folder-open"></i></span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+          <br>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label style="color: red">*NC ไม่รับสาย, ปิดเครื่อง, คนอื่นรับแทน</label>
+    </div>
+    <div class="col-sm-12">
+      <label style="color: red">*M นัดชำระ</label>
+    </div>
+    <div class="col-sm-12">
+      <label style="color: red">*L เกินนัดชำระ</label>
+    </div>
+    <div class="col-sm-12">
+      <label style="color: red">*O อื่นๆ</label>
+    </div>
+  </div>
+</div>

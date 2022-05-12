@@ -1,0 +1,99 @@
+<modal-layout (onClose)="close()" header="{{'Label.LORP15.SearchContract' | translate}}">
+    <card header="{{'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+            <button type="button" (click)="search(true)" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>{{'Label.LORP15.ContractNo' | translate}}</label>
+                        <input type="text" (keyup.enter)="search(true)" class="form-control" formControlName="LoanNo" maxlength="50">
+                    </div>
+                    <!-- <div class="form-group col-md-4">
+                        <label>{{'Label.LORP15.ContractDate' | translate}}</label>
+                        <input type="text" class="form-control text-center" formControlName="LoanDate" bsDatepicker>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label>{{'Label.LORP15.ContractStatus' | translate}}</label>
+                        <ng-select [items]="invoiceStatusList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                            formControlName="LoanStatus">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>{{'Label.LORP15.CustomerCode' | translate}}</label>
+                        <input type="text" (keyup.enter)="search(true)" class="form-control" formControlName="CustomerCode" maxlength="20">
+                    </div> -->
+                    <div class="form-group col-md-8">
+                        <label>{{'Label.LORP15.CustomerName' | translate}}</label>
+                        <input type="text" (keyup.enter)="search(true)" class="form-control" formControlName="CustomerName" maxlength="200">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="itemsLOV" [page]="page" 
+                            (onTableEvent)="onTableEvent($event)">
+                            <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="80">
+                                <ng-template ngx-datatable-header-template>
+                                    <label
+                                        class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Select'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <button type="button" class="btn btn-primary btn-sm" (click)="select(row.ContractNo)">
+                                        {{'Label.GLOBAL.Select' | translate}}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="ContractNo" width="130">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LORP15.ContractNo' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ContractNo}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode" width="100">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LORP15.CustomerCode' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CustomerCode}}
+                                </ng-template>
+                            </ngx-datatable-column> -->
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName{lang}">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LORP15.CustomerName' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row['CustomerName'+lang.CURRENT]}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <!-- <ngx-datatable-column [cellClass]="'text-center'" prop="ContractDate" width="100">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LORP15.ContractDate' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ContractDate | thaidate}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="150" [cellClass]="'text-center'" prop="StatusDesc{lang}">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LORP15.ContractStatus' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row['StatusDesc'+lang.CURRENT]}}
+                                </ng-template>
+                            </ngx-datatable-column> -->
+                        </aaa-table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </card>
+</modal-layout>

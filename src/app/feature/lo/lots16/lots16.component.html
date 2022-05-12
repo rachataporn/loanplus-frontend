@@ -1,0 +1,95 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <card header="{{ 'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+          <button type="button" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="search()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'Label.LOTS16.MgmCode' | translate}}</label>
+                <input type="text" class="form-control" formControlName="MgmCode"
+                  placeholder="{{'Label.LOTS16.MgmCode' | translate}}" (keyup.enter)="search()">
+              </div>
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'Label.LOTS16.FirstLastname' | translate}}</label>
+                <input type="text" class="form-control" formControlName="CustomerName"
+                  placeholder="{{'Label.LOTS16.FirstLastname' | translate}}" (keyup.enter)="search()">
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{'Label.LOTS15.ReceiptList' | translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanPaymentsList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column width="120" [cellClass]="'text-center'" prop="MgmCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS16.MgmCode' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="onViewInformation(row.MgmCode)">{{row.MgmCode}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="120" [cellClass]="'text-center'" prop="CustomerCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS16.CustomerCode' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerCode}}
+                    <i *ngIf="!row.CustomerCode" class="fas fa-minus"></i>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="200" [cellClass]="'text-left'" prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS16.FirstLastname' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerName}}
+                    <!-- {{ row['CompanyName'+lang.CURRENT] }} -->
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="200" [cellClass]="'text-center'" prop="IdCard">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS16.IDCard4D' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.IdCard}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="50" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{'Label.DBMT07.Delect'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="remove(row)">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

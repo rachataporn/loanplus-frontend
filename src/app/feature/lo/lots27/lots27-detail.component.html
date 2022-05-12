@@ -1,0 +1,208 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form [formGroup]="requestSecuritiesForm" [class.validated]="submitted">
+        <tabset>
+          <tab heading="{{ 'Label.LOTS13.GeneralInfo'| translate}}" (select)="tabSelected()">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.SecuritiesCode'| translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="SecuritiesCode">
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.SecuritiesDate'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="SecuritiesDate" />
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.SecuritiesStatus'| translate}}</label>
+                <h5>
+                  <span class="badge badge-primary w-100" style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                    {{ getDocStatus['Text'+lang.CURRENT] }}
+                  </span>
+                </h5>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+                <ng-select [items]="assetTypeList" bindLabel="TextTha" bindValue="Value"
+                  formControlName="SecuritiesCategoryId" placeholder="กรุณาเลือก">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3"
+                *ngIf="requestSecuritiesForm.controls.SecuritiesCategoryId.value == 2 || requestSecuritiesForm.controls.SecuritiesCategoryId.value == 3">
+                <label class="require">{{ 'Label.LOTS13.EstimateAmount'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control" [max]="2147483647" formControlName="EstimateAmount"
+                  [decimals]="2">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'Label.LOTS13.LoanLimitAmount'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control" [max]="2147483647" formControlName="LoanLimitAmount"
+                  [decimals]="2">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label>{{ 'Label.LOTS13.AppPrincipleAmount'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control" formControlName="AppPrincipleAmount" [decimals]="2">
+                </ngx-numeric-textbox>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.ApprovedCode'| translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="ApprovedCode">
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'Label.LOTS13.CustomerName'| translate}}</label>
+                <input type="text" class="form-control " inputClass="form-control" formControlName="SecurityOwner">
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'Label.LOTS13.PhoneNumber'| translate}}</label>
+                <input type="text" class="form-control " inputClass="form-control" formControlName="ContractNumber"
+                  pattern="[0-9]{10}" maxlength="10">
+                <div class="invalid-feedback">
+                  {{'Message.'+ this.showAlert | translate}}
+                </div>
+              </div>
+            </div>
+            <div class="row" *ngIf="requestSecuritiesForm.controls.RefRegisterId.value">
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.RefRegisterName'| translate}}</label>
+                <input type="text" class="form-control" formControlName="RefRegisterName">
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.RefRegisterDate'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="RefRegisterDate" />
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'Label.LOTS13.RefRegisterChannel'| translate}}</label>
+                <input type="text" class="form-control" formControlName="RefRegisterChannel">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'จังหวัดที่อยู่นอกเขต'| translate}}</label>
+                <ng-select [items]="province" bindLabel="TextTha" bindValue="Value" formControlName="ProvinceOutOfBound"
+                  placeholder="กรุณาเลือก">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'วันที่สิ้นสุดห้ามโอน'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="EndNotTransferDate" />
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label>{{ 'วันที่สิ้นสุดโอนมรดก'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" formControlName="EndTransferInheritanceDate" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="Description">{{ 'Label.LOTS13.SecuritiesDescription'| translate}}</label>
+                <textarea id="Description-textarea-input" name="Description-textarea-input" rows="4"
+                  class="form-control" formControlName="Description" maxlength="4000"></textarea>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label for="description">{{ 'Label.LOTS13.SecuritiesRemark'| translate}}</label>
+                <textarea id="Remark-textarea-input" name="Remark-textarea-input" rows="4" class="form-control"
+                  formControlName="Remark"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS13.RequestSecuritiesBy'| translate}}</label>
+                <input type="text" class="form-control" formControlName="ReqSecuritiesBy" disabled>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS13.CustomerReqSecurities'| translate}}</label>
+                <input type="text" class="form-control" formControlName="CustomerReqSecurities" disabled>
+              </div>
+            </div>
+          </tab>
+          <tab heading="{{ 'Label.LOTS13.SecuritiesAttribute'| translate}}" (select)="tabSelected()">
+            <card header="{{ 'Label.LOTS13.SecuritiesAttribute'| translate}}">
+              <div class="card-menu">
+                <button *ngIf="checkButton" (click)="checkEstimateAmount()" class="btn btn-sm btn-circle btn-secondary"
+                  tooltip="ตรวจสอบมูลค่าหลักทรัพย์">
+                  <i class="fas fa-exchange-alt"></i>
+                </button>
+              </div>
+              <div class="card-content">
+                <div *ngFor="let securities of securitiesAttributeList; let i=index" class="form-row">
+                  <!-- {{i}} ------ {{securities.labelTha}} -->
+                  <app-dynamic-form class="form-group col-md-6" [formsBase]="securities" [form]="securitiesAttributes">
+                  </app-dynamic-form>
+                </div>
+              </div>
+            </card>
+          </tab>
+          <tab heading="{{ 'Label.LOTS13.SecuritiesImage'| translate}}" (select)="tabSelected()">
+            <card header="{{ 'Label.LOTS13.SecuritiesImage'| translate}}">
+              <div class="card-content">
+                <div formArrayName="SecuritiesImages" class="d-inline-flex flex-wrap">
+                  <div *ngFor="let detail of SecuritiesImages.controls; let i=index" [formGroupName]="i"
+                    class="mr-2 mb-2">
+                    <image-upload-securities [file]="imageFiles[i]" [category]="category"
+                      [referenceSecure]="requestSecuritiesForm.controls.RefRegisterId.value"
+                      [placeholder]="detail.controls['ViewName'+lang.CURRENT].value" [disabled]="verifyComplete"
+                      formControlName="AttahmentId" [pictureName]="detail.controls['ImageName'].value"
+                      (selected)="onSelectedImage(i,$event)" (remove)="onRemoveImage(i,$event)">
+                    </image-upload-securities>
+                  </div>
+                </div>
+              </div>
+            </card>
+          </tab>
+        </tabset>
+      </form>
+    </div>
+  </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-3 text-center">
+        <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving || (verifyComplete && !approved)">
+          <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+          <i class="far fa-check-circle" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+      </div>
+      <div class="col-sm-3 col-md-3 text-center">
+        <button class="btn btn-footer" (click)="onReApproved()"
+          [disabled]="saving || requestSecuritiesForm.controls.SecuritiesCode.value === 'AUTO' || approved || !verifyComplete">
+          <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+          <i class="far fa-check-circle" [hidden]="saving"></i> {{'Label.LOTS13.ReApproved'| translate}}</button>
+      </div>
+      <div class="col-sm-3 col-md-3 text-center">
+        <button class="btn btn-footer" [disabled]="saving" (click)="openPopupHistoryVerify()">
+          <i class="fas fa-list-ul"></i> {{'Label.LOTS14.HistoryVerify'| translate}}</button>
+      </div>
+      <div class="col-sm-3 col-md-3 text-center">
+        <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+          <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back'| translate}}</button>
+      </div>
+    </div>
+  </div>
+</footer>

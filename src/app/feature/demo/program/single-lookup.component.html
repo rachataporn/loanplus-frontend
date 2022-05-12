@@ -1,0 +1,55 @@
+<modal-layout (onClose)="close()" header="{{ 'Label.GLOBAL.Lookup' | translate }}">
+    <div class="row">
+        <div class="col-sm-6 col-12">
+            <div class="input-group">
+                <input type="text" (keyup.enter)="search(true)" class="form-control" [(ngModel)]="keyword" placeholder="list item code ,list item name">
+                <div class="input-group-append">
+                    <button type="button" (click)="search(true)" class="btn btn-warning">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-12">
+            <aaa-table [rows]="listItems" [page]="page" (onTableEvent)="onTableEvent()">
+                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                    <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Select'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <button class="btn btn-primary btn-sm" (click)="select(row.ListItemCode)">
+                                เลือก
+                        </button>
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ListItemCode" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">List Item Code</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.ListItemCode}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ListItemNameTha">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">List Item Name Tha</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.ListItemNameTha}}
+                    </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ListItemNameEng">
+                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                            <label class="datatable-header-cell-wrapper" (click)="sort()">List Item Name Eng</label>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.ListItemNameEng}}
+                        </ng-template>
+                    </ngx-datatable-column>
+            </aaa-table>
+        </div>
+    </div>
+</modal-layout>

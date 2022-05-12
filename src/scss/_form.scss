@@ -1,0 +1,98 @@
+@mixin invalid-border {
+    border-color: $danger;
+    &:focus,&.ng-select-opened > .ng-select-container, &.ng-select-focused:not(.ng-select-opened) > .ng-select-container{
+        border-color: $danger;
+        box-shadow: 0 0 0 $input-focus-width rgba($danger, .25);
+    }
+}
+
+:not(form).ng-invalid {
+    .validated &,
+    &.ng-dirty {
+        &,> .ng-select-container,> input:not(.ng-valid),> .custom-file > .custom-file-label
+        ,> .upload-container > .area {
+            @include invalid-border;
+            ~.invalid-feedback {
+                display: block;
+            }
+        }
+    }
+}
+
+.ng-select {
+    &.ng-select-opened,
+    &.ng-select-focused:not(.ng-select-opened) {
+        >.ng-select-container {
+            border: $input-border-width solid $input-border-color;
+            color: $input-focus-color;
+            background-color: $input-focus-bg;
+            border-color: $input-focus-border-color;
+            outline: 0; // Avoid using mixin so we can pass custom focus shadow properly
+            @if $enable-shadows {
+                box-shadow: $input-box-shadow, $input-focus-box-shadow;
+            }
+            @else {
+                box-shadow: $input-focus-box-shadow;
+            }
+        }
+    }
+ }
+
+ .ng-select.ng-select-single .ng-select-container{
+     height:auto;
+ }
+ .ng-select.ng-select-multiple .ng-select-container .ng-value-container{
+     padding-top:0;
+     .ng-value{
+         margin-bottom: 0;
+     }
+     .ng-input{
+         padding-bottom: 0;
+     }
+ }
+ .ng-select .ng-select-container{
+     min-height: auto;
+     padding:0.375rem 0 0.375rem 0;
+     border:1px solid #e4e7ea;
+     .ng-value-container .ng-input > input{
+        padding: 0;
+    }
+ }
+
+.ng-select.sm {
+     font-size: 0.765625rem;
+     .ng-select-container  {
+        height: calc(1.6484375rem + 2px);
+        padding: 0.25rem 0;
+        border-radius: 0.2rem;
+    }
+}
+.ng-dropdown-panel {
+    &.sm{
+      font-size:0.765625rem;
+    }
+    border: $border-width solid $border-color;
+    .ng-dropdown-panel-items {
+        margin: 0;
+        .ng-option {
+            &.ng-option-marked {
+                background-color: $gray-100;
+            }
+            &.ng-option-selected {
+                background-color: $gray-200;
+            }
+        }
+    }
+}
+
+ label.require:after{
+   content: ' *';
+   color:$danger;
+   font-weight: bold;
+}
+
+.tab-require > a:after{
+    content: ' *';
+    color:$danger;
+    font-weight: bold;
+ }

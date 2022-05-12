@@ -1,0 +1,5 @@
+<input type="text" #inputMenu class="form-control menu-input" readonly [disabled]="disabled" [value]="display" (click)="toggle()">
+<div class="menu-clear" (click)="clear()" *ngIf="value"  ><i class="fas fa-times"></i></div>
+
+<menu-tree (selected)="onSelected($event)" (outsideClick)="close()" class="menu-tree" *ngIf="isOpen" [menus]="menus" [actives]="actives">
+</menu-tree>

@@ -1,0 +1,47 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP02.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP02.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP02.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="FromContractDate">{{"Label.LORP02.FromApprovedContractDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="FromApprovedContractDate"
+                  [maxDate]=this.searchForm.controls.ToApprovedContractDate.value />
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="ToContractDate">{{"Label.LORP02.ToApprovedContractDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="ToApprovedContractDate"
+                  [minDate]=this.searchForm.controls.FromApprovedContractDate.value />
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

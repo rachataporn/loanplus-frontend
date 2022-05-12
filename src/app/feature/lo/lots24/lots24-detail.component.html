@@ -1,0 +1,2396 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <form [formGroup]="contractForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <card header="{{ 'Label.LOTS04.NewContract'| translate }}">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="md-stepper-horizontal orange">
+                                    <div class="md-step m-3" [ngClass]="status == 1 ? 'active' : ''"
+                                        (click)="clickStepper(1)">
+                                        <div class="md-step-circle"><span>1</span></div>
+                                        <div class="md-step-title">{{ 'Label.LOTS04.LoanRequest'| translate }}</div>
+                                        <div class="md-step-optional">{{ 'Label.LOTS04.SaveLoanRequest'| translate }}
+                                        </div>
+                                        <div class="md-step-bar-left"></div>
+                                        <div class="md-step-bar-right"></div>
+                                    </div>
+                                    <div class="md-step" [ngClass]="status == 2 ? 'active' : ''"
+                                        (click)="clickStepper(2)">
+                                        <div class="md-step-circle"><span>2</span></div>
+                                        <div class="md-step-title">{{ 'Label.LOTS04.Installment'| translate }}</div>
+                                        <div class="md-step-optional">{{ 'Label.LOTS04.InstallmentDetail'| translate }}
+                                        </div>
+                                        <div class="md-step-bar-left"></div>
+                                        <div class="md-step-bar-right"></div>
+                                    </div>
+                                    <div class="md-step" [ngClass]="status == 3 ? 'active' : ''"
+                                        (click)="clickStepper(3)">
+                                        <div class="md-step-circle"><span>3</span></div>
+                                        <div class="md-step-title">{{ 'Label.LOTS04.PayingAccepting'| translate }}</div>
+                                        <div class="md-step-optional">{{ 'Label.LOTS04.SettleByDebit'| translate }}
+                                        </div>
+                                        <div class="md-step-bar-left"></div>
+                                        <div class="md-step-bar-right"></div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </card>
+                <div *ngIf="status == 1">
+                    <!-- card ก้อนใหม่ -->
+                    <card header="{{ 'Label.LOTS04.statusContractCard'| translate }}">
+                        <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-4 col-md-6">
+                                        <label class="require"
+                                            for="CustomerName">{{ 'Label.LOTS04.CustomerCode'| translate }}</label>
+                                            <input *ngIf="lang.CURRENT == 'Tha'" type="text" class="form-control"
+                                                formControlName="CustomerNameTha">
+                                            <input *ngIf="lang.CURRENT == 'Eng'" type="text" class="form-control"
+                                                formControlName="CustomerNameEng">
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        <label class="require"
+                                            for="CategoryId">{{ 'เลขที่อ้างอิง'| translate }}</label>
+                                            <input type="text" class="form-control"
+                                            formControlName="RequestNumber">
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        <!-- <label>{{ 'Label.LOTS04.CompanyCode'| translate }}</label> -->
+                                        <label>{{ 'สาขาที่ยืนยันตัวตน'| translate }}</label>
+                                        <input *ngIf="lang.CURRENT == 'Tha'" type="text" class="form-control"
+                                            formControlName="branchCompanyNameTha">
+                                        <input *ngIf="lang.CURRENT == 'Eng'" type="text" class="form-control"
+                                            formControlName="branchCompanyNameEng">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="require"
+                                            for="CategoryId">{{ 'สาขาที่ดำเนินการ'| translate }}</label>
+                                        <ng-select [items]="CompanyListsData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="defaultCompany"
+                                            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3 col-md-3">
+                                        <label>{{ 'Label.LOTS04.ContractStatus'| translate}}</label>
+                                        <h5>
+                                            <span
+                                                class="badge badge-primary w-100">{{ contractHead['ContractStatus'+lang.CURRENT] }}</span>
+                                        </h5>
+                                    </div>
+                                    <div class="form-group col-sm-3 col-md-3">
+                                        <label class="require">{{ 'ประเภทการชำระค่างวด'| translate}}</label>
+                                        <div class="btn-group d-block" btnRadioGroup formControlName="TypeOfPay">
+                                          <button [disabled] = "this.checkDisableContractStatus() " [btnRadio]="detail.Value" *ngFor="let detail of typeOfPay" class="btn btn-outline-warning"
+                                            tabindex="0">{{detail.Text | translate}}</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        <label class="require"
+                                            for="CategoryId">{{ 'Label.LOTS04.CategoryId'| translate }}</label>
+                                        <ng-select [items]="SecuritiesCategoriesData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="CategoryId"
+                                            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-4 col-md-3">
+                                        <label class="require">{{ 'Label.LOTS04.ContractType'| translate}}</label>
+                                        <div class="btn-group d-block" btnRadioGroup formControlName="ContractType">
+                                            <button [btnRadio]="detail.Value" *ngFor="let detail of contractTypeList"
+                                                class="btn btn-outline-warning" tabindex="0">{{
+                                            detail['Text'+lang.CURRENT]}}</button>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-12">
+                                      <card header="{{ 'Label.LOTS04.customerSecuritiesCard'| translate }}">
+                                        <div class="card-menu">
+                                          <button *ngIf="contractForm.controls.ContractType.value == 'M'" type="button"
+                                            class="btn btn-sm btn-circle btn-secondary" [disabled] = "this.checkDisableContractStatus() " (click)="addSecurities()"
+                                            tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                            <i class="fas fa-plus"></i>
+                                          </button>
+                                        </div>
+                                        <div class="card-content">
+                                          <div class="form-row">
+                                            <div class="col-12" formArrayName="contractSecuritiess">
+                                              <aaa-grid-no-pager #detailgrd [rows]="contractSecuritiess.value"
+                                                [formArray]="contractSecuritiess" [summaryRow]="true">
+                                                <ngx-datatable-column name="CustomerSecuritiesId" width="200" *ngIf="contractForm.controls.ContractType.value == 'M' && !this.checkDisableContractStatus()" >
+                                                  <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                      class="datatable-header-cell-wrapper require">{{'Label.LOTS04.customerSecurities'|
+                                                      translate}}</label>
+                                                  </ng-template>
+                                                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div *ngIf="contractForm.controls.ContractType.value == 'M'" [formGroupName]="rowIndex">
+                                                      <ng-select class="sm" appendTo="body" dropdownPosition="bottom"
+                                                        [items]="customerSecuritiesData"
+                                                        (open)="filterCustomerSecurities(row.ContractSecuritiesId)"
+                                                        [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                        formControlName="CustomerSecuritiesId"
+                                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                                      </ng-select>
+                                                      <div class="invalid-feedback">
+                                                        {{ 'Message.STD00000' | translate }}
+                                                      </div>
+                                                    </div>
+                                                    <label *ngIf="contractForm.controls.ContractType.value == 'S'">
+                                                      {{ row['securities'+lang.CURRENT] }}
+                                                    </label>
+                                                  </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="CustomerSecuritiesId" width="200" *ngIf="contractForm.controls.ContractType.value == 'M' && this.checkDisableContractStatus() " > 
+                                                    <ng-template ngx-datatable-header-template>
+                                                      <label class="datatable-header-cell-wrapper require">{{
+                                                        'Label.LOTS03.customerSecurities'| translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                      ngx-datatable-cell-template>
+                                                      {{ row['securities'+lang.CURRENT] }}
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="Description" [summaryTemplate]="summaryLabel">
+                                                  <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">{{
+                                                      'Label.LOTS04.description'| translate}}</label>
+                                                  </ng-template>
+                                                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    {{ row['Description'] }}
+                                                  </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column name="loanLimitAmount" [cellClass]="'text-right'"
+                                                  [summaryTemplate]="productSummary">
+                                                  <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">{{
+                                                      'Label.LOTS04.loanLimitAmount'| translate}}</label>
+                                                  </ng-template>
+                                                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    {{ row['loanLimitAmount'] | number:'1.2-2' }}
+                                                  </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                                                  <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">
+                                                      {{ 'Label.LOTS04.Delete'| translate}}</label>
+                                                  </ng-template>
+                                                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                    [disabled] = " this.checkDisableContractStatus() "
+                                                      (click)="removeRowSecurities(rowIndex);">
+                                                      <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                  </ng-template>
+                                                </ngx-datatable-column>
+                                              </aaa-grid-no-pager>
+                                              <ng-template #summaryLabel>
+                                                <div class="custom-template-body text-right">
+                                                  <label>{{ 'Label.LOTS04.summaryLoanLimitAmount'| translate}}</label>
+                                                </div>
+                                              </ng-template>
+                                              <ng-template #productSummary>
+                                                <div class="custom-template-body  text-right">
+                                                  {{ summary() | number:'1.2-2' }}
+                                                </div>
+                                              </ng-template>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </card>
+                                    </div>
+                                  </div>
+                                  <div class="form-row" *ngIf="typeAmount1 > 0">
+                                    <div class="form-group col-sm-12 col-md-12">
+                                      <label><input type="radio" [disabled] = "this.checkDisableContractStatus() "  [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                                          (ngModelChange)="onChangeLoanContractType(typeAmount1)" name="loantype" value="1">&nbsp;วงเงินสินเชื่อสูงสุด
+                                        {{ typeAmount1 == null ? 0 : typeAmount1 | number:'1.2-2' }} บาท</label>
+                                    </div>
+                                  </div>
+                                  <div class="form-row" *ngIf="typeAmount3 > 0">
+                                    <div class="form-group col-sm-12 col-md-12">
+                                      <label><input type="radio" [disabled] = "this.checkDisableContractStatus() "  [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                                          (ngModelChange)="onChangeLoanContractType(typeAmount3)" name="loantype" value="3">&nbsp;เพิ่มวงเงิน +
+                                        แถมประกันคุ้มครองหนี้สิน
+                                        วงเงินสินเชื่อสูงสุด {{ typeAmount3 == null ? 0 : typeAmount3 | number:'1.2-2' }} บาท</label>
+                                    </div>
+                                  </div>
+                                  <div class="form-row" *ngIf="typeAmount4 > 0">
+                                    <div class="form-group col-sm-12 col-md-12">
+                                      <label><input type="radio" [disabled] = "this.checkDisableContractStatus() "  [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                                          (ngModelChange)="onChangeLoanContractType(typeAmount4)" name="loantype" value="4">&nbsp;จดจำนอง
+                                        วงเงินสินเชื่อสูงสุด
+                                        {{ typeAmount4 == null ? 0 : typeAmount4 | number:'1.2-2' }} บาท</label>
+                                    </div>
+                                  </div>
+                                  <div class="form-row" *ngIf="typeAmount5 > 0">
+                                    <div class="form-group col-sm-12 col-md-12">
+                                      <label><input type="radio" [disabled] = "this.checkDisableContractStatus() "  [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                                          (ngModelChange)="onChangeLoanContractType(typeAmount5)" name="loantype" value="5">&nbsp;จดจำนอง + แถมประกัน
+                                        วงเงินสินเชื่อสูงสุด
+                                        {{ typeAmount5 == null ? 0 : typeAmount5 | number:'1.2-2' }} บาท</label>
+                                    </div>
+                                  </div>
+                                  <div class="form-row">
+                                    <div class="form-group col-sm-6 col-md-6">
+                                      <label class="require" for="LoanTypeCode">{{ 'Label.LOTS04.LoanTypeCode'| translate
+                                        }}</label>
+                                      <ng-select [items]="loanTypeData" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value" [disabled]="true"
+                                        formControlName="LoanTypeCode" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                      </ng-select>
+                                      <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                      </div>
+                                    </div>
+                                  </div>
+                        </div>
+                    </card>
+                    <!-- card ก้อนที่1 -->
+                    <card header="{{ 'Label.LOTS04.statusContractCard'| translate }}">
+                        <div class="card-content">
+                            <!-- <div class="form-row">
+                                <div class="form-group col-sm-4 col-md-6">
+                                    <label class="require"
+                                        for="CustomerName">{{ 'Label.LOTS04.CustomerCode'| translate }}</label>
+                                        <input *ngIf="lang.CURRENT == 'Tha'" type="text" class="form-control"
+                                            formControlName="CustomerNameTha">
+                                        <input *ngIf="lang.CURRENT == 'Eng'" type="text" class="form-control"
+                                            formControlName="CustomerNameEng">
+                                </div>
+                                <div class="form-group col-sm-4 col-md-3">
+                                    <label class="require"
+                                        for="CategoryId">{{ 'เลขที่อ้างอิง'| translate }}</label>
+                                        <input type="text" class="form-control"
+                                        formControlName="RequestNumber">
+                                </div>
+                                
+                                     <label>{{ 'สาขาที่ยืนยันตัวตน'| translate }}</label>
+                                    <input *ngIf="lang.CURRENT == 'Tha'" type="text" class="form-control"
+                                        formControlName="branchCompanyNameTha">
+                                    <input *ngIf="lang.CURRENT == 'Eng'" type="text" class="form-control"
+                                        formControlName="branchCompanyNameEng">
+                                </div>
+                               
+                            </div> -->
+                            <!-- <div class="form-row">
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require"
+                                        for="CategoryId">{{ 'สาขาที่ดำเนินการ'| translate }}</label>
+                                    <ng-select [items]="CompanyListsData" [bindLabel]="'Text'+lang.CURRENT"
+                                        bindValue="Value" formControlName="defaultCompany"
+                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                    </ng-select>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require"
+                                        for="CategoryId">{{ 'Label.LOTS04.CategoryId'| translate }}</label>
+                                    <ng-select [items]="SecuritiesCategoriesData" [bindLabel]="'Text'+lang.CURRENT"
+                                        bindValue="Value" formControlName="CategoryId"
+                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                    </ng-select>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require"
+                                        for="LoanTypeCode">{{ 'Label.LOTS04.LoanTypeCode'| translate }}</label>
+                                    <ng-select [items]="loanTypeData" [bindLabel]="'Text'+lang.CURRENT"
+                                        bindValue="Value" formControlName="LoanTypeCode"
+                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                    </ng-select>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-row">
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require"
+                                        for="ContractNo">{{ 'Label.LOTS04.ContractNo'| translate }}</label>
+                                    <input type="text" class="form-control text-center" placeholder="AUTO"
+                                        formControlName="ContractNo" maxlength="50" readonly>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require">{{ 'Label.LOTS04.ContractType'| translate}}</label>
+                                    <div class="btn-group d-block" btnRadioGroup formControlName="ContractType">
+                                        <button [btnRadio]="detail.Value" *ngFor="let detail of contractTypeList"
+                                            class="btn btn-outline-warning" tabindex="0">{{
+                                        detail['Text'+lang.CURRENT]}}</button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div> -->
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="OldContractId">{{ 'Label.LOTS04.OldContractId'| translate }}</label>
+                                    <ng-select [items]="contractReFinanceData" [bindLabel]="'Text'+lang.CURRENT"
+                                        bindValue="Value" formControlName="OldContractId"
+                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                    </ng-select>
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require"
+                                        for="CategoryId">{{ 'ผู้ตรวจสอบ'| translate }}</label>
+                                        <input type="text" class="form-control"
+                                        [disabled]="true"
+                                        formControlName="RequestReviewText">
+                                </div>
+                                <div class="form-group col-sm-3 col-md-3">
+                                    <label for="ContractDate">{{ 'Label.LOTS04.ContractDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="ContractDate" />
+                                </div>
+                                <!-- <div class="form-group col-sm-3 col-md-3">
+                                    <label>{{ 'Label.LOTS04.ContractStatus'| translate}}</label>
+                                    <h5>
+                                        <span
+                                            class="badge badge-primary w-100">{{ contractHead['ContractStatus'+lang.CURRENT] }}</span>
+                                    </h5>
+                                </div> -->
+                                <!-- <div class="form-group col-sm-3 col-md-3">
+                                    <label class="require">{{ 'ประเภทการชำระค่างวด'| translate}}</label>
+                                    <div class="btn-group d-block" btnRadioGroup formControlName="TypeOfPay">
+                                      <button [btnRadio]="detail.Value" *ngFor="let detail of typeOfPay" class="btn btn-outline-warning"
+                                        tabindex="0">{{detail.Text | translate}}</button>
+                                    </div>
+                                </div> -->
+                                <!-- <div class="form-group col-sm-4 col-md-3">
+                                        <label for="OldContractId">{{ 'Label.LOTS04.OldContractId'| translate }}</label>
+                                        <ng-select [items]="contractReFinanceData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="OldContractId"
+                                            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                </div> -->
+                                <!-- <div class="form-group col-sm-6 col-md-4">
+                                    <label class="require"
+                                        for="ContractNo">{{ 'Label.LOTS04.ContractNo'| translate }}</label>
+                                    <input type="text" class="form-control text-center" placeholder="AUTO"
+                                        formControlName="ContractNo" maxlength="50" readonly>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-3">
+                                    <label class="require">{{ 'Label.LOTS04.MainContractNo'| translate}}</label>
+                                    <lookup-input [small]="false" lookupName="MainContractLookup" keyColumn="ContractNo"
+                                        [param]="getParameterForSingleLookup"
+                                        searchUrl="loan/contract/mainContractlookup/search"
+                                        descUrl="loan/contract/mainContractlookup/description"
+                                        [content]="MainContractLookupContent" formControlName="MainContractNo">
+                                    </lookup-input>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div> -->
+                                    <!-- <div class="form-group col-sm-6 col-md-3">
+                                        <label for="OldContractId">{{ 'Label.LOTS04.OldContractId'| translate }}</label>
+                                        <ng-select [items]="contractReFinanceData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="OldContractId"
+                                            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                    </div> -->
+                                <!-- <div class="form-group col-sm-6 col-md-3">
+                                    <label for="ContractDate">{{ 'Label.LOTS04.ContractDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="ContractDate" />
+                                </div> -->
+                            </div>
+                            <div class="form-row">
+                                <!-- <div class="form-group col-sm-6 col-md-3">
+                                    <label class="require"
+                                        for="ContractNo">{{ 'Label.LOTS04.ContractNo'| translate }}</label>
+                                    <input type="text" class="form-control text-center" placeholder="AUTO"
+                                        formControlName="ContractNo" maxlength="50" readonly>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div> -->
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label class="require">{{ 'Label.LOTS04.MainContractNo'| translate}}</label>
+                                    <lookup-input [small]="false" lookupName="MainContractLookup" keyColumn="ContractNo"
+                                        [param]="getParameterForSingleLookup"
+                                        searchUrl="loan/contract/mainContractlookup/search"
+                                        descUrl="loan/contract/mainContractlookup/description"
+                                        [content]="MainContractLookupContent" formControlName="MainContractNo">
+                                    </lookup-input>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label
+                                        class="require">{{ 'Label.LOTS04.MainLoanPrincipleAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                        formControlName="MainLoanPrincipleAmount" [decimals]="0"
+                                        (keyup)="checkMainAmountSecruritiesKeyup()">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback"
+                                        *ngIf="contractForm.controls.MainLoanPrincipleAmount.invalid">
+                                        <div *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.overLoanCusAmount">
+                                            {{ 'Message.LO00058' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.over">
+                                            {{ 'Message.LO00008' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.overLoanTypeMax">
+                                            {{ 'Message.LO00027' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.lessthanLoanCloseRefinance">
+                                            {{ 'Message.LO00060' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.refinanceAdditionalPayment">
+                                            {{ 'Message.LO00062' | translate:{ '0' : refinanceAmtMod1000.toString() } }}
+                                            <!-- {{ 'Message.LO00062' | translate }} -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-4 col-md-4">
+                                    <label>{{ 'Label.LOTS04.TotalAllContractAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="TotalAllContractAmount" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                </div>
+                                <!-- <div class="form-group col-sm-6 col-md-6">
+                                    <label for="ContractDate">{{ 'Label.LOTS04.ContractDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="ContractDate" />
+                                </div> -->
+                            </div>
+                            <div class="form-row">
+                                <!-- <div class="form-group col-sm-6 col-md-3">
+                                    <label
+                                        class="require">{{ 'Label.LOTS04.MainLoanPrincipleAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                        formControlName="MainLoanPrincipleAmount" [decimals]="0"
+                                        (keyup)="checkMainAmountSecruritiesKeyup()">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback"
+                                        *ngIf="contractForm.controls.MainLoanPrincipleAmount.invalid">
+                                        <div *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.overLoanCusAmount">
+                                            {{ 'Message.LO00058' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.over">
+                                            {{ 'Message.LO00008' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.overLoanTypeMax">
+                                            {{ 'Message.LO00027' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.lessthanLoanCloseRefinance">
+                                            {{ 'Message.LO00060' | translate }}
+                                        </div>
+                                        <div
+                                            *ngIf="contractForm.controls.MainLoanPrincipleAmount.errors.refinanceAdditionalPayment">
+                                            {{ 'Message.LO00062' | translate:{ '0' : refinanceAmtMod1000.toString() } }}
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-3">
+                                    <label>{{ 'Label.LOTS04.TotalAllContractAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="TotalAllContractAmount" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                </div> -->
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label class="require"
+                                        for="LoanObjective">{{ 'Label.LOTS04.LoanObjective'| translate }}</label>
+                                    <input type="text" class="form-control" formControlName="LoanObjective">
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-3">
+                                    <label>{{ 'Label.LOTS04.OldContractNo'| translate }}</label>
+                                    <input type="text" class="form-control" formControlName="OldContractNo"
+                                        maxlength="50">
+                                </div>
+                            </div> -->
+                        </div>
+                    </card>
+                    <card
+                        header="{{ 'Label.LOTS04.customerCard'| translate }} : {{ 'Label.LOTS04.RemarkcustomerCard'| translate }}">
+                        <div class="card-menu">
+                            <button class="btn btn-sm btn-circle btn-secondary" type="button" (click)="addBorrower()"
+                            [disabled] = " this.checkDisableContractStatus() "
+                                tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="col-12" formArrayName="contractBorrowers">
+                                    <aaa-grid-no-pager #detailgrd [rows]="contractBorrowers.value"
+                                        [formArray]="contractBorrowers" [summaryRow]="true">
+                                        <ngx-datatable-column name="CustomerCode" [cellClass]="'text-center'">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="require"
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.CustomerBorrowers'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                {{ row['CustomerCode'] }}
+                                            </ng-template>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="CustomerName+lang">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.CustomerName'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                {{ row['CustomerName'+lang.CURRENT] }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="DebtAmount" [cellClass]="'text-right'"
+                                            [summaryTemplate]="summaryLabelLoanAmount">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.DebtAmount'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                {{ row['DebtAmount'] | number:'1.2-2' }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [summaryTemplate]="LoanSummary">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.loanAmount'|
+                                            translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div *ngIf="contractForm.controls.ContractType.value == 'M'"
+                                                    [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control form-control-sm"
+                                                    [disabled] = " this.checkDisableContractStatus() "
+                                                        formControlName="LoanAmount" [min]="0" [decimals]="0">
+                                                    </ngx-numeric-textbox>
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="contractBorrowers.controls[rowIndex].controls.LoanAmount.invalid">
+                                                        <div
+                                                            *ngIf="contractBorrowers.controls[rowIndex].controls.LoanAmount.errors.required">
+                                                            {{ 'Message.STD00000' | translate }}
+                                                        </div>
+                                                        <div
+                                                            *ngIf="contractBorrowers.controls[rowIndex].controls.LoanAmount.errors.min">
+                                                            {{ 'Message.LO00004' | translate }}
+                                                        </div>
+                                                        <div
+                                                            *ngIf="contractBorrowers.controls[rowIndex].controls.LoanAmount.errors.over">
+                                                            {{ 'Message.LO00023' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [cellClass]="'text-center'">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    (click)="removeRowBorrower(rowIndex);">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ng-template #summaryLabelLoanAmount>
+                                            <div class="custom-template-body text-right" *ngIf=" this.checkStatus!='Y' ">
+                                                <label>{{ 'Label.LOTS04.summaryLoanAmount'| translate}}</label>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template #LoanSummary>
+                                            <div class="custom-template-body  text-right" *ngIf=" this.checkStatus!='Y' ">
+                                                {{ summaryTotalLoanAmount()  |  number:'1.2-2' }}
+                                            </div>
+                                        </ng-template>
+                                    </aaa-grid-no-pager>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-row">
+                                <div class="col-md-3" [hidden]=" this.checkStatus=='Y' " >
+                                    <strong><label>{{'Label.LOTS04.DebtMainAmount'| translate}} : </label></strong>
+                                </div>
+                                <div class="col-md-3" [hidden]=" this.checkStatus=='Y' "
+                                    *ngIf="!contractForm.controls.LoanTypeCode.value || MaxLoanAmount != null">
+                                    <label>{{ summaryDeptLeft() | number:0 }} {{'Label.LOTS04.bath'| translate}}</label>
+                                </div>
+                                <div class="col-md-7 color-danger" [hidden]=" this.checkStatus=='Y' "
+                                    *ngIf="this.contractForm.controls.LoanTypeCode.value && this.MaxLoanAmount == null">
+                                    <label>{{ 'Message.LO00053' | translate }}</label>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-3" [hidden]=" this.checkStatus=='Y' " >
+                                    <strong><label>{{'Label.LOTS04.TotalReqAmountBorrower'| translate}} :
+                                        </label></strong>
+                                </div>
+                                <div class="col-md-2" [hidden]=" this.checkStatus=='Y' "
+                                    *ngIf="!contractForm.controls.LoanTypeCode.value || ContractMaximumLimitBorrower != null">
+                                    <label>{{ summaryAmountForBorrowers() | number:0}}
+                                        {{'Label.LOTS04.bath'| translate}}</label>
+                                </div>
+                                <div class="col-md-3" [hidden]=" this.checkStatus=='Y' "
+                                    *ngIf="!contractForm.controls.LoanTypeCode.value || ContractMaximumLimitBorrower != null">
+                                    <label>{{ findPerson() }} {{'Label.LOTS04.persons'| translate}}</label>
+                                </div>
+                                <div class="col-md-7 color-danger" [hidden]=" this.checkStatus=='Y' "
+                                    *ngIf="contractForm.controls.LoanTypeCode.value && ContractMaximumLimitBorrower == null">
+                                    <label>{{ 'Message.LO00038' | translate }}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                    <!-- <card header="{{ 'Label.LOTS04.customerSecuritiesCard'| translate }}">
+                        <div class="card-menu">
+                            <button *ngIf="contractForm.controls.ContractType.value == 'M'" type="button"
+                            [disabled] = " this.checkDisableContractStatus() "
+                                class="btn btn-sm btn-circle btn-secondary" (click)="addSecurities()"
+                                tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="col-12" formArrayName="contractSecuritiess">
+                                    <aaa-grid-no-pager #detailgrd [rows]="contractSecuritiess.value"
+                                        [formArray]="contractSecuritiess" [summaryRow]="true">
+                                        <ngx-datatable-column name="CustomerSecuritiesId" width="200" *ngIf="contractForm.controls.ContractType.value == 'M' && !this.checkDisableContractStatus()">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper require">{{'Label.LOTS04.customerSecurities'|
+                                            translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div *ngIf="contractForm.controls.ContractType.value == 'M' && !this.checkDisableContractStatus()"
+                                                    [formGroupName]="rowIndex">
+                                                    <ng-select class="sm" appendTo="body" dropdownPosition="bottom"
+                                                        [items]="customerSecuritiesData"
+                                                        (open)="filterCustomerSecurities(row.ContractSecuritiesId)"
+                                                        [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                        formControlName="CustomerSecuritiesId"                                     
+                                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                                    </ng-select>
+                                                    
+                                                    <div class="invalid-feedback">
+                                                        {{ 'Message.STD00000' | translate }}
+                                                    </div>
+                                                </div>
+                                                
+                                                <label *ngIf="contractForm.controls.ContractType.value == 'S'">
+                                                    {{ row['securities'+lang.CURRENT] }}
+                                                </label>
+                                            </ng-template>
+                    
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="CustomerSecuritiesId" width="200" *ngIf="contractForm.controls.ContractType.value == 'M' && this.checkDisableContractStatus() " > 
+                                            <ng-template ngx-datatable-header-template>
+                                              <label class="datatable-header-cell-wrapper require">{{
+                                                'Label.LOTS03.customerSecurities'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                              ngx-datatable-cell-template>
+                                              {{ row['securities'+lang.CURRENT] }}
+                                            </ng-template>
+                                          </ngx-datatable-column>
+                                        <ngx-datatable-column name="Description" [summaryTemplate]="summaryLabel">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.description'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                {{ row['Description'] }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="loanLimitAmount" [cellClass]="'text-right'"
+                                            [summaryTemplate]="productSummary">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.loanLimitAmount'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                {{ row['loanLimitAmount'] |  number:'1.2-2' }}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper">
+                                                    {{ 'Label.LOTS04.Delete'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <button type="button" class="btn btn-outline-primary btn-sm"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    (click)="removeRowSecurities(rowIndex);">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-grid-no-pager>
+                                    <ng-template #summaryLabel>
+                                        <div class="custom-template-body text-right">
+                                            <label>{{ 'Label.LOTS04.summaryLoanLimitAmount'| translate}}</label>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #productSummary>
+                                        <div class="custom-template-body  text-right">
+                                            {{ summary()  |  number:'1.2-2' }}
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </card> -->
+                    <card header="{{ 'Label.LOTS04.contractItemCard'| translate }}" [isCollapsed]="false">
+                        <div class="card-content">
+                            <card header="{{ 'Label.LOTS04.income'| translate }}">
+                                <div class="card-menu">
+                                    <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                    [disabled] = " this.checkDisableContractStatus() "
+                                        (click)="addContractIncomeItem()" tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="form-row">
+                                        <div class="col-12" formArrayName="contractIncomeItems">
+                                            <aaa-grid #detailgrd [rows]="contractIncomeItems.value"
+                                                [formArray]="contractIncomeItems">
+                                                <ngx-datatable-column name="Name{lang}" width="200">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{'Label.LOTS04.LoItemCode'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ng-select class="sm" appendTo="body"
+                                                                dropdownPosition="bottom" [items]="incomeLoan"
+                                                                (open)="filterIncomeLoan(row.ContractItemId)"
+                                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                                formControlName="LoItemCode"
+                                                                [disabled] = " this.checkDisableContractStatus() "
+                                                                placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                                            </ng-select>
+                                                            <div class="invalid-feedback">
+                                                                {{ 'Message.STD00000' | translate }}
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column>
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.Description'|
+                                                        translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <input type="text" class="form-control form-control-sm"
+                                                            [disabled] = " this.checkDisableContractStatus() "
+                                                                formControlName="Description">
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column width="50">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{ 'Label.LOTS04.Amount'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ngx-numeric-textbox
+                                                                inputClass="form-control form-control-sm"
+                                                                [disabled] = " this.checkDisableContractStatus() "
+                                                                formControlName="Amount" [decimals]="2">
+                                                            </ngx-numeric-textbox>
+                                                            <div class="invalid-feedback"
+                                                                *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.invalid">
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.required">
+                                                                    {{ 'Message.STD00000' | translate }}
+                                                                </div>
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.min">
+                                                                    {{ 'Message.LO00004' | translate }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <!-- <ngx-datatable-column>
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{ 'รูปภาพ'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ngx-numeric-textbox
+                                                                inputClass="form-control form-control-sm"
+                                                                formControlName="Amount" [decimals]="2">
+                                                            </ngx-numeric-textbox>
+                                                            <div class="invalid-feedback"
+                                                                *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.invalid">
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.required">
+                                                                    {{ 'Message.STD00000' | translate }}
+                                                                </div>
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.min">
+                                                                    {{ 'Message.LO00004' | translate }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column> -->
+                                                <ngx-datatable-column name="FileName">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="require">{{ 'รูปภาพ'| translate
+                                                            }}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <file-upload-auto 
+                                                                [file]="attachmentFiles[rowIndex]"
+                                                                [fileName]="contractIncomeItems.value[rowIndex].LoImgName"
+                                                                [category]="category"
+                                                                [isDisableDownload]="false"
+                                                                (fileNameReturn)="fileNameReturn($event, rowIndex)"
+                                                                formControlName="LoImgName">
+                                                            </file-upload-auto>
+                                                            <!-- <image-upload [file]="attachmentFiles" [category]="category" formControlName="LoImgName">
+                                                            </image-upload> -->
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.Delete'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        [disabled] = " this.checkDisableContractStatus() "
+                                                            (click)="removeRowContractIncomeItem(rowIndex);">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                            </aaa-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+                            <br />
+                            <card header="{{ 'Label.LOTS04.cost'| translate }}">
+                                <div class="card-menu">
+                                    <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                    [disabled] = " this.checkDisableContractStatus() "
+                                        (click)="addContractPaymentItem()" tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="form-row">
+                                        <div class="col-12" formArrayName="contractPaymentItems">
+                                            <aaa-grid #detailgrd [rows]="contractPaymentItems.value"
+                                                [formArray]="contractPaymentItems">
+                                                <ngx-datatable-column name="Name{lang}" width="200">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{'Label.LOTS04.ExpenseCode'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ng-select class="sm" appendTo="body"
+                                                            [disabled] = " this.checkDisableContractStatus() "
+                                                                dropdownPosition="bottom" [items]="paymentLoan"
+                                                                (open)="filterPaymentLoan(row.ContractItemId)"
+                                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                                formControlName="LoItemCode"
+                                                                placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                                            </ng-select>
+                                                            <div class="invalid-feedback">
+                                                                {{ 'Message.STD00000' | translate }}
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column>
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.Description'|
+                                                        translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                formControlName="Description">
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column width="50">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{ 'Label.LOTS04.Amount'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ngx-numeric-textbox
+                                                                inputClass="form-control form-control-sm"
+                                                                [disabled] = " this.checkDisableContractStatus() "
+                                                                formControlName="Amount" [min]="0" [decimals]="2">
+                                                            </ngx-numeric-textbox>
+                                                            <div class="invalid-feedback"
+                                                                *ngIf="contractPaymentItems.controls[rowIndex].controls.Amount.invalid">
+                                                                <div
+                                                                    *ngIf="contractPaymentItems.controls[rowIndex].controls.Amount.errors.required">
+                                                                    {{ 'Message.STD00000' | translate }}
+                                                                </div>
+                                                                <div
+                                                                    *ngIf="contractPaymentItems.controls[rowIndex].controls.Amount.errors.min">
+                                                                    {{ 'Message.LO00004' | translate }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <!-- <ngx-datatable-column>
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper require">{{ 'รูปภาพ'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ngx-numeric-textbox
+                                                                inputClass="form-control form-control-sm"
+                                                                formControlName="Amount" [decimals]="2">
+                                                            </ngx-numeric-textbox>
+                                                            <div class="invalid-feedback"
+                                                                *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.invalid">
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.required">
+                                                                    {{ 'Message.STD00000' | translate }}
+                                                                </div>
+                                                                <div
+                                                                    *ngIf="contractIncomeItems.controls[rowIndex].controls.Amount.errors.min">
+                                                                    {{ 'Message.LO00004' | translate }}
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column> -->
+                                                <ngx-datatable-column name="FileName">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="require">{{ 'รูปภาพ'| translate
+                                                            }}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <file-upload-auto 
+                                                                [file]="attachmentFiles[rowIndex]"
+                                                                [fileName]="contractPaymentItems.value[rowIndex].LoImgName"
+                                                                [category]="category"
+                                                                [isDisableDownload]="false"
+                                                                (fileNameReturn)="fileNameReturnPay($event, rowIndex)"
+                                                                formControlName="LoImgName">
+                                                            </file-upload-auto>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.Delete'|
+                                                    translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        [disabled] = " this.checkDisableContractStatus() "
+                                                            (click)="removeRowContractPaymentItem(rowIndex);">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                            </aaa-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+                        </div>
+                    </card>
+                    <card header="{{ 'Label.LOTS04.contractAmountCard'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label class="require" for="PayType">{{ 'Label.LOTS04.PayType'| translate }}</label>
+                                    <ng-select [items]="pays" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                        formControlName="PayType"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                        placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                    </ng-select>
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group col-md-4">
+                                    <label class="require">{{ 'Label.LOTS04.ReqLoanAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="ReqLoanAmount" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback" *ngIf="contractForm.controls.ReqLoanAmount.invalid">
+                                        <div *ngIf="contractForm.controls.ReqLoanAmount.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="maxLoanMsg || contractForm.controls.ReqLoanAmount.errors.invalid">
+                                            {{ 'Message.LO00001' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqLoanAmount.errors.min">
+                                            {{ 'Message.LO00004' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqLoanAmount.errors.over">
+                                            {{ 'Message.LO00007' | translate }}
+                                        </div>
+                                    </div>
+                                </div> -->
+                                <div class="form-group col-md-4">
+                                    <label class="require">{{ 'Label.LOTS04.ReqTotalPeriod'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="ReqTotalPeriod" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback" *ngIf="contractForm.controls.ReqTotalPeriod.invalid">
+                                        <div *ngIf="contractForm.controls.ReqTotalPeriod.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqTotalPeriod.errors.min">
+                                            {{ 'Message.LO00004' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqTotalPeriod.errors.minPeriod">
+                                            {{ 'Message.LO00036' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqTotalPeriod.errors.maxPeriod">
+                                            {{ 'Message.LO00035' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="require">{{ 'Label.LOTS04.ReqGapPeriod'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="ReqGapPeriod" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback" *ngIf="contractForm.controls.ReqGapPeriod.invalid">
+                                        <div *ngIf="contractForm.controls.ReqGapPeriod.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqGapPeriod.errors.min">
+                                            {{ 'Message.LO00004' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-4">
+                                    <label>{{ 'Label.LOTS04.CanLoanTotalAmount'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="TotalAmount" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="require">{{ 'Label.LOTS04.ReqTotalMonth'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="ReqTotalMonth" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback" *ngIf="contractForm.controls.ReqTotalMonth.invalid">
+                                        <div *ngIf="contractForm.controls.ReqTotalMonth.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.ReqTotalMonth.errors.min">
+                                            {{ 'Message.LO00004' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                    <card header="{{ 'Label.LOTS04.informationCard'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <div formArrayName="contractInformations">
+                                        <div class="custom-control custom-checkbox custom-control-inline" id="w1"
+                                            (change)="onChange()"
+                                            *ngFor="let item of contractInformations.controls; let i=index"
+                                            [formGroupName]="i">
+                                            <input  [disabled] = " this.checkDisableContractStatus() " class="custom-control-input" type="checkbox"
+                                               
+                                                [id]="'Chkinformations'+ i" formControlName="Active">
+                                            <label class="custom-control-label" [for]="'Chkinformations'+ i">
+                                                {{ item.controls['Text'+lang.CURRENT].value }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="addOn" class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label>{{ 'Label.LOTS04.AdditionalLoan'| translate}}</label>
+                                    <ngx-numeric-textbox inputClass="form-control form-control" formControlName="AddOn"
+                                    [disabled] = " this.checkDisableContractStatus() "
+                                        [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                    <div class="invalid-feedback" *ngIf="contractForm.controls.AddOn.invalid">
+                                        <div *ngIf="contractForm.controls.AddOn.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.AddOn.errors.min">
+                                            {{ 'Message.LO00004' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                    <card header="{{ 'MGM'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-md-2 col-sm-2 col-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Active"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                            formControlName="MGMCheckbox">
+                                        <label class="custom-control-label" for="Active">
+                                            {{'MGM'| translate}}
+                                        </label>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-4 col-12">
+                                    <label class="require">{{ 'Label.LOTS04.Activity'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="Activity" 
+                                    [disabled] = " this.checkDisableContractStatus() "
+                                    maxlength="100">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6 col-sm-6 col-6">
+                                    <card header="{{ 'Label.LOTS04.Employee'| translate }}">
+                                        <div class="card-menu">
+                                            <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                                (click)="openAddMgmEmployeeModal()"
+                                                tooltip="{{'Label.GLOBAL.Add'| translate}}"
+                                                [disabled]="flagAddMgmEmployee == false || this.checkDisableContractStatus() ">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <aaa-grid-no-pager #ContractMgmEmployeeGrid
+                                                        [rows]="ContractMgmEmployee.getRawValue()"
+                                                        [formArray]="ContractMgmEmployee">
+                                                        <ngx-datatable-column [width]="20" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'Label.LOTS04.No'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{rowIndex+1}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="60" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'Label.LOTS04.EmployeeCode'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.EmployeeCode }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="300"
+                                                            prop="EmployeeName{{lang.CURRENT}}" [sortable]="false">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row['EmployeeName'+lang.CURRENT]}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                            [sortable]="false" [width]="50">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                ngx-datatable-cell-template>
+                                                                <button class="btn btn-outline-primary btn-sm"
+                                                                [disabled] = " this.checkDisableContractStatus() "
+                                                                    (click)="removeRowEmployee(rowIndex)">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                    </aaa-grid-no-pager>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+                                </div>
+                                <div class="form-group col-md-6 col-sm-6 col-6">
+                                    <card header="{{ 'Label.LOTS04.MGM'| translate }}">
+                                        <div class="card-menu">
+                                            <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                            [disabled] = " this.checkDisableContractStatus() "
+                                                (click)="openAddMgmModal()" tooltip="{{'Label.GLOBAL.Add'| translate}}"
+                                                [disabled]="flagAddMgmEmployee == false">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <aaa-grid-no-pager #ContractMgmGrid
+                                                        [rows]="ContractMgm.getRawValue()" [formArray]="ContractMgm">
+                                                        <ngx-datatable-column [width]="20" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'Label.LOTS04.No'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{rowIndex+1}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="60" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'Label.LOTS04.MgmCode'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.MgmCode }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="60" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'Label.LOTS04.CustomerCode1'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.CustomerCode }}
+                                                                <i *ngIf="!row.CustomerCode" class="fas fa-minus"></i>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="120"
+                                                            prop="EmployeeName{{lang.CURRENT}}" [sortable]="false">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row['MgmName'+lang.CURRENT]}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                            [sortable]="false" [width]="50">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                ngx-datatable-cell-template>
+                                                                <button class="btn btn-outline-primary btn-sm"
+                                                                [disabled] = " this.checkDisableContractStatus() "
+                                                                    (click)="removeRowMgm(rowIndex)">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                    </aaa-grid-no-pager>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+                                </div>
+                            </div>
+
+                        </div>
+                    </card>
+                    <card header="{{ 'รายการเเจ้งเตือนไปยังผู้กู้'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-md-12 col-sm-12 col-12">
+                                    <card header="{{ ''| translate }}">
+                                        <div class="card-menu">
+                                            <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                            [disabled] = " this.checkDisableContractStatus() "
+                                                (click)="openAddNotiModal()"
+                                                tooltip="{{'Label.GLOBAL.Add'| translate}}"
+                                               >
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="form-row">
+                                                <div class="col-12">
+                                                    <!-- <aaa-grid-no-pager #ContractNotiGrid
+                                                        [rows]="ContractNoti.getRawValue()"
+                                                        [formArray]="ContractNoti">
+                                                        <ngx-datatable-column [width]="20" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'วันที่'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{row.NotiDate}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                        <ngx-datatable-column [width]="360" [sortable]="false"
+                                                            [cellClass]="'text-center'">
+                                                            <ng-template let-sort="sortFn"
+                                                                ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper"
+                                                                    (click)="sort()">{{ 'รายละเอียด'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.NotiDesc }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                         <ngx-datatable-column [width]="300"
+                                                            prop="EmployeeName{{lang.CURRENT}}" [sortable]="false">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row['EmployeeName'+lang.CURRENT]}}
+                                                            </ng-template>
+                                                        </ngx-datatable-column> 
+
+                                                        <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                            [sortable]="false" [width]="50">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                ngx-datatable-cell-template>
+                                                                <button class="btn btn-outline-primary btn-sm"
+                                                                    (click)="removeRowEmployee(rowIndex)">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+
+                                                    </aaa-grid-no-pager> -->
+                                                    <div class="col-12" formArrayName="contractNotis">
+                                                        <aaa-grid-no-pager #notidetailgrd [rows]="contractNotis.value"
+                                                            [formArray]="contractNotis" [summaryRow]="false">
+                                
+                                                            <!-- <ngx-datatable-column name="NotiDate" [summaryTemplate]="summaryLabel">
+                                                                <ng-template ngx-datatable-header-template>
+                                                                    <label
+                                                                        class="datatable-header-cell-wrapper">{{ 'วันที่'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                                    ngx-datatable-cell-template>
+                                                                    {{ row['NotiDate' | thaidate ] }}
+                                                                </ng-template>
+                                                            </ngx-datatable-column> -->
+                                                            <ngx-datatable-column name="NotiDate" [cellClass]="'text-center'"
+                                                            [summaryTemplate]="summaryNotiDateLabel">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{ 'วันที่'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                                ngx-datatable-cell-template>
+                                                                {{ row.NotiDate | thaidate  }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                            <ngx-datatable-column name="NotiDesc" [summaryTemplate]="summaryLabel">
+                                                                <ng-template ngx-datatable-header-template>
+                                                                    <label
+                                                                        class="datatable-header-cell-wrapper">{{ 'รายละเอียด'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                                    ngx-datatable-cell-template>
+                                                                    {{ row['NotiDesc'] }}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+            
+                                                            <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                                                                <ng-template ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper">
+                                                                        {{ 'Label.LOTS04.Delete'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                    ngx-datatable-cell-template>
+                                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                                    [disabled] = " this.checkDisableContractStatus() "
+                                                                        (click)="removeRowNoti(rowIndex);">
+                                                                        <i class="far fa-trash-alt"></i>
+                                                                    </button>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-grid-no-pager>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+                                </div>
+                            </div>
+
+                        </div>
+                    </card>
+
+                    <card header="{{ 'Label.LOTS04.Remark'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <textarea formControlName="DescLoan" id="textarea-input" name="textarea-input"
+                                        rows="7" class="form-control" placeholder=""></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+
+                </div>
+                <div *ngIf="status == 2">
+                    <card header="{{ 'Label.LOTS04.datePaymentCard'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row justify-content-md-center">
+                                <div class="form-group col-lg-2">
+                                    <label class="require">{{ 'Label.LOTS04.ApprovedDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="ApprovedDate" />
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="require">{{ 'Label.LOTS04.StartPaymentDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="StartPaymentDate"
+                                        [minDate]="contractForm.controls.ApprovedDate.value" />
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-md-center">
+                                <div class="form-group col-lg-2">
+                                    <label class="require">{{ 'Label.LOTS04.TransferDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text" formControlName="TransferDate"
+                                        [minDate]="contractForm.controls.ApprovedDate.value" />
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-2">
+                                    <label class="require">{{ 'Label.LOTS04.EndPaymentDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="EndPaymentDate" />
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row justify-content-md-center">
+                                <div class="form-group col-lg-2">
+                                    <label class="require">{{ 'Label.LOTS04.StartInterestDate'| translate}}</label>
+                                    <input bsDatepicker class="form-control" type="text"
+                                        formControlName="StartInterestDate"
+                                        [minDate]="contractForm.controls.TransferDate.value" />
+                                    <div class="invalid-feedback">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                </div>
+                                <div class="form-group col-lg-2"></div>
+                            </div>
+                        </div>
+                    </card>
+                    <div class="form-row">
+                        <card class="col-md-6" header="{{ 'Label.LOTS04.amountApproveCard'| translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label class="require">{{ 'Label.LOTS04.AppLoanTotalPeriod'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppLoanTotalPeriod" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label
+                                            class="require">{{ 'Label.LOTS04.MaximumInterestRate'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="MaximumInterestRate" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label
+                                            class="require">{{ 'Label.LOTS04.AppLoanInterestRate'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppLoanInterestRate" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label
+                                            class="require">{{ 'Label.LOTS04.AppLoanPrincipleAmount'| translate}}</label>
+                                        <!-- <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppLoanPrincipleAmount" [decimals]="0">
+                                        </ngx-numeric-textbox> -->
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                        formControlName="MainLoanPrincipleAmount" [decimals]="0">
+                                    </ngx-numeric-textbox>
+                                        <div class="invalid-feedback"
+                                            *ngIf="contractForm.controls.AppLoanPrincipleAmount.invalid">
+                                            <div *ngIf="contractForm.controls.AppLoanPrincipleAmount.errors.required">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                            <div *ngIf="contractForm.controls.AppLoanPrincipleAmount.errors.min">
+                                                {{ 'Message.LO00004' | translate }}
+                                            </div>
+                                            <div *ngIf="contractForm.controls.AppLoanPrincipleAmount.errors.over">
+                                                {{ 'Message.LO00013' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label
+                                            class="require">{{ 'Label.LOTS04.AppLoanEffectiveInterestRate'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppLoanEffectiveInterestRateYear" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>{{ 'Label.LOTS04.AppLoanInterestAmount'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppLoanInterestAmount" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-5">
+                                        <label
+                                            class="require">{{ 'Label.LOTS04.AppLoanPeriodAmount'| translate}}</label>
+                                            <label
+                                            *ngIf="(ContractType == '2' || ContractType == '3'|| ContractType == '4') && RoundInterestAmount != null"
+                                            class="text-danger">{{
+                                            'ค่างวดขั้นต่ำ '|
+                                            translate}} {{RoundInterestAmount}} </label>
+                                            <ngx-numeric-textbox inputClass="form-control form-control"
+                                            [disabled] = "this.checkDisableContractStatus() "
+                                            formControlName="AppLoanPeriodAmountDisplay" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback"
+                                        *ngIf="contractForm.controls.AppLoanPeriodAmountDisplay.invalid">
+                                        <div
+                                            *ngIf="contractForm.controls.AppLoanPeriodAmountDisplay.errors.required">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                        <div *ngIf="contractForm.controls.AppLoanPeriodAmountDisplay.errors.min">
+                                            {{ 'Message.LO00070' | translate }} {{RoundInterestAmount}}
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>{{ 'Label.LOTS04.AppLoanAmountTotal'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            [disabled] = "this.checkDisableContractStatus() "
+                                            formControlName="AppLoanAmountTotal" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                        <card class="col-md-4" header="{{ 'Label.LOTS04.feeCard'| translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeRate1'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppFeeRate1" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeAmount1'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppFeeAmount1" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeRate2'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppFeeRate2" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeAmount2'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="AppFeeAmount2" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeRate3'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                            formControlName="AppFeeRate3" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>{{ 'Label.LOTS04.AppFeeAmount3'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                        [disabled] = " this.checkDisableContractStatus() "
+                                            formControlName="AppFeeAmount3" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                        <card class="col-md-2" header="{{ 'Label.LOTS04.latePaymentCard'| translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label
+                                            for="LatePaymentDay">{{ 'Label.LOTS04.LatePaymentDay'| translate }}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="LatePaymentDay" [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label>{{ 'Label.LOTS04.LatePaymentFeeRate'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control form-control"
+                                            formControlName="LatePaymentFeeRate" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <br />
+                                        <br />
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                    <br />
+                    <div class="form-row" *ngIf="IsSuperUser || (this.ContractType == '2' || this.ContractType == '3' || this.ContractType == '4')" 
+                    [hidden]=" this.checkDisableContractStatus() ">
+                        <div class="col text-center">
+                            <button type="button" class="btn btn-primary" (click)="processPeriod()">
+                                {{ 'Label.LOTS04.Process'| translate }}</button>
+                        </div>
+                    </div>
+                    <br />
+                    <card header="{{ 'Label.LOTS04.preriodCard'| translate }}">
+                        <div class="card-content">
+                            <div class="col-12" formArrayName="contractPeriods">
+                                <aaa-grid-no-pager #detailgrd [rows]="contractPeriods.value"
+                                    [formArray]="contractPeriods" [summaryRow]="true" pagination="false">
+                                    <ngx-datatable-column name="Period" [cellClass]="'text-center'" width="80">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.Period'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.Period }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="ReceiveDate" [cellClass]="'text-center'"
+                                        [summaryTemplate]="summaryPeriodLabel">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.ReceiveDate'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.ReceiveDate | thaidate  }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="TotalAmount" [cellClass]="'text-right'"
+                                        [summaryTemplate]="SummaryTotalAmount">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.TotalAmount'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.RoundTotalAmount | number:0 }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="PrincipleAmount" [cellClass]="'text-right'"
+                                        [summaryTemplate]="SummaryPrincipleAmount">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.PrincipleAmount'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.RoundPrincipleAmount | number:0 }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="InterestAmount" [cellClass]="'text-right'"
+                                        [summaryTemplate]="SummaryInterestAmount">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.InterestAmount'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.RoundInterestAmount | number:0 }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column name="BalPrincipleAmount" [cellClass]="'text-right'">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.BalPrincipleAmount'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                            ngx-datatable-cell-template>
+                                            {{ row.BalPrincipleAmount |  number:0 }}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ng-template #summaryPeriodLabel>
+                                        <div class="custom-template-body text-right">
+                                            <label>{{ 'Label.LOTS04.summaryLoanLimitAmount'| translate}}</label>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #SummaryTotalAmount>
+                                        <div class="custom-template-body  text-right">
+                                            {{ summaryTotalAmount()  |  number:'1.2-2' }}
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #SummaryPrincipleAmount>
+                                        <div class="custom-template-body  text-right">
+                                            {{ summaryPrincipleAmount()  |  number:'1.2-2' }}
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #SummaryInterestAmount>
+                                        <div class="custom-template-body  text-right">
+                                            {{ summaryInterestAmount()  |  number:'1.2-2' }}
+                                        </div>
+                                    </ng-template>
+                                </aaa-grid-no-pager>
+                            </div>
+                        </div>
+                    </card>
+                </div>
+                <div *ngIf="status == 3">
+                    <card header="{{ 'Label.LOTS04.paymentDetailCard'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label>{{ 'Label.LOTS04.PaymentTypeCode'| translate}}</label>
+                                    <ng-select [items]="paymentTypeData" [bindLabel]="'Text'+lang.CURRENT"
+                                   
+                                        bindValue="Value" formControlName="PaymentTypeCode"
+                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                    </ng-select>
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label>{{'Label.LOTS04.PaymentCompanyAccountId' | translate}}</label>
+                                    <ng-select [items]="paymentCompanyAccount" [bindLabel]="'Text'+lang.CURRENT"
+                                        bindValue="Value" formControlName="PaymentCompanyAccountId"
+                                       
+                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                    <card header="{{ 'Label.LOTS04.receivePaymentCard'| translate }}">
+                        <div class="card-content">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6 col-md-6">
+                                    <label>{{ 'Label.LOTS04.CustomerReceiveTypeCode'| translate}}</label>
+                                    <ng-select [items]="customerReceiveTypeData" [bindLabel]="'Text'+lang.CURRENT"
+                                   
+                                        bindValue="Value" formControlName="CustomerReceiveTypeCode"
+                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <!-- <div class="form-row">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12 col-12">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="BankActive"
+                                            [disabled] = " this.checkStatus=='Y' || this.checkStatus=='CR' "
+                                                formControlName="BankCheckbox">
+                                            <label class="custom-control-label" for="Active">
+                                                {{'เข้าบัญชีธนาคาร'| translate}}
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="form-row">
+                                <div *ngIf="CustomerReceiveTypeCode.value != null && CustomerReceiveTypeCode.value == tranfersTypeM "
+                                    class="col-sm-6 col-md-6">
+                                    <fieldset class="border p-2">
+                                        <legend class="w-auto">
+                                            <label>{{ 'Label.LOTS04.MBS'| translate}}</label>
+                                        </legend>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerAccountNo'| translate }}</label>
+                                                <input type="text" class="form-control text-center"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    formControlName="CustomerAccountNo">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerAccountName'| translate }}</label>
+                                                <input type="text" class="form-control text-center"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    formControlName="CustomerAccountName">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-12">
+                                                <label>{{ 'Label.LOTS04.CustomerBankAccountTypeCode'| translate }}</label>
+                                                <ng-select [items]="bankAccountType" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value" formControlName="CustomerBankAccountTypeCode"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox"
+                                                    [disabled] = " this.checkDisableContractStatus() "
+                                                        id="CustomerAccountAuto" formControlName="CustomerAccountAuto">
+                                                    <label class="custom-control-label" for="CustomerAccountAuto">
+                                                        {{ 'Label.LOTS04.CustomerAccountAuto'| translate}}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                                <div *ngIf="CustomerReceiveTypeCode.value != null && CustomerReceiveTypeCode.value == tranfersTypeT"
+                                    class="col-sm-6 col-md-6">
+                                    <fieldset class="border p-2">
+                                        <legend class="w-auto">
+                                            <label>{{ 'Label.LOTS04.BankAccount'| translate}}</label>
+                                        </legend>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerBankCode'| translate }}</label>
+                                                <ng-select [items]="banklist" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value" formControlName="CustomerBankCode"
+                                                    [disabled] = " this.checkDisableContractStatus() "
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                </ng-select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerBranchName'| translate }}</label>
+                                                <input type="text" class="form-control text-center"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    formControlName="CustomerBranchName">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerAccountNo'| translate }}</label>
+                                                <input type="text" class="form-control text-center"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    formControlName="CustomerAccountNo">
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label>{{ 'Label.LOTS04.CustomerAccountName'| translate }}</label>
+                                                <input type="text" class="form-control text-center"
+                                                [disabled] = " this.checkDisableContractStatus() "
+                                                    formControlName="CustomerAccountName">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <!-- <div class="form-row">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12 col-sm-12 col-12">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="PromtPlayActive"
+                                                formControlName="PromtPlayCheckbox">
+                                            <label class="custom-control-label" for="Active">
+                                                {{' พร้อมเพย์ '| translate}}
+                                            </label>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4 col-sm-4 col-4">
+                                    <input type="text" class="form-control" formControlName="PromtPlayNumber" maxlength="100">
+                                </div>
+                            </div> -->
+                        </div>
+                    </card>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #addEmployeeModal>
+    <modal-layout (onClose)="closeMgmEmployeeModal(true)" header="{{ 'Label.LOTS04.ListEmployeeMgm'| translate}}">
+        <form [formGroup]="searchEmpForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="animated fadeIn">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.GLOBAL.Search' | translate }}">
+                            <div class="card-menu">
+                                <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                    tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="searchEmployeeModal()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="require">{{'Label.DBMT07.EmployeeCode'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="EmployeeCode"
+                                            maxlength="20" placeholder="{{ 'Label.DBMT07.EmployeeCode' | translate }}">
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="require">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="EmployeeName"
+                                            maxlength="50" placeholder="{{ 'Label.LOTS04.FirstLastName'| translate}}"
+                                            (keyup.enter)="searchEmployeeModal()">
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.LOTS04.AddEmployee' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <aaa-table [rows]="getEmployeeList" [rowSelect]="attributeSelected"
+                                            [page]="pageEmployee" (onTableEvent)="onTableEvent($event)">
+                                            <ngx-datatable-column [width]="50" [sortable]="false"
+                                                [canAutoResize]="false" [draggable]="false" [resizeable]="false"
+                                                [headerCheckboxable]="true" [checkboxable]="true">>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [width]="30" prop="MgmName{{lang.CURRENT}}"
+                                                [cellClass]="'text-left'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'Label.LOTS04.EmployeeCode'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span> {{row.EmployeeCode}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [width]="150" prop="EmployeeName{{lang.CURRENT}}"
+                                                [cellClass]="'text-left'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span> {{row['EmployeeName'+lang.CURRENT]}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" style="background-color: #005fb7;">
+                <div class="col text-center" (click)="genEmployee()">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas fa-plus"></i> {{ 'Label.GLOBAL.Add' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #addNotiModal>
+    <modal-layout (onClose)="closeAddNotiModal(true)" header="{{ 'รายการเเจ้งเตือนไปยังผู้กู้'| translate}}">
+        <form [formGroup]="searchNotiForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <label class="require">{{'รายละเอียด'| translate}}</label>
+                                        <textarea formControlName="NotiDesc" id="textarea-input" name="textarea-input"
+                                        rows="7" class="form-control" placeholder=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" >
+                <div class="col text-center" (click)="cancelAddNoti()" style="background-color: red;">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas "></i> {{ 'ยกเลิก' | translate }}</button>
+                </div>
+                <div class="col text-center" (click)="genNoti()" style="background-color: #005fb7;">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas fa-plus"></i> {{ 'บันทึก' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #addMgmModal>
+    <modal-layout (onClose)="closeMgmModal(true)" header="{{ 'Label.LOTS04.ListMgm'| translate}}">
+        <form [formGroup]="searchMgmForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.GLOBAL.Search' | translate }}">
+                            <div class="card-menu">
+                                <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                    tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="searchMgmModal()">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="require">{{'Label.LOTS04.MgmCode'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="MgmCode"
+                                            maxlength="20" placeholder="{{ 'Label.LOTS04.MgmCode' | translate }}"
+                                            (keyup.enter)="searchMgmModal()">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="require">{{'Label.LOTS04.CustomerCode1'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="CustomerCode"
+                                            maxlength="50" placeholder="{{ 'Label.LOTS04.CustomerCode1' | translate }}"
+                                            (keyup.enter)="searchMgmModal()">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="require">{{'Label.LOTS04.FirstLastName'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="MgmName"
+                                            maxlength="50" placeholder="{{ 'Label.LOTS04.FirstLastName' | translate }}"
+                                            (keyup.enter)="searchMgmModal()">
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.LOTS04.AddMGM' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12">
+                                        <aaa-table [rows]="getMgmList" [rowSelect]="attributeSelected" [page]="pageMgm"
+                                            (onTableEvent)="onTableMgmEvent($event)">
+                                            <ngx-datatable-column [width]="50" [sortable]="false"
+                                                [canAutoResize]="false" [draggable]="false" [resizeable]="false"
+                                                [headerCheckboxable]="true" [checkboxable]="true">>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [width]="40" prop="MgmName{{lang.CURRENT}}"
+                                                [cellClass]="'text-left'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'Label.LOTS04.MgmCode'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span> {{row.MgmCode}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [width]="40" prop="MgmName{{lang.CURRENT}}"
+                                                [cellClass]="'text-left'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'Label.LOTS04.CustomerCode1'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span> {{row.CustomerCode}}</span>
+                                                    <i *ngIf="!row.CustomerCode" class="fas fa-minus"></i>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [width]="150" prop="MgmName{{lang.CURRENT}}"
+                                                [cellClass]="'text-left'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'Label.LOTS04.FirstLastName'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <span> {{row['MgmName'+lang.CURRENT]}}</span>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" style="background-color: #005fb7;">
+                <div class="col text-center" (click)="genMgm()">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas fa-plus"></i> {{ 'Label.GLOBAL.Add' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #alertSaveModal>
+    <modal-layout (onClose)="closeAlertSaveModal(true)" header="{{ 'เแจ้งเตือน'| translate}}">
+        <form [formGroup]="searchNotiForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12" style="text-align: center; ">
+                                        <label class="require" style="text-align: center; font-size: 5vh;">{{'กรุณาบันทึกข้อมูลก่อนดำเนินการถัดไป'| translate}}</label>
+    
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" >
+                <div class="col text-center" style="background-color: rgb(255, 255, 255);">
+                    
+                </div>
+                <div class="col text-center" (click)="closeAlertSaveModal(true)" style="background-color: red;">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas "></i> {{ 'ยกเลิก' | translate }}</button>
+                </div>
+                <div class="col text-center"  style="background-color: rgb(255, 255, 255);">
+                    
+                </div>
+                <div  class="col text-center" (click)="finalSubmit()" style="background-color: #005fb7;">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas "></i> {{ 'ดำเนินการต่อ' | translate }}</button>
+                </div>
+                <div class="col text-center" style="background-color: rgb(255, 255, 255);">
+                    
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row" [hidden]=" status == 3 && this.checkDisableContractStatus() " >
+            
+            <div class="col text-center" [hidden]="status != 1 || this.checkDisableContractStatus() ">
+                <button class="btn btn-footer" (click)="onCancelRequestReFinance()" [disabled]=" saving || this.checkDisableContractStatus() " style="background-color: rgb(206, 75, 75);">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    {{ 'ยกเลิกสัญญา'| translate}} </button>
+            </div>
+            <!-- <div class="col text-center">
+                <button class="btn btn-footer" (click)="ontestRefresh()">testRefresh</button>
+            </div> -->
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="status == 1 || saving || normalSaving " (click)="onPrevious()" style="align-self: center;">
+                    <i class="fas fa-arrow-left"></i> {{ 'Label.GLOBAL.Back'| translate }} </button>
+            </div>
+            <div class="col text-center" >
+                <button class="btn btn-footer" [hidden]="status == 3 " (click)="onNext()" [disabled]="saving"> 
+                    {{ 'Label.GLOBAL.Next'| translate}} <i class="fas fa-arrow-right"></i> </button>
+                <button class="btn btn-footer" [hidden]="status != 3 || this.checkDisableContractStatus() " (click)="onSubmit()" [disabled]="saving || normalSaving  || this.checkDisableContractStatus() " >
+                    <i class="fas fa-cog fa-spin" [hidden]="!normalSaving"></i>
+                    {{ 'บันทึก'| translate}} <i class="fas fa-arrow-right"></i> </button>
+            </div>
+            <div class="col text-center" [hidden]="status != 3">
+                <button class="btn btn-footer" [hidden]="status != 3 || this.checkDisableContractStatus() " (click)="alertConfirmMassage()" [disabled]="saving || normalSaving  || this.checkDisableContractStatus() ">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'ดำเนินการเสร็จสิ้น'| translate}}</button>
+            </div>
+        </div>
+        <div class="row" [hidden]=" (status != 3 && this.checkDisableContractStatus()) || !this.checkDisableContractStatus() ">
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="status == 1 || saving || normalSaving " (click)="onPrevious()" style="align-self: center;">
+                    <i class="fas fa-arrow-left"></i> {{ 'Label.GLOBAL.Back'| translate }} </button>
+            </div>
+        </div>
+    </div>
+</footer>

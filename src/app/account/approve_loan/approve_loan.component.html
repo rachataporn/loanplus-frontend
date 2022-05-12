@@ -1,0 +1,113 @@
+<div class="col-sm-12" style="background-color: white; padding-top: 10px; height: 7%; border-bottom: solid 2px #ffc107">
+  <div class="row">
+    <div class="form-group col-12">
+      <h5 class="text-center" style="font-weight: 900;">ประเมินสินเชื่อ</h5>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn" style="background-color: white; padding-top: 10px;">
+  <!-- <div class="row" style="background-color: white; padding-top: 10px"> -->
+  <div class="col-sm-12">
+    <form [formGroup]="approveLoanForm" [class.validated]="submitted">
+      <div class="form-group col-12">
+        <div class="form-row">
+          <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+
+            <label style="font-weight: 900"><i class="far fa-id-card"></i> ข้อมูลส่วนตัว </label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-sm-3">
+            <label class="require">ชื่อ-นามสกุล</label>
+            <input type="text" class="form-control" formControlName="Name" maxlength="100">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-sm-3">
+            <label class="require">อาชีพ</label>
+            <input type="text" class="form-control" formControlName="Career">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-sm-3">
+            <label class="require">เบอร์โทร</label>
+            <input type="text" class="form-control" name="phone" pattern="[0-9]{10}" formControlName="MobileNo">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+            <label style="font-weight: 900"><i class="fas fa-money-bill-wave"></i> ข้อมูลการขอกู้</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-sm-3">
+            <label class="require">ยอดขอกู้ (ไม่เกิน 200,000 บาท)</label>
+            <ngx-numeric-textbox inputClass="form-control" formControlName="LoanAmount" [decimals]="2" [min]="0"
+              [max]="200000">
+            </ngx-numeric-textbox>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+            <label style="font-weight: 900"><i class="fas fa-file-contract"></i> ข้อมูลหลักทรัพย์</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12 col-sm-3">
+            <label class="require">ประเภทหลักทรัพย์ค้ำประกัน</label>
+            <select class="form-control" required formControlName="CreditType">
+              <option *ngFor="let site of assetTypeDDL" value="{{site.Value}}">{{site.Text}}</option>
+          </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+            <label class="require" style="font-weight: 900"><i class="far fa-images"></i> รูปหลักทรัพย์ (รองรับ jpg)
+            </label>
+            &nbsp;
+            <label style="font-weight: 900; color: #005fb7;" (click)="openModalViaService(galleryId, imageIndex - 1)"><i
+                class="fa fa-search"></i>ดูตัวอย่าง
+            </label>
+            <ks-modal-gallery [id]="1" [modalImages]="imagesExample" [enableCloseOutside]="false"
+              [plainGalleryConfig]="plainExample"></ks-modal-gallery>
+          </div>
+          <div class="col-4 col-sm-4"></div>
+          <div class="form-group col-12 col-sm-12" style="border: dashed 1px #FFD800">
+            <ks-modal-gallery class="text-center" [id]="0" [modalImages]="images"
+              [plainGalleryConfig]="plainGalleryGrid" [enableCloseOutside]="false"
+              (buttonAfterHook)="onButtonAfterHook($event)" [buttonsConfig]="customButtonsFontAwesomeConfig"
+              [dotsConfig]="{visible: false}">
+            </ks-modal-gallery>
+            <div class="text-center upload-mb" (click)="onClick(fileInput)">
+              <div><i class="fa fa-camera-retro" style="font-size: 35px;"></i></div>
+              <input type="file" accept="image/*,.svg" #fileInput (change)="onFileChange($event)"
+                style="display:none" />
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+              <input class="custom-control-input" type="checkbox" id="Age" formControlName="Age">
+              <label class="custom-control-label" for="Age">
+                อายุมากกว่า 20 ปีบริบูรณ์ และไม่เกิน 65 ปี
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <br>
+    <br>
+  </div>
+
+  <footer class="app-footer-btn">
+    <div class="container-fluid">
+      <div class="col text-center">
+        <button type="button" class="btn btn-footer" (click)="onSave()" [disabled]="saving">
+          <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+          <i class="far fa-check-circle" [hidden]="saving"></i> บันทึก</button>
+      </div>
+    </div>
+  </footer>

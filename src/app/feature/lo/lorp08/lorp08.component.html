@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LORP08.ReportWriteOff'| translate}}">
+        <div class="card-menu">
+            <button  (click)="print()" class="btn btn-sm btn-circle btn-secondary" 
+            tooltip="{{ 'Label.GLOBAL.Print'| translate}}"> 
+                <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+                <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+        </div>
+        <div class="card-content">
+          <form #report [formGroup]="searchForm">
+            <div class="row">
+              <div class="form-group col-sm-6 col-6">
+                  <label >{{'Label.LORP08.FromBranches'| translate}}</label>
+                  <ng-select [items]="fromBranches" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" 
+                   placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="FromBranches"></ng-select>
+                  <div class="invalid-feedback">
+                    {{'Message.STD00000' | translate}}
+                  </div> 
+              </div>
+              <div class="form-group col-sm-6 col-6">
+                  <label >{{'Label.LORP08.ToBranch'| translate}}</label>
+                  <ng-select [items]="toBranch" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" 
+                  placeholder="{{'Label.GLOBAL.All' | translate}}"formControlName="ToBranch"></ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-6">
+                <label >{{'Label.LORP08.FromContractType'| translate}}</label>
+                <ng-select [items]="fromContractType" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" 
+                placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="FromContractType"></ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+                </div> 
+              </div>
+              <div class="form-group col-sm-6 col-6">
+                <label >{{'Label.LORP08.ToContractType'| translate}}</label>
+                <ng-select [items]="toContractType" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" 
+                placeholder="{{'Label.GLOBAL.All' | translate}}"formControlName="ToContractType"></ng-select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-12 col-sm-3 col-3">
+                    <label>{{'Label.LORP08.FromTheBorrowerCode'| translate}}</label>
+                    <ng-select [items]="fromTheBorrowerCode" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                      placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="FromTheBorrowerCode"></ng-select>
+                  </div>
+                  <div class="form-group col-12 col-sm-3 col-3">
+                    <label>{{'Label.LORP08.ToTheBorrowerCode'| translate}}</label>
+                    <ng-select [items]="toTheBorrowerCode" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                      placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="ToTheBorrowerCode"></ng-select>
+                  </div>
+                <!-- <div class="form-group col-12 col-sm-3 col-3">
+                  <label >{{'Label.LORP08.FromTheBorrowerCode'| translate}}</label>
+                  <input type="text" class="form-control " formControlName="FromTheBorrowerCode" >
+                </div>
+                <div class="form-group col-12 col-sm-3 col-3">
+                  <label >{{'Label.LORP08.ToTheBorrowerCode'| translate}}</label>
+                  <input type="text" class="form-control" formControlName="ToTheBorrowerCode" >
+                </div> -->
+                <div class="form-group col-12 col-sm-3 col-3">
+                  <label for="FromTheContractDate" >{{'Label.LORP08.FromTheContractDate'| translate}}</label>
+                  <input type="text" bsDatepicker class="form-control text-center" formControlName="FromTheContractDate" 
+                   [maxDate]=this.searchForm.controls.UpToTheContractDate.value />
+                </div>
+                <div class="form-group col-12 col-sm-3 col-3">
+                  <label for="UpToTheContractDate">{{'Label.LORP08.UpToTheContractDate'| translate}}</label>
+                  <input type="text" bsDatepicker class="form-control text-center" formControlName="UpToTheContractDate" 
+                   [minDate]=this.searchForm.controls.FromTheContractDate.value />
+                </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{'Label.LORP08.ReportViewer'| translate}}">
+        <div class="card-menu"></div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

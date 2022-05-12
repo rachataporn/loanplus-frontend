@@ -1,0 +1,131 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary" tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+                <ng-select [items]="assetTypeList" bindLabel="TextTha" bindValue="Value"
+                  formControlName="SecuritiesType" placeholder="{{'Label.GLOBAL.All'| translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-3">
+                <label>{{ 'Label.LOTS13.SecuritiesDateFrom'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" [maxDate]="searchForm.controls['DateTo'].value"
+                  formControlName="DateFrom" />
+              </div>
+              <div class="form-group col-md-3">
+                <label>{{ 'Label.LOTS13.SecuritiesDateTo'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" [minDate]="searchForm.controls['DateFrom'].value"
+                  formControlName="DateTo" />
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.Securities'| translate}}</label>
+                <input type="text" class="form-control" formControlName="Securities" (keyup.enter)="search()"
+                  placeholder="{{ 'Label.LOTS13.SecuritiesPlacholder'| translate}}">
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.SecuritiesStatus'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="DocStatus">
+                  <button type="button" [btnRadio]="docStatus.Value" *ngFor="let docStatus of docStatusList"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ docStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+
+      <card header="{{ 'Label.LOTS13.SecuritiesList'| translate}}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-12">
+              <aaa-table [rows]="detailList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesCode'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.SecuritiesCode)">{{row.SecuritiesCode}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesDate'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.SecuritiesDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ContractNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เลขที่สัญญา'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="linkToContractDetail(row.ContractHeadId)">{{row.ContractNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="StatusDesc{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สถานะสัญญา'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['StatusDesc'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="StatusDesc{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS13.FinancialAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.LoanLimitAmount | number }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CategoryName{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['CategoryName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-left'" prop="Description">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesDescription'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.Description }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesStatus{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesStatus'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['SecuritiesStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

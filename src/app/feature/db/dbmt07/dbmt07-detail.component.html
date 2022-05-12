@@ -1,0 +1,422 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <tabset>
+                <tab heading="{{'Label.DBMT07.EmployeeData' | translate}}" (select)="onSelect($event)">
+                    <card header="{{'Label.DBMT07.EmployeeData'| translate}}">
+                        <div class="card-menu">
+                        </div>
+                        <div class="card-content">
+                            <form [formGroup]="employeeForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.EmployeeCode'| translate}}</label>
+                                        <input type="text" class="form-control text-center"
+                                            formControlName="EmployeeCode" maxlength="10"
+                                            (change)="changeemployeeCode()">
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.Prefix'| translate}}</label>
+                                        <ng-select [items]="PrefixId" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="PrefixId"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.Name'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="FirstName"
+                                            maxlength="40">
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.LastName'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="LastName"
+                                            maxlength="40">
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'ชื่อ(อังกฤษ)'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="FirstNameEn"
+                                            maxlength="100">
+                                        <div class="invalid-feedback" *ngIf="FirstNameEn.errors">
+                                            <small class="text-danger d-block" *ngIf="FirstNameEn.errors['required']">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </small>
+                                            <small class="text-danger d-block" *ngIf="FirstNameEn.errors['pattern']">
+                                                {{ 'กรอกได้เฉพาะภาษาอังกฤษเท่านั้น (ขึ้นต้นด้วยตัวพิมพ์ใหญ่)' |
+                                                translate }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'นามสกุล(อังกฤษ)'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="LastNameEn"
+                                            maxlength="100">
+                                        <div class="invalid-feedback" *ngIf="LastNameEn.errors">
+                                            <small class="text-danger d-block" *ngIf="LastNameEn.errors['required']">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </small>
+                                            <small class="text-danger d-block" *ngIf="LastNameEn.errors['pattern']">
+                                                {{ 'กรอกได้เฉพาะภาษาอังกฤษเท่านั้น (ขึ้นต้นด้วยตัวพิมพ์ใหญ่)' |
+                                                translate }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <label class="require">{{'Label.DBMT07.Company'| translate}}</label>
+                                        <ng-select [items]="CompanyData" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="CompanyCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}"
+                                            (change)="changeCompany()">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <label class="require">{{'Label.DBMT07.Position'| translate}}</label>
+                                        <ng-select [items]="PositionCode" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="PositionCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12">
+                                        <label class="require">{{'Label.DBMT07.Department'| translate}}</label>
+                                        <ng-select [items]="DepartmentData" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="DepartmentCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.IdCardNumber'| translate}}</label>
+                                        <personalid-input formControlName="IdCard" pattern="[0-9]{13,}">
+                                        </personalid-input>
+                                        <div class="invalid-feedback"
+                                            *ngIf="this.employeeForm.controls['IdCard'].invalid">
+                                            <div *ngIf="this.employeeForm.controls['IdCard'].errors.invalid">
+                                                {{ 'Message.STD00017' | translate }}
+                                            </div>
+                                            <div *ngIf="this.employeeForm.controls['IdCard'].errors.minlength">
+                                                {{ 'Message.STD00019' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.PassportNo'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="PassportNo"
+                                            maxlength="20">
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.PhoneNumber'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="Mobile"
+                                            maxlength="20">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <!-- <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Religion'| translate}}</label>
+                                        <ng-select [items]="ReligionCode" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="ReligionCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                    </div> -->
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Nationality'| translate}}</label>
+                                        <ng-select [items]="NationalityCode" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="NationalityCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Race'| translate}}</label>
+                                        <ng-select [items]="RaceCode" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="RaceCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Country'| translate}}</label>
+                                        <ng-select [items]="country" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                            formControlName="CountryCode"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}"
+                                            (change)="changeCountry()">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Province'| translate}}</label>
+                                        <ng-select [items]="ProvinceData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="ProvinceId"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}"
+                                            (change)="changeProvince()">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.District'| translate}}</label>
+                                        <ng-select [items]="DistrictData" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="DistrictId"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}"
+                                            (change)="changeDistrict()">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.Subdistrict'| translate}}</label>
+                                        <ng-select [items]="SubDistrictData" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="SubDistrictId"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}"
+                                            (change)="changeSubDistrict()"></ng-select>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-8">
+                                        <label>{{'Label.DBMT07.Address'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="Address"
+                                            maxlength="500">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label>{{'Label.DBMT07.PostCode'| translate}}</label>
+                                        <ng-select [items]="PostalCodeData" [bindLabel]="'Text' + lang.CURRENT"
+                                            bindValue="Value" formControlName="PostalCodeId"
+                                            placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                                        </ng-select>
+
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-4">
+                                        <label class="require">{{'Label.DBMT07.Email'| translate}}</label>
+                                        <input type="text" class="form-control text-left" formControlName="Email"
+                                            maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                        <div class="invalid-feedback">
+                                            <div
+                                                *ngIf="this.employeeForm.controls['Email'].value == null || this.employeeForm.controls['Email'].value == '';else other_email">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                            <ng-template #other_email>
+                                                {{ 'Message.STD00031' | translate }}
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="Active"
+                                                formControlName="Active">
+                                            <label class="custom-control-label" for="Active">
+                                                {{ 'Label.DBMT09.Active' | translate }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="IsMobile"
+                                                formControlName="IsMobile">
+                                            <label class="custom-control-label" for="IsMobile">
+                                                {{ 'เปิดสิทธิ์การใช้งาน Mobile' | translate }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </card>
+                </tab>
+                <tab heading="{{'MGM' | translate}}" (select)="onSelect($event)">
+                    <form [formGroup]="employeeForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="animated fadeIn">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <card header="{{'Label.DBMT07.SearchYear' | translate }}">
+                                        <div class="card-menu">
+                                            <button type="button" (click)="searchYear()"
+                                                class="btn btn-sm btn-circle btn-secondary"
+                                                tooltip="{{ 'Label.GLOBAL.Search' | translate }}">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label>{{'Label.DBMT07.Year'| translate}}</label>
+                                                    <year-input formControlName="Year">
+                                                    </year-input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+                                    <br />
+                                    <card header="{{ 'Label.DBMT07.TargetYear' | translate }}">
+                                        <div class="card-menu">
+                                            <button type="button"
+                                                (click)="openPlanTarget(genPlanTarget); phoneNumberGrd.goLastPage();"
+                                                class="btn btn-sm btn-circle btn-secondary"
+                                                tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                                                <i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+                                        <div class="card-content">
+                                            <div class="row">
+                                                <div class="col-12" formArrayName="EmployeeMgmTarget">
+                                                    <aaa-grid-no-pager #phoneNumberGrd
+                                                        [rows]="EmployeeMgmTarget.getRawValue()"
+                                                        [formArray]="EmployeeMgmTarget">
+                                                        <ngx-datatable-column name="MonthCode">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper require">{{
+                                                                    'Label.DBMT07.Month' | translate }}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex">
+                                                                    <ng-select [items]="MounthList"
+                                                                        [bindLabel]="'Text' + lang.CURRENT"
+                                                                        bindValue="Value" (change)="checkYearSelect()"
+                                                                        placeholder="{{ 'เลือกเดือน'| translate }}"
+                                                                        formControlName="MonthCode">
+                                                                    </ng-select>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="MobileDescription">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label class="datatable-header-cell-wrapper require">{{
+                                                                    'Label.DBMT07.Target' | translate }}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex">
+                                                                    <ngx-numeric-textbox inputClass="form-control"
+                                                                        [decimals]="2" formControlName="Target">
+                                                                    </ngx-numeric-textbox>
+                                                                    <div class="invalid-feedback">
+                                                                        {{ 'Message.STD00000' | translate }}
+                                                                    </div>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                    </aaa-grid-no-pager>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </tab>
+
+            </tabset>
+
+        </div>
+    </div>
+</div>
+
+
+
+<ng-template #genPlanTarget>
+    <modal-layout (onClose)="closeEdit(true)" header="{{ 'Label.DBMT07.TargetEmployee' | translate }}">
+        <form [formGroup]="genarateForm" [class.validated]="submittedGen" [focusInvalid]="focusToggleGen">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.DBMT07.TargetEmployeeHeader' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        <label class="require text-left">{{'Label.DBMT07.Year'| translate}}</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <year-input formControlName="Year" placeholder="ระบุปี"
+                                            (change)="checkYearSelect()">
+                                        </year-input>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="form-row">
+                                    <div class="col-3">
+                                        <label class="require">{{'Label.DBMT07.TargetPerMonth'| translate}}</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                            formControlName="Target">
+                                        </ngx-numeric-textbox>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" style="background-color: #005fb7;">
+                <div class="col text-center" (click)="onGenTarget()" *ngIf="!checkSearchingYear">
+                    <button class="btn btn-footer" [disabled]="saving || savingDis" style="color: white;">
+                        <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                        <i class="fas fa-check" [hidden]="saving"></i> {{ 'Label.GLOBAL.Confirm' | translate }}</button>
+                </div>
+                <div class="col text-center" *ngIf="checkSearchingYear">
+                    <button class="btn btn-footer" [disabled]="yearDisable" style="color: white;">
+                        <i class="fas fa-cog fa-spin" [hidden]="saving"></i>
+                        {{ 'Label.DBMT07.SearchingYear' | translate }}</button>
+                </div>
+                <div class="col text-center" (click)="closeEdit(true)">
+                    <button class="btn btn-footer" style="color: white;">
+                        <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Cancel' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

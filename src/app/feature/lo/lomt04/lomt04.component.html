@@ -1,0 +1,155 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT04.Header' | translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search()" class="form-control"
+                                        formControlName="InputSearch"
+                                        placeholder="{{ 'Label.LOMT04.Placeholder' | translate }}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="search()" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="receiveTypeList" [page]="page" 
+                                (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column width="130" [cellClass]="'text-center'" prop="ReceiveTypeCode">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.ReceiveTypeCode' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link"
+                                            (click)="edit(row.ReceiveTypeCode)">{{row.ReceiveTypeCode}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" prop="AccountCode" width="110">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.AccountCode' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span>{{row.AccountCode}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-left'" prop="ReceiveTypeNameTha" width="180">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.ReceiveTypeNameTha' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span>{{row.ReceiveTypeNameTha}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-left'" prop="ReceiveTypeNameEng" width="180">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.ReceiveTypeNameEng' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span>{{row.ReceiveTypeNameEng}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" prop="ReceiveFormat" width="140">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.ReceiveFormat' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span>{{row.ReceiveFormat}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="ReceiveFlag" width="110" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.ReceiveFlag' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.ReceiveFlag" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="PaymentFlag" width="140" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.PaymentFlag' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.PaymentFlag" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="CustomerReceiveFlag" width="140"
+                                    [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.CustomerReceiveFlag' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.CustomerReceiveFlag" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="DefaultReceiptFlag" width="140"
+                                    [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.DefaultReceiptFlag' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.DefaultReceiptFlag" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="Active" width="100" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT04.Active' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="100">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            (click)="remove(row.ReceiveTypeCode, row.RowVersion)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

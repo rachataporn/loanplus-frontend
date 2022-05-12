@@ -1,0 +1,1122 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="btn-group" dropdown *ngIf="companies.length">
+      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle"
+        aria-controlang="dropdown-basic">
+        {{ currentCompany['CompanyName'+lang.CURRENT]}}
+        <span class="caret"></span>
+      </button>
+      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+        <li role="menuitem" *ngFor="let company of companies">
+          <button class="dropdown-item" (click)="onChangeCompany(company.CompanyCode, company.IsCompanyTracking)">{{
+                        company['CompanyName'+lang.CURRENT] }}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="card bg-primary">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-12 text-right">
+                <label>{{ 'Label.LOTS00.newCustomer'| translate }}</label>
+              </div>
+              <div class="col-12 text-right">
+                <h4>{{ NewCustomer }} {{ 'Label.LOTS00.countCustomer'| translate }}</h4>
+              </div>
+              <div class="col-12 text-right">
+                <label>({{ CustomerAll }} {{ 'Label.LOTS00.countCustomer'| translate }})</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="card bg-success">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-12 text-right">
+                <label>{{ 'Label.LOTS00.NewContract'| translate }}</label>
+              </div>
+              <div class="col-12 text-right">
+                <h4>{{ SummaryPrincipleAmount | number:'1.0-0' }} {{ 'Label.LOTS00.Bath'| translate }}
+                </h4>
+              </div>
+              <div class="col-12 text-right">
+                <label>{{ NewContract }} {{ 'Label.LOTS00.countContract'| translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="card bg-danger">
+          <div class="card-body">
+            <div class="form-row">
+              <div class="col-12 text-right">
+                <label>{{ 'Label.LOTS00.ApproveContract'| translate }}</label>
+              </div>
+              <div class="col-12 text-right">
+                <h4>{{ SummaryPrincipleAmountAll | number:'1.0-0' }}
+                  {{ 'Label.LOTS00.Bath'| translate }}
+                </h4>
+              </div>
+              <div class="col-12 text-right">
+                <label>{{ ApproveContract }} {{ 'Label.LOTS00.countContract'| translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="card bg-warning">
+          <div class="card-body">
+            <div class="form-row  text-right">
+              <div class="col-12">
+                <label>{{ 'Label.LOTS00.SummayContract'| translate }}</label>
+              </div>
+              <div class="col-12">
+                <h4>{{ SummaryReceiveTotalAmount | number:'1.0-0' }}</h4>
+              </div>
+              <div class="col-12">
+                <label>{{ percentReceiveTotalAmount }} {{ 'Label.LOTS00.percent'| translate }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row">
+  <div class="col-md-12">
+    <card header="{{ 'Label.LOTS00.contracts'| translate }}">
+      <div class="card-menu">
+        <div class="custom-control custom-checkbox">
+          <input class="custom-control-input" type="checkbox" id="myWorkCreateContract"
+            [(ngModel)]="myWorkCreateContract" (ngModelChange)="onChangeDetailCreateContract($event)">
+          <label class="custom-control-label" for="myWorkCreateContract">
+            {{'Label.LOTS00.myWork'| translate}}
+          </label>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="col-12">
+          <aaa-table [rows]="contracts" [page]="pagecontracts" (onTableEvent)="onTableEventContracts($event)">
+            <ngx-datatable-column [width]="100" [cellClass]="'text-center'" prop="ContractDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.ContractDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.ContractDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="180" [cellClass]="'text-center'" prop="ContractNo">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.ContractNo'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span class="link" (click)="editContract(row.ContractHeadId)">{{row.ContractNo}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="200" prop="CustomerName{lang}">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.CustomerName'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row['CustomerName'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="PrincipleAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.PrincipleAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.PrincipleAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="InterestAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.InterestAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.InterestAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="TotalAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.TotalAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.TotalAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartInterestDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.StartInterestDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartInterestDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartPaymentDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.StartPaymentDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartPaymentDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="ContractStatus{lang}">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.ContractStatus'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row['ContractStatus'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="Remark">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS00.Remark'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.Remark}}
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+<br />
+<div *ngIf="this.approvePermission.ApproveContract" class="row">
+  <div class="col-md-12">
+    <card header="{{ 'Label.LOTS00.ApproveContracts'| translate }}">
+      <div class="card-menu">
+        <div class="custom-control custom-checkbox">
+          <input class="custom-control-input" type="checkbox" id="myWorkApproveContract"
+            [(ngModel)]="myWorkApproveContract" (ngModelChange)="onChangeDetailApproveContract($event)">
+          <label class="custom-control-label" for="myWorkApproveContract">
+            {{'Label.LOTS00.myWork'| translate}}
+          </label>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="col-12">
+          <aaa-table [rows]="ApproveContracts" [page]="pageApproveContracts"
+            (onTableEvent)="onTableEventApproveContracts($event)">
+            <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="ContractDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.ContractDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.ContractDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="180" [cellClass]="'text-center'" name="ContractNo">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.ContractNo'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span class="link" (click)="editApproveContract(row.ContractNo)">{{row.ContractNo}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [width]="200" prop="CustomerName{lang}">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.CustomerName'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row['CustomerName'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [cellClass]="'text-right'" prop="PrincipleAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.PrincipleAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.PrincipleAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="InterestAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.InterestAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.InterestAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="TotalAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.TotalAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.TotalAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartInterestDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.StartInterestDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartInterestDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartPaymentDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.StartPaymentDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartPaymentDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+<br />
+<div *ngIf="this.approvePermission.ApprovePayment" class="row">
+  <div class="col-md-12">
+    <card header="{{ 'Label.LOTS00.ApproveTransferContracts'| translate }}">
+      <div class="card-menu">
+        <div class="custom-control custom-checkbox">
+          <input class="custom-control-input" type="checkbox" id="myWorkTransferContracts"
+            [(ngModel)]="myWorkTransferContracts" (ngModelChange)="onChangeDetailApproveTransferContract($event)">
+          <label class="custom-control-label" for="myWorkTransferContracts">
+            {{'Label.LOTS00.myWork'| translate}}
+          </label>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="col-12">
+          <aaa-table [rows]="ApproveTransferContracts" [page]="pageApproveTransferContracts"
+            (onTableEvent)="onTableEventApproveTransferContracts($event)">
+            <ngx-datatable-column [width]="100" [cellClass]="'text-center'" prop="ContractDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.ContractDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.ContractDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="180" [cellClass]="'text-center'" prop="ContractNo">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.ContractNo'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span class="link" (click)="editApproveTransferContract(row.ContractNo)">{{row.ContractNo}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [width]="200" prop="CustomerName{lang}">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.CustomerName'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row['CustomerName'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [cellClass]="'text-right'" prop="PrincipleAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.PrincipleAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.PrincipleAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column [cellClass]="'text-right'" prop="InterestAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.InterestAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.InterestAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-right'" prop="TotalAmount">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.TotalAmount'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.TotalAmount | number:'1.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="ApproveContractDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.ApproveContractDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.ApproveContractDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartInterestDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.StartInterestDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartInterestDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="StartPaymentDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS00.StartPaymentDate'|
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.StartPaymentDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+<!-- <div class="row">
+    <div class="col-md-12">
+        <card header="{{ 'Label.LOTS02.NewLoanRequest'| translate}}">
+            <div class="card-menu"></div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <aaa-table [rows]="approveWeb" [page]="pageweb" (onTableEvent)="onTableEventWeb($event)">
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="CreateDate">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                        'Label.LOTS02.CreateDate'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CreateDate | thaidate}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                        'Label.LOTS02.Name'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span class="link"
+                                        (click)="editApproveWeb(row.CustomerCode, true)">{{row.CustomerName}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="MobileNo">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.MobileNo'|
+                                        translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.MobileNo}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="SecuritiesTypeNameTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.AssetType'|
+                                        translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{ row['SecuritiesTypeName'+lang.CURRENT] }}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-right'" prop="LoanAmount">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.LoanAmount'|
+                                        translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.LoanAmount | number : '1.2-2'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="LoanChannelTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.ChannelsForLoan'|
+                                        translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{ row['LoanChannel'+lang.CURRENT] }}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="ApproveStatusTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.FlagApprove'|
+                                        translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{ row['ApproveStatus'+lang.CURRENT] }}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </div>
+        </card>
+    </div>
+</div> -->
+<div class="row">
+  <div class="col-md-12">
+    <card header="{{ 'ควบคุมเอกสาร'| translate}}">
+      <div class="card-menu">
+        <button type="button" (click)="openModalSearch(search)" class="btn btn-sm btn-circle btn-secondary"
+          tooltip="ค้นหา">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+      <div class="card-content">
+        <div class="row">
+          <div class="col-md-12">
+            <aaa-table [rows]="trackingDocWeb" [page]="pageTrackingDocWeb"
+              (onTableEvent)="onTableEventTrackingDocWeb($event)">
+              <ngx-datatable-column [cellClass]="'text-center'" prop="MainContractNo">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เลขที่สัญญา'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="link"
+                    (click)="openModal(historyControlDoc,row.MainContractHeadId);searchEdit(row.TrackingDocumentId)">
+                    {{row.MainContractNo}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="ContractType">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ประเภทสัญญา'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.ContractType}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="CustomerName">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ชื่อ-นามสกุล'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.CustomerName}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-center'" prop="ContractStatusTH">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สถานะสัญญา'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.ContractStatusTH }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="ReqDocumentLocation">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ตำแหน่งเอกสาร'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.ReqDocumentLocation }}<span class="link" *ngIf="row.ReqDocumentLocationCode != '1'"
+                    (click)="linkContractDetail(row.TrackingDocumentPackageId)">{{row.RefNo}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-center'" prop="ReqDocumentStatus">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สถานะเอกสาร'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.ReqDocumentStatus }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-center'" prop="ReqDocumentDate">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'วันที่รับเอกสาร'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.ReqDocumentDate | thaidate}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-center'" prop="PackageSendDate">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'วันที่ส่งเอกสาร'|
+                                        translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{ row.PackageSendDate | thaidate}}
+                </ng-template>
+              </ngx-datatable-column>
+            </aaa-table>
+          </div>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <card header="Application - New contract">
+      <div class="card-content">
+        <aaa-table [rows]="loanAgreement" [page]="pageLoanAgreement" (onTableEvent)="onTableEventLoanAgreement($event)">
+          <ngx-datatable-column [width]="180" [cellClass]="'text-center'" prop="requestNumber">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เลขที่อ้างอิง'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span class="link" (click)="editLoanAgreement(row.id, $event)"
+                (contextmenu)="editLoanAgreement(row.id, $event)">{{row.requestNumber}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="120" [cellClass]="'text-center'" prop="requestDate">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'วันที่ยื่นเอกสาร'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.requestDate | thaidate }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="200" prop="customerName{lang}">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ชื่อผู้กู้'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row['customerName'+lang.CURRENT]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="130" [cellClass]="'text-center'" prop="CompanyCode">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สาขาที่ดำเนินการ'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row['companyName'+lang.CURRENT]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [cellClass]="'text-right'" prop="PrincipleAmount">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เงินที่กู้'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.mainLoanPrincipleAmount | number:'1.2-2'}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column prop="contractStatus{lang}">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สถานะการยินยอม'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row['acceptStatus'+lang.CURRENT]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column prop="contractStatus{lang}">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper"
+                (click)="sort()">{{ 'Label.LOTS03.ContractStatus'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row['contractStatus'+lang.CURRENT]}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column [width]="200" prop="customerName{lang}">
+            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+              <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ผู้ตรวจสอบ'| translate}}</label>
+            </ng-template>
+            <ng-template let-row="row" *ngIf="lang.CURRENT == 'Tha'" ngx-datatable-cell-template>
+              {{row['ReqSecuritiesByTha']}}
+            </ng-template>
+            <ng-template let-row="row" *ngIf="lang.CURRENT == 'Eng'" ngx-datatable-cell-template>
+              {{row['reqsecuritiesByEng']}}
+            </ng-template>
+          </ngx-datatable-column>
+        </aaa-table>
+      </div>
+    </card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <card header="Application - Refinance">
+
+      <div class="card-content">
+        <div class="row">
+          <div class="col-12">
+            <aaa-table [rows]="loanRefinance" [page]="pageLoanRefinance"
+              (onTableEvent)="onTableEventLoanRefinance($event)">
+              <ngx-datatable-column [width]="180" [cellClass]="'text-center'" prop="requestNumber">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เลขที่อ้างอิง'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="link" (click)="editRefinance(row.id,row.RefinanceId, $event)"
+                    (contextmenu)="editRefinance(row.id,row.RefinanceId, $event)">{{row.requestNumber}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="120" [cellClass]="'text-center'" prop="requestDate">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'วันที่ยื่นเอกสาร'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.requestDate | thaidate }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="200" prop="customerName{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ชื่อผู้กู้'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['customerName'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="100" prop="RefinanceNo">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'เลขที่สัญญาขอ refinance'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.RefinanceNo}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="130" [cellClass]="'text-center'" prop="CompanyCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'สาขาที่ดำเนินการ'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['companyName'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-right'" prop="PrincipleAmount">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'เงินที่กู้'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.mainLoanPrincipleAmount | number:'1.2-2'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="contractStatus{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'สถานะการยินยอม'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['acceptStatus'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="contractStatus{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.LOTS03.ContractStatus'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['contractStatus'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+            </aaa-table>
+          </div>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <card header="Application - รอการลงนาม">
+      <div class="card-content">
+        <div class="row">
+          <div class="col-12">
+            <aaa-table [rows]="loanWait" [page]="pageWait" (onTableEvent)="onTableEventWait($event)">
+              <ngx-datatable-column [width]="80" [cellClass]="'text-center'" prop="CompanyCode">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.CompanyCode'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.CompanyCode}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="180" [cellClass]="'text-center'" prop="ContractNo">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.ContractNo'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="link" (click)="editWait(row.ContractHeadId, row.IsSignature, $event)"
+                    (contextmenu)="editWait(row.ContractHeadId, row.IsSignature, $event)">{{row.ContractNo}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="100" [cellClass]="'text-center'" prop="ContractDate">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.ContractDate'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.ContractDate | thaidate }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="250" prop="LoanTypeName{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.LoanTypeName'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['LoanTypeName'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="200" prop="CustomerName{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.CustomerName'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['CustomerName'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [cellClass]="'text-right'" [sortable]="false">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.PrincipleAmount'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.PrincipleAmount | number:'1.2-2'}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="ContractStatus{lang}">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.ContractStatus'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row['ContractStatus'+lang.CURRENT]}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column [width]="170" prop="Signature">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                'Label.LOTS03.SignatureStatus'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.Signature}}
+                </ng-template>
+              </ngx-datatable-column>
+            </aaa-table>
+          </div>
+        </div>
+      </div>
+    </card>
+  </div>
+</div>
+
+<ng-template #historyControlDoc>
+  <modal-layout (onClose)="closeModal()" header="ประวัติ">
+    <form [formGroup]="ContractForm">
+      <div class="form-row ">
+        <div class="form-row col-md-12">
+          <div class="form-group col-sm-6 col-md-6">
+            <label>{{'เลขที่สัญญา' | translate}}</label>
+            <input type="text" class="form-control" formControlName="ContractNo">
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+          <div class="form-group col-sm-6 col-md-6">
+            <label>{{'ลูกค้า' | translate}}</label>
+            <input type="text" class="form-control" formControlName="CustomerName">
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+        <div class="form-row col-md-12">
+          <div class="form-group col-sm-6 col-md-6">
+            <label>{{'สถานะสัญญา' | translate}}</label>
+            <input type="text" class="form-control " formControlName="CloseContract">
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+          <div class="form-group col-sm-6 col-md-6">
+            <label>{{'คู่สัญญารีไฟแนนซ์' | translate}}</label>
+            <input type="text" class="form-control " formControlName="ContractRefinance">
+            <div class="invalid-feedback">
+              {{ 'Message.STD00000' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <aaa-table [rows]="historyContract" [page]="pageHistoryContract"
+        (onTableEvent)="onTableEventHistoryContract($event)">
+        <div class="form-row">
+          <div class="form-group col-md-12">
+            <ngx-datatable-column prop="LocationCode">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ตำแหน่งเอกสาร' |
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span>{{row.LocationCode}}</span>
+                <span *ngIf="row.ReqLocationCode != '1' " class="link"
+                  (click)="linkContractDetail(row.TrackingDocumentPackageId);closeModal();">
+                  {{row.RefNo}}
+                </span>
+                <span *ngIf="row.ReqLocationCode == '1' ">
+                  {{row.Company}}
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="ReqDocumentStatus">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สถานะเอกสาร' |
+                                    translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.ReqDocumentStatus}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column [cellClass]="'text-center'" prop="PackageReceiveDate">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'วันที่รับเอกสาร'
+                                    | translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.PackageReceiveDate | thaidate }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="User">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ผู้บันทึกรายการ'
+                                    | translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.User}}
+              </ng-template>
+            </ngx-datatable-column>
+
+          </div>
+        </div>
+      </aaa-table>
+    </form>
+    <br />
+    <button type="button" class="btn btn-danger" style="width: 100%;" *ngIf="(contractsHistory.CheckCloseContract == 'S')
+            && contractsHistory.ReqDocumentStatus != 'F' &&  contractsHistory.ReqDocumentStatus != 'RD' "
+      [disabled]="contractsHistory.PackageStatus == 'S' || contractsHistory.PackageStatus == 'P' || contractsHistory.ReqDocumentStatus == 'RD'
+            ||  contractsHistory.ReqDocumentStatus == 'I'||  contractsHistory.ReqDocumentStatus == 'CH' || IsDisableReturnDoc" (click)="closeModal();openModal2(Attachment);">คืนเอกสาร</button>
+    <button class="btn btn-sm btn-primary" style=" width: 100%;" *ngIf="contractsHistory.ReqDocumentStatus == 'RD'"
+      (click)="closeModal();openModalAttachment(Attachment)">
+      {{ 'เอกสารแนบ'| translate}}</button>
+  </modal-layout>
+</ng-template>
+
+<ng-template #search>
+  <modal-layout (onClose)="closeModal()" header="ค้นหา">
+    <div class="row">
+      <div class="col-sm-12">
+        <card header="{{ 'Label.GLOBAL.Search'| translate }}">
+          <div class="card-menu">
+            <button type="button" (click)="searchContract()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="ค้นหา">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <form [formGroup]="SearchForm" (keyup.enter)="searchContract()">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>ค้นหา</label>
+                  <input type="text" class="form-control" formControlName="Keyword" placeholder="เลขที่สัญญา">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="CompanyReqTake">{{'Label.LOTS19.Company' | translate}}</label>
+                  <ng-select [items]="companies" [bindLabel]="'CompanyNameTha'" bindValue="CompanyCode"
+                    formControlName="CompanyReqTake">
+                  </ng-select>
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <card header="รายละเอียด">
+          <div class="card-menu"></div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-12">
+                <aaa-table [rows]="TrackingDoc" [page]="pageSearch" (onTableEvent)="onTableEventSearch($event)">
+                  <ngx-datatable-column [cellClass]="'text-center'" prop="MainContractNo">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'เลขที่สัญญา'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link"
+                        (click)="closeModal();openModal(historyControlDoc,row.MainContractHeadId);searchEdit(row.TrackingDocumentId,row.TrackingDocumentControlId);">
+                        {{row.MainContractNo}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="ContractType">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'ประเภทสัญญา'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ContractType}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="CustomerName">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'ชื่อ-นามสกุล'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.CustomerName}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" prop="ContractStatusTH">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'สถานะสัญญา'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{ row.ContractStatusTH }}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="ReqDocumentLocation">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'ตำแหน่งเอกสาร'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ReqDocumentLocation }}<span class="link" *ngIf="row.ReqDocumentLocationCode != '1'"
+                        (click)="linkContractDetail(row.TrackingDocumentPackageId)">{{row.RefNo}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" prop="ReqDocumentStatus">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{
+                                                'สถานะเอกสาร'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ReqDocumentStatus }}
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-table>
+              </div>
+            </div>
+          </div>
+        </card>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>
+
+<ng-template #Attachment>
+  <modal-layout (onClose)="closeModal()" header="{{ 'Label.LOTS03.attachment'| translate }}">
+    <form #attribute [formGroup]="ContractForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+      <div>
+        <card header="รายละเอียด">
+          <div class="card-menu">
+            <button *ngIf="IsSuperUser" type="button" (click)="onApproveSecurityCustomer()"
+              class="btn btn-sm btn-success">
+            </button>
+            <button type="button" class="btn btn-sm btn-circle btn-secondary" (click)="addAttachment()"
+              *ngIf="!contractsHistory.TrackingDocumentAttachment">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="col-12" formArrayName="TrackingDocumentAttachment">
+                <aaa-grid #detailgrid [rows]="contractAttachments.getRawValue()" [formArray]="contractAttachments">
+                  <ngx-datatable-column name="FileName">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="require">{{ 'Label.LOTS03.attachment'| translate
+                                                }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <file-upload-auto [file]="attachmentFiles[rowIndex]"
+                          [fileName]="contractAttachments.getRawValue()[rowIndex].FileName" [category]="category"
+                          [isDisableDownload]="contractAttachments.getRawValue()[rowIndex].IsDisableAttachment"
+                          (fileNameReturn)="fileNameReturn($event, rowIndex)" formControlName="AttachmentId">
+                        </file-upload-auto>
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column>
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{
+                                                'Label.LOTS03.Description'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <input type="text" class="form-control form-control-sm" formControlName="Remark">
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'|
+                                                translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button class="btn btn-outline-primary btn-sm"
+                        [disabled]="contractsHistory.TrackingDocumentAttachment" (click)="removeAttachment(rowIndex);">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-grid>
+              </div>
+            </div>
+          </div>
+        </card>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="onSubmit();"
+        *ngIf="!contractsHistory.TrackingDocumentAttachment">คืนเอกสาร</button>
+    </form>
+  </modal-layout>
+</ng-template>

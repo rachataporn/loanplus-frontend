@@ -1,0 +1,27 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP42.Title'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'ณ วันที่'| translate}}</label>
+                <input type="text" class="form-control" formControlName="date" bsDatepicker [maxDate]="now">
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>

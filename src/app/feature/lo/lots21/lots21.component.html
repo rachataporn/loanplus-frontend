@@ -1,0 +1,119 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="รายการรับพัสดุ">
+        <div class="card-menu">
+          <button type="button" (click)="onSearchReceivePackage()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="receivePackageList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column prop="CompanySource" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.CompanySource' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanySource}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="RefNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.Ref' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.TrackingDocumentPackageId)">
+                      {{row.RefNo}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="TransportName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.TransportCompany' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.TransportName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PackageNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.PackageNo' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PackageNo}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{'Label.LOTS21.RceivePackage' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="receivePackage(row)">{{'Label.LOTS21.RceivePackage' |
+                      translate}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'รายการตรวจเอกสาร' | translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="onSearchCheckDoc()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="checkDocumentList" [page]="page2" (onTableEvent)="onTableEvent2($event)">
+                <ngx-datatable-column prop="CompanySource" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.Branch' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CompanySource}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PackageReceiveDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.PackageReceiveDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PackageReceiveDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="RefNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS21.Ref' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.TrackingDocumentPackageId)">
+                      {{row.RefNo}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

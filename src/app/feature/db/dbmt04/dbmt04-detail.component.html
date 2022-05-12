@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+    <div class="row">
+      <div class="col-12">
+        <card header="{{'Label.DBMT04.Overview' | translate}}">
+          <div class="card-menu">
+          </div>
+          <div class="card-content">
+            <form [formGroup]="listItemForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+              <div class="form-row">
+                <div class="form-group col-sm-6 col-md-6">
+                  <label class="require">{{'Label.DBMT04.GeneralInfoGroup'| translate}}</label>
+                  <ng-select [items]="listItemGroups" bindLabel="ListItemGroupName" bindValue="ListItemGroupCode" formControlName="ListItemGroupCode" placeholder="{{'Label.GLOBAL.PleaseSelect'| translate}}">
+                  </ng-select>
+                  <div class="invalid-feedback">
+                    {{'Message.STD00000' | translate}}
+                  </div>
+                </div>
+                <div class="form-group col-sm-6 col-md-3">
+                  <label>{{'Label.DBMT04.System'| translate}}</label>
+                  <input type="text" class="form-control" formControlName="SystemCode">
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-12 col-sm-6 col-md-3">
+                  <label class="require">{{'Label.DBMT04.DataCode'| translate}}</label>
+                  <input type="text" class="form-control text-center" formControlName="ListItemCode" maxlength="20" >
+                  <div class="invalid-feedback" *ngIf="ListItemCode.errors">
+                    <div *ngIf="ListItemCode.errors['required']">{{'Message.STD00000' | translate}}</div>
+                    <div *ngIf="ListItemCode.errors['pattern']">{{ 'Message.STD00033' | translate}}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-3">
+                  <label class="require">{{'Label.DBMT04.DataNameTH'| translate}}</label>
+                  <input type="text" class="form-control" formControlName="ListItemNameTha" maxlength="500">
+                  <div class="invalid-feedback">
+                    {{'Message.STD00000' | translate}}
+                  </div>
+                </div>
+
+                <div class="form-group col-12 col-sm-6 col-md-3">
+                  <label>{{'Label.DBMT04.DataNameEN'| translate}}</label>
+                  <input type="text" class="form-control" formControlName="ListItemNameEng" maxlength="500">
+                </div>
+                <div class="form-group col-12 col-sm-6 col-md-3">
+                  <label class="require">{{'Label.DBMT04.Order'| translate}}</label>
+                  <ngx-numeric-textbox inputClass="form-control" formControlName="Sequence" [decimals]="0" [max]="999999999">
+                  </ngx-numeric-textbox>
+                  <div class="invalid-feedback" *ngIf="Sequence.invalid">
+                    <div *ngIf="Sequence.errors.min || Sequence.errors.max || Sequence.errors.required">
+                      {{ 'Message.STD00018' | translate: { '0': ("Label.DBMT04.Order" | translate),'1':'1','2':'999,999,999' } }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col-md-6 col-sm-6 col-12">
+                  <label>{{'Label.DBMT04.Remark'| translate }}</label>
+                  <input type="text" class="form-control" formControlName="Remark" maxlength="200">
+                </div>
+
+                <div class="form-group col-md-2 col-sm-2 col-2">
+                    <label class="invisible">active</label>
+                    <div class="custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" id="Active"
+                            formControlName="Active">
+                        <label class="custom-control-label" for="Active">
+                            {{'Label.GLOBAL.Active'| translate}}
+                        </label>
+                    </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </card>
+      </div>
+    </div>
+  </div>
+  <footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+        </div>
+        <div class="col text-center">
+          <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+            <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+        </div>
+      </div>
+    </div>
+  </footer>

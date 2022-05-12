@@ -1,0 +1,48 @@
+<form [formGroup]="alertForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+    <card header="ตั้งค่าการแจ้งเตือน">
+        <div class="card-content" *ngFor="let data of items">
+            <div class="row">
+                <div class="col-4 padLabel" style="padding-left: unset; padding-right: unset">
+                    <label class="font-14"> {{data.ContractNo}} </label>
+                </div>
+                <div class=" col-8">
+                    <div class="row">
+                        <div *ngIf="data.FlagAlertLine
+                      " class="col-3 padLabel">
+                            <label class="font-14 color-green">เปิด Line&nbsp;
+                            </label>
+                        </div>
+                        <div *ngIf="!data.FlagAlertLine" class="col-3 padLabel">
+                            <label class="font-14 color-red">ปิด Line&nbsp;
+                            </label>
+                        </div>
+                        <div class="col-3 padLabel">
+                            <label class="switch switch-3d switch-pico">
+                                <input type="checkbox" class="switch-input" (change)="onSubmit(data,true)"
+                                    [checked]="data.FlagAlertLine">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                        <div *ngIf="data.FlagAlertEmail
+                      " class="col-3 padLabel">
+                            <label class="font-14 color-green">เปิด Email&nbsp;
+                            </label>
+                        </div>
+                        <div *ngIf="!data.FlagAlertEmail" class="col-3 padLabel">
+                            <label class="font-14 color-red">ปิด Email&nbsp;
+                            </label>
+                        </div>
+                        <div class="col-3 padLabel">
+                            <label class="switch switch-3d switch-pico">
+                                <input type="checkbox" class="switch-input" (change)="onSubmit(data,false)"
+                                    [checked]="data.FlagAlertEmail">
+                                <span class="switch-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr *ngIf="data.length > 1" class="hr-margin">
+        </div>
+    </card>
+</form>

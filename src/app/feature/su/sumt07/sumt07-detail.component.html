@@ -1,0 +1,287 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="UserForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <tabset>
+                    <tab heading="{{'Label.SUMT07.Info' | translate}}">
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label class="require">{{'Label.SUMT07.UserName' | translate}}</label>
+                                        <input type="text" class="form-control text-center" formControlName="UserName"
+                                            maxlength="50">
+                                        <div class="invalid-feedback" *ngIf="UserName.errors">
+                                            <div *ngIf="UserName.errors['required']">
+                                                {{ 'Message.STD00000' | translate }}</div>
+                                            <div *ngIf="UserName.errors['pattern']">{{ 'Message.SU00021' | translate}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label class="require">{{'Label.SUMT07.Employee' | translate}}</label>
+                                        <ng-select [items]="employeeList" required [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                            formControlName="EmployeeCode">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-sm-6">
+                                        <label class="require">{{'Label.SUMT07.Policy' | translate}}</label>
+                                        <ng-select [items]="passwordList" required bindLabel="Text" bindValue="Value"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                            formControlName="PasswordPolicyCode">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>{{'Label.SUMT07.Password' | translate}}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control text-center" [value]="password"
+                                                disabled>
+                                            <div class="input-group-append">
+                                                <div class="form-group col-sm-3">
+                                                    <button (click)="forget()"
+                                                        class="btn btn-outline-warning">{{'Label.SUMT07.SendEmail' | translate }}</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label class="require">{{'Label.SUMT07.DefaultLang' | translate}}</label>
+                                        <ng-select [items]="langList" required bindLabel="Text" bindValue="Value"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                            formControlName="DefaultLang">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-6 col-md-3">
+                                        <label class="invisible">active</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="Active"
+                                                formControlName="Active">
+                                            <label class="custom-control-label" for="Active">
+                                                {{'Label.GLOBAL.Active'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-sm-6 col-md-6">
+                                        <label class="invisible">{{'Label.SUMT07.ForceChange' | translate}}</label>
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox" id="ForceChangePassword"
+                                                formControlName="ForceChangePassword">
+                                            <label class="custom-control-label" for="ForceChangePassword">
+                                                {{'Label.SUMT07.ForceChange'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-4 col-md-3">
+                                        <label class="require">{{'Label.SUMT07.StartDate' | translate}}</label>
+                                        <input type="text" class="form-control text-center" bsDatepicker
+                                            [maxDate]=this.UserForm.controls.EndEffectiveDate.value
+                                            formControlName="StartEffectiveDate">
+                                        <div class="invalid-feedback">
+                                            {{'Message.STD00000' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-4 col-md-3">
+                                        <label>{{'Label.SUMT07.EndDate' | translate}}</label>
+                                        <input type="text" class="form-control text-center" bsDatepicker
+                                            [minDate]=this.UserForm.controls.StartEffectiveDate.value
+                                            formControlName="EndEffectiveDate">
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.SUMT07.UpdateBy' | translate}}</label>
+                                        <input type="text" class="form-control text-center" disabled
+                                            [value]="UserDetail.LastUpdateBy || null">
+                                    </div>
+                                    <div class="form-group col-12 col-sm-4 col-md-3">
+                                        <label>{{'Label.SUMT07.UpdateDate' | translate}}</label>
+                                        <input type="text" class="form-control text-center" disabled bsDatepicker
+                                            [bsValue]="UserDetail.LastUpdateDate || null">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.SUMT07.LastChangePassword' | translate}}</label>
+                                        <input type="text" class="form-control text-center" disabled bsDatepicker
+                                            [bsValue]="UserDetail.LastChangePassword || null">
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.SUMT07.PasswordExpire' | translate}}</label>
+                                        <input type="text" class="form-control text-center" disabled bsDatepicker
+                                            [bsValue]="passwordExpireDate">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab heading="{{'Label.SUMT07.Profile'|translate}}">
+                        <form [formGroup]="UserForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                            <card header="{{'Label.SUMT07.Profile'|translate}}">
+                                <div class="card-menu">
+                                    <button (click)="addProfileRow(); profileGrd.goLastPage();"
+                                        class="btn btn-sm btn-circle btn-secondary"
+                                        tooltip="{{'Label.GLOBAL.Add' | translate}}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="row" [formGroup]="UserForm" [class.validated]="submitted">
+                                        <div class="col-12" formArrayName="Profile">
+                                            <aaa-grid #profileGrd [trackByProp]="'guid'"
+                                                [rows]="getProfile.getRawValue()" [formArray]="getProfile">
+                                                <ngx-datatable-column name="profileCode" width="600">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label
+                                                            class="datatable-header-cell-wrapper require">{{'Label.SUMT07.Profile' | translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ng-select [items]="profileList" class="sm" appendTo="body"
+                                                                dropdownPosition="bottom"
+                                                                placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                                required bindLabel="Text" bindValue="Value"
+                                                                formControlName="ProfileCode">
+                                                            </ng-select>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label
+                                                            class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete' | translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                                            (click)="removeProfileRow(rowIndex)">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                            </aaa-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+                        </form>
+                    </tab>
+
+                    <tab heading="{{'Label.SUMT07.Permission' | translate}}">
+                        <form [formGroup]="UserForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+
+                            <card header="{{'Label.SUMT07.Permission' | translate}}">
+                                <div class="card-menu">
+                                    <button (click)="addPermissionRow(); permissionGrd.goLastPage();"
+                                        class="btn btn-sm btn-circle btn-secondary"
+                                        tooltip="{{'Label.GLOBAL.Add' | translate}}">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="row">
+                                        <div class="col-12" formArrayName="Permission">
+                                            <aaa-grid #permissionGrd [trackByProp]="'guid'"
+                                                [rows]="getPermission.getRawValue()" [formArray]="getPermission">
+                                                <ngx-datatable-column name="CompanyCode" width="50">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label
+                                                            class="datatable-header-cell-wrapper require">{{'Label.SUMT07.Permission' | translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <ng-select [items]="permissionList[row.guid]" class="sm"
+                                                                appendTo="body" dropdownPosition="bottom"
+                                                                placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                                required [bindLabel]="'Text'+lang.CURRENT"
+                                                                bindValue="Value" formControlName="CompanyCode">
+                                                            </ng-select>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+
+                                                <ngx-datatable-column name="IsDefault" width="50"
+                                                    [cellClass]="'text-center'">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label
+                                                            class="datatable-header-cell-wrapper require">{{'Label.SUMT07.IsDefualt' | translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <div [formGroupName]="rowIndex">
+                                                            <label class="datatable-checkbox">
+                                                                <input type="checkbox" formControlName="IsDefault">
+                                                            </label>
+                                                            <div class="invalid-feedback">
+                                                                {{ 'Message.STD00000' | translate }}
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+
+                                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                                                    <ng-template ngx-datatable-header-template>
+                                                        <label
+                                                            class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete' | translate}}</label>
+                                                    </ng-template>
+                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                        ngx-datatable-cell-template>
+                                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                                            (click)="removePermissionRow(rowIndex)">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </ng-template>
+                                                </ngx-datatable-column>
+                                            </aaa-grid>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+
+                        </form>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,415 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <form [formGroup]="TrackingForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <div class="form-row">
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <card header="{{ 'Label.TRTS02.Detail' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center">
+                                        <img style="width: 150px;height: 150px;"
+                                            src="https://picouat.ssweb.ga/content/Image/Securities/9ec421ec-f055-4499-bf10-1555655198da.jpeg"
+                                            alt="">
+                                        <!-- <image-upload-base64 placeholder="" formControlName="ProfileImage">
+                                        </image-upload-base64> -->
+                                    </div>
+                                </div>
+
+                                <!-- <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center">
+                                        <b>{{tracking['CustomerName'+lang.CURRENT]}}</b>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>วันที่ครบกำหนด</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.DueDate | thaidate}} </div>
+                                </div> -->
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>เลขที่สัญญา</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"> BRM0163-00006
+                                    </div>
+                                </div>
+                                <!-- <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>รหัสผู้กู้</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.CustomerCode}} </div>
+                                </div> -->
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>เบอร์โทร</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"> 0889920035
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>เงินต้นคงค้าง</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{40000 | number:'1.2-2'}} </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>ดอกเบี้ยคงค้าง</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{5000 | number:'1.2-2'}} </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>ค่าปรับ</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{2500| number:'1.2-2'}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>ค่าติดตาม</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{2500 | number:'1.2-2'}} </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>ยอดรวม</b> </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{50000 | number:'1.2-2'}} </div>
+                                </div>
+                            </div>
+
+                        </card>
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-8">
+                        <card header="{{ 'Label.TRTS02.Detail' | translate }}">
+                            <div class="card-content">
+                                <tabset>
+                                    <tab heading="บันทึกติดตาม" (select)="tabSelect(0)">
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <label>ครั้งที่ </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <input type="text" class="form-control text-center" Value="1" disabled>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <label>กิจกรรม </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <input type="text" class="form-control text-center" Value="โทรติดตาม"
+                                                    disabled>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">วันที่ดำเนินการ </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <!-- <input type="text" class="form-control text-center" Value="โทรติดตาม"
+                                                    value="25/02/2563" disabled> -->
+                                                <input type="text" class="form-control text-center" disabled
+                                                    bsDatepicker [placement]="'top'">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">สถานะติดตาม </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <ng-select [items]="status" bindLabel="Text" bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.All' | translate}}">
+                                                </ng-select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">วันที่นัดชำระ </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <!-- <input type="text" class="form-control text-center" Value="โทรติดตาม"
+                                                    value="25/02/2563" disabled> -->
+                                                <input type="text" class="form-control text-center" disabled
+                                                    bsDatepicker [placement]="'top'">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-12 col-md-12">
+                                                <label>{{ 'หมายเหตุ'| translate}}</label>
+                                                <textarea rows="3" class="form-control"
+                                                    formControlName="Remark"></textarea>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="ประวัติการโทรติดตาม" (select)="tabSelect(1)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-menu">
+                                                <button type="button" (click)="print()"
+                                                    class="btn btn-sm btn-circle btn-secondary"
+                                                    tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+                                                    <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+                                                    <i class="fas fa-print" [hidden]="printing"></i>
+                                                </button> </div>
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="customerList" [count]="count"
+                                                            (onTableEvent)="onTableEvent($event)">
+                                                            <ngx-datatable-column width="45" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'ครั้งที่' | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'วันที่'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="180"
+                                                                [cellClass]="'text-center'" prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'รายละเอียด'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="StatusDesc{{lang.CURRENT}}">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'สถานะติดตาม'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row['StatusDesc'+lang.CURRENT]}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+
+                                    </tab>
+                                    <tab heading="ประวัติติดตามที่บ้าน(บริษัท)" (select)="tabSelect(2)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-menu">
+                                                <button type="button" (click)="print()"
+                                                    class="btn btn-sm btn-circle btn-secondary"
+                                                    tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+                                                    <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+                                                    <i class="fas fa-print" [hidden]="printing"></i>
+                                                </button> </div>
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="customerList" [count]="count"
+                                                            (onTableEvent)="onTableEvent($event)">
+                                                            <ngx-datatable-column width="45" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'ครั้งที่' | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'วันที่'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="180"
+                                                                [cellClass]="'text-center'" prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'รายละเอียด'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="StatusDesc{{lang.CURRENT}}">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'สถานะติดตาม'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row['StatusDesc'+lang.CURRENT]}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+
+                                    </tab>
+                                    <tab heading="ประวัติติดตามที่บ้าน(NPL)" (select)="tabSelect(3)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-menu">
+                                                <button type="button" (click)="print()"
+                                                    class="btn btn-sm btn-circle btn-secondary"
+                                                    tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+                                                    <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+                                                    <i class="fas fa-print" [hidden]="printing"></i>
+                                                </button> </div>
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="customerList" [count]="count"
+                                                            (onTableEvent)="onTableEvent($event)">
+                                                            <ngx-datatable-column width="45" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'ครั้งที่' | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'วันที่'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="180"
+                                                                [cellClass]="'text-center'" prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'รายละเอียด'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+
+                                                            <ngx-datatable-column width="80" [cellClass]="'text-center'"
+                                                                prop="StatusDesc{{lang.CURRENT}}">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{ 'สถานะติดตาม'| translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row['StatusDesc'+lang.CURRENT]}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+                                    </tab>
+                                </tabset>
+                            </div>
+                            <br>
+                        </card>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-12 col-sm-4 col-md-4">
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-8">
+                        <card header="{{ 'ผู้กู้ร่วม' | translate }}">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <aaa-table [rows]="customerLists" [count]="count"
+                                            (onTableEvent)="onTableEvent($event)">
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                [sortable]="false">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'ชื่อ' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.Name}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                prop="TrackingDate">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{ 'เบอร์โทร'| translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.Phone}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="disabled" (click)="onSubmit()">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>
+                    {{ 'Label.GLOBAL.Save' | translate }}
+                </button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="back()">
+                    <i class="fas fa-undo-alt"></i>
+                    {{ 'Label.GLOBAL.Back'| translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,310 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.SUMT01.Company1'| translate}}">
+                <div class="card-menu">
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="companyForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+
+                        <div class="form-row">
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label class="require">{{'Label.SUMT01.CompanyCodeM1'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="CompanyCode" maxlength="10">
+                                <div class="invalid-feedback" *ngIf="companyCode.errors">
+                                    <div *ngIf="companyCode.errors['required']">{{'Message.STD00000' | translate}}</div>
+                                    <div *ngIf="companyCode.errors['pattern']">{{'Message.STD00033' | translate}}</div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-5">
+                                <label class="require">{{'Label.SUMT01.CompanyCodeM'| translate}}</label>
+                                <ng-select [items]="mainCompanyList" [bindLabel]="'Text' + lang.CURRENT"
+                                    bindValue="Value" formControlName="MainCompany"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"></ng-select>
+
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-1">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="IsBranch"
+                                        formControlName="IsBranch">
+                                    <label class="custom-control-label" for="IsBranch">
+                                        {{'สาขา'| translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-1">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="Active"
+                                        formControlName="Active">
+                                    <label class="custom-control-label" for="Active">
+                                        {{'Label.SUMT01. Active'| translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-2">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="IsMobile"
+                                        formControlName="IsMobile">
+                                    <label class="custom-control-label" for="IsMobile">
+                                        {{'ใช้งานบน Pico Mobile'| translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label class="require">{{'Label.SUMT01.TaxID'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="TaxId" maxlength="13">
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label class="require">{{'Label.SUMT01.PersonalTaxTypeCode'| translate}}</label>
+                                <ng-select [items]="personalTaxtList" [bindLabel]="'Text' + lang.CURRENT"
+                                    bindValue="Value" formControlName="PersonalTaxTypeCode"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"></ng-select>
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label class="require">{{'Label.SUMT01.ReceiptBranchCode'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="ReceiptBranchCode"
+                                    maxlength="20">
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label class="require">{{'Label.SUMT01.ReceiptBranchName'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="ReceiptBranchName"
+                                    maxlength="100">
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6 col-6">
+                                <label class="require">{{'Label.SUMT01.CompanyNameT'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="CompanyNameTha"
+                                    maxlength="100">
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6 col-6">
+                                <label>{{'Label.SUMT01.CompanyNameE'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="CompanyNameEng"
+                                    maxlength="100">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.SocialSecurityBranch'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="SocailSecurityNo"
+                                    maxlength="20">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.SocialSecurityCode'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="SocailSecurityBranch"
+                                    maxlength="100">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.URL'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="Website" maxlength="500">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Email'| translate}}</label>
+                                <input type="email" class="form-control " formControlName="Email" maxlength="100">
+                                <div class="invalid-feedback" *ngIf="email.errors">
+                                    {{'Message.STD00031' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.SDBranchNo'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="RevenueStampBranchNo"
+                                    maxlength="5">
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="BillPaymentFlag"
+                                        formControlName="BillPaymentFlag">
+                                    <label class="custom-control-label" for="BillPaymentFlag">
+                                        {{'Label.SUMT01.BillPaymentFlag'| translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.ComCode'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="ComCode" maxlength="5">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00036' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.SuffixCode'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="SuffixCode" maxlength="2">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00036' | translate}}
+                                </div>
+                            </div>
+                            <!-- <div class="form-group col-12 col-sm-6 col-md-3">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="Active"
+                                        formControlName="Active">
+                                    <label class="custom-control-label" for="Active">
+                                        {{'Label.SUMT01. Active'| translate}}
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                              <div class="custom-control custom-checkbox" style="margin-top: 5px">
+                                  <input class="custom-control-input" type="checkbox" id="IsCompanyTracking"
+                                      formControlName="IsCompanyTracking">
+                                  <label class="custom-control-label" for="IsCompanyTracking">
+                                      {{'บริษัทสำหรับใช้ติดตามเอกสาร'| translate}}
+                                  </label>
+                              </div>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.SUMT01.Address'| translate}}">
+                <div class="card-menu">
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="companyForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="form-row">
+
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Province'| translate}}</label>
+                                <ng-select [items]="provinceData" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                    formControlName="ProvinceId"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"
+                                    (change)="changeProvince()">
+                                </ng-select>
+
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.District'| translate}}</label>
+                                <ng-select [items]="districtData" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                    formControlName="DistrictId"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"
+                                    (change)="changeDistrict()">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Tambol'| translate}}</label>
+                                <ng-select [items]="tambolData" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                    formControlName="Tambol" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"
+                                    (change)="changeSubDistrict()">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.PostalCode'| translate}}</label>
+                                <ng-select [items]="postalCodeData" [bindLabel]="'Text' + lang.CURRENT"
+                                    bindValue="Value" formControlName="PostalCode"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"></ng-select>
+                            </div>
+                            <div class="form-group col-sm-6 col-6">
+                                <label class="require">{{'Label.SUMT01.AddressT'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="AddressTha" maxlength="500">
+                                <div class="invalid-feedback">
+                                    {{'Message.STD00000' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6 col-6">
+                                <label>{{'Label.SUMT01.AddressE'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="AddressEng" maxlength="500">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Moo'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="Moo" maxlength="100">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Soi'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="Soi" maxlength="100">
+                            </div>
+                            <div class="form-group col-sm-6 col-6">
+                                <label>{{'Label.SUMT01.Road'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="Road" maxlength="100">
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Region'| translate}}</label>
+                                <ng-select [items]="regionData" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                    formControlName="RegionId"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"
+                                    (change)="changeRegion()">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Telephone'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="TelephoneNo" maxlength="20">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00030' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-6 col-md-3">
+                                <label>{{'Label.SUMT01.Fax'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="FaxNo" maxlength="20">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00034' | translate}}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-9 col-9">
+                                <label>{{'Label.SUMT01.Google Map'| translate}}</label>
+                                <input type="text" class="form-control " formControlName="GoogleMap" maxlength="500">
+                            </div>
+                            <div class="form-group col-sm-3 col-3">
+                                <label>{{'Label.SUMT01.Map'| translate}}</label>
+                                <image-upload [file]="imageFile" [category]="category" formControlName="MapName">
+                                </image-upload>
+                                <div class="invalid-feedback">
+                                    please enter
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<!-- <footer class="app-footer-btn animated fadeIn">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col text-center">
+              <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+              <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+          </div>
+        </div>
+      </footer> -->
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="checkBranch()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

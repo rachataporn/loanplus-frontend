@@ -1,0 +1,156 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate }}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary" tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search()">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>ค้นหา</label>
+                <input type="text" class="form-control" formControlName="Keyword" placeholder="เลขที่สัญญา">
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="รายละเอียด">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="TrackingDoc" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column prop="MainContractNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.MainContractNo' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link"
+                      (click)="linkContractDetail(row.MainContractHeadId)">{{row.MainContractNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="TransportNameEn" [cellClass]="'text-center'" [sortable]="false">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{'Label.LOTS19.Edit' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button (click)="edit(row.TrackingDocumentId)" class="btn btn-outline-primary btn-sm">
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractType" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.ContractType' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ContractType}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.CustomerName' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractStatusTH" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.ContractStatusTH' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ContractStatusTH}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqCompanyDocument" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.CompanyReqTake' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqCompanyDocument}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqDocumentStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.ReqDocumentStatus' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqDocumentStatus}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqDocumentTypeCode" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.TypeTakeCode' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqDocumentTypeCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqDocumentDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.TakeDocDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqDocumentDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqReturnDocumentDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.ReturnDocDate' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqReturnDocumentDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ReqRemark" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS19.ReqRemark' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReqRemark}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button class="btn btn-outline-primary btn-sm" (click)="remove(row)"
+                      [disabled]="row.IsReturn || row.IsAutoReq || row.ReqDocumentStatusCode == 'P' || row.ReqDocumentStatusCode == 'S'">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

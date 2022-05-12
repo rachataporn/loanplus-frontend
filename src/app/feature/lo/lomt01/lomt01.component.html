@@ -1,0 +1,99 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT01.SecuritiesTypes'| translate}}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="onSearch()" class="form-control"
+                                        formControlName="keywords"
+                                        placeholder="{{ 'Label.LOMT01.SecuritiesTypes'| translate}}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="onSearch()" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <hr>
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="securitiesLists" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column prop="CategoryNameTha">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT01.NameSecurities(TH)'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="edit(row.CategoryId)">{{row.CategoryNameTha}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column prop="CategoryNameEng">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT01.NameSecurities(EN)'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.CategoryNameEng}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column prop="SecuritiesGroup{lang}">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.LOMT01.SecuritiesTypeGroup'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row['SecuritiesGroup'+lang.CURRENT] }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.GLOBAL.Active'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="80">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-primary btn-sm"
+                                            (click)="remove(row.CategoryId,row.RowVersion)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="80">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.LOMT01.TemplateView'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-primary btn-sm"
+                                            (click)="templatview(row.TemplateViewId, row.TemplateName)">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

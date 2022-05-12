@@ -1,0 +1,899 @@
+<div class="animated fadeIn">
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-row">
+                <div class="col-sm-12">
+                    <tabset>
+                        <tab heading="{{'Label.LOTS16.PersonalInformation' | translate}}" (select)="onSelect($event)">
+                            <card header="{{'Label.LOTS16.PersonalInformation' | translate}}">
+                                <div class="card-content">
+                                    <form [formGroup]="MgmMasterForm" [class.validated]="submitted"
+                                        [focusInvalid]="focusToggle">
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6 col-12">
+                                                <label>{{'Label.LOTS16.MgmCode' | translate}}</label>
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="MgmCode">
+                                            </div>
+                                            <div class="form-group col-sm-6 col-12">
+                                                <label>{{'Label.LOTS16.CustomerCode' | translate}}</label>
+                                                <lookup-input lookupName="LoanLookup" [small]="false"
+                                                    [detailCheck]="true" [detailFlag]="true" keyColumn="CustomerCode"
+                                                    holder="{{'Label.LOTS16.CustomerCode' | translate}}"
+                                                    searchUrl="loan/Mgm/getCustomerLOV"
+                                                    [content]="lots16CustomerLookupContent"
+                                                    formControlName="CustomerCode" (detail)="loanDetailOutput($event)">
+                                                </lookup-input>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Prefix' | translate}}</label>
+                                                <ng-select [items]=" PrefixList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="PrefixId">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Firstname' | translate}}</label>
+                                                <input type="text" class="form-control" formControlName="FirstName"
+                                                    placeholder="{{'Label.LOTS16.Firstname' | translate}}">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Lastname' | translate}}</label>
+                                                <input type="text" class="form-control" formControlName="LastName"
+                                                    placeholder="{{'Label.LOTS16.Lastname' | translate}}">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3"
+                                                *ngIf="this.checkId == false || this.mgm.MgmCode == null;else other_idCard">
+                                                <label class="require">{{ 'Label.LOTS01.CardId' | translate }}</label>
+                                                <personalid-input formControlName="IdCard">
+                                                </personalid-input>
+                                                <div class="invalid-feedback"
+                                                    *ngIf="this.MgmMasterForm.controls['IdCard'].invalid">
+                                                    <div *ngIf="this.MgmMasterForm.controls['IdCard'].errors.invalid">
+                                                        {{ 'Message.STD00017' | translate }}
+                                                    </div>
+                                                    <div *ngIf="this.MgmMasterForm.controls['IdCard'].errors.minlength">
+                                                        {{ 'Message.STD00019' | translate }}
+                                                    </div>
+                                                    <div
+                                                        *ngIf="this.MgmMasterForm.controls['IdCard'].value == null || this.MgmMasterForm.controls['IdCard'].value == '';else other_content">
+                                                        {{ 'Message.STD00000' | translate }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <ng-template #other_idCard>
+                                                <div class="form-group col-sm-3 col-3">
+                                                    <label
+                                                        class="require">{{ 'Label.LOTS01.CardId' | translate }}</label>
+                                                    <div class="input-group">
+                                                        <input type="text" (keyup.enter)="chkIdCard()"
+                                                            class="form-control" formControlName="IdcardHidden">
+                                                        <div class="input-group-append">
+                                                            <button type="button" (click)="chkIdCard()"
+                                                                style="background-color: #2094d8;">
+                                                                <i class="fa fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Birthday' | translate}}</label>
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="Birthday" [maxDate]="this.dateNow" bsDatepicker>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label>{{'Label.LOTS16.Age' | translate}}</label>
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="Age" placeholder="">
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label
+                                                    class="require">{{'Label.LOTS16.CardIssuance' | translate}}</label>
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="DateIssue"
+                                                    [maxDate]="MgmMasterForm.controls['DateExpiry'].value" bsDatepicker>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label
+                                                    class="require">{{'Label.LOTS16.CardExpiration' | translate}}</label>
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="DateExpiry"
+                                                    [minDate]="MgmMasterForm.controls['DateIssue'].value" bsDatepicker>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-6 col-12">
+                                                <label>{{'E-Mail' | translate}}</label>
+                                                <input type="text" class="form-control" formControlName="Email"
+                                                    placeholder="{{'E-Mail' | translate}}">
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label>{{'Label.LOTS16.Race' | translate}}</label>
+                                                <ng-select [items]="RaceList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="Race">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label>{{'Label.LOTS16.Nationality' | translate}}</label>
+                                                <ng-select [items]="NationalityList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="Nationality">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label>{{'Label.LOTS16.Religion' | translate}}</label>
+                                                <ng-select [items]="ReligionList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="Religio">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Sex' | translate}}</label>
+                                                <ng-select [items]="GenderList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="Gender">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label>{{'Label.LOTS16.State' | translate}}</label>
+                                                <ng-select [items]="MaritalStatusList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="MaritalStatus">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label
+                                                    class="require">{{'Label.LOTS16.GroupOfCareers' | translate}}</label>
+                                                <ng-select [items]="GroupOfCareerList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="GroupOfCareer">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label class="require">{{'Label.LOTS16.Career' | translate}}</label>
+                                                <input type="text" class="form-control text" formControlName="Career"
+                                                    placeholder="{{'Label.LOTS16.Career' | translate}}">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-sm-3 col-3">
+                                                <label
+                                                    class="require">{{'Label.LOTS16.IncomeRange' | translate}}</label>
+                                                <ng-select [items]="IncomeRangeList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}"
+                                                    formControlName="IncomeRange">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </card>
+                        </tab>
+                        <tab heading="{{'Label.LOTS16.Address' | translate}}" (select)="onSelect($event)">
+                            <card header="{{'Label.LOTS16.AddressIDCard' | translate}}">
+                                <div class="card-content" [formGroup]="MgmAddressIdCardForm"
+                                    [class.validated]="submitted" [focusInvalid]="focusToggle">
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.BuildingName' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingName"
+                                                maxlength="100">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.No' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingNo">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.VillageNo' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="VillageNo"
+                                                maxlength="100">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Alley' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Alley"
+                                                maxlength="100">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Street' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Street"
+                                                maxlength="100">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.Province' | translate }}</label>
+                                            <ng-select [items]="ProvinceList" required [bindLabel]="'Text'+lang.CURRENT"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ProvinceId"
+                                                (change)="onChangeProvince($event, MgmAddressIdCardForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.District' | translate }}</label>
+                                            <ng-select [items]="DistrictCardList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="DistrictId"
+                                                (change)="onChangeDistrict($event, MgmAddressIdCardForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.SubDistrict' | translate }}</label>
+                                            <ng-select [items]="SubDistrictCardList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="SubDistrictId">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.PostCode' | translate }}</label>
+                                            <ng-select [items]="zipcodeCardList" bindLabel="PostalCode"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ZipCode">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </card>
+                            <br />
+                            <card header="{{'Label.LOTS16.AddressCurrent' | translate}}">
+                                <div class="card-content" [formGroup]="MgmAddressCorrentForm"
+                                    [class.validated]="submitted" [focusInvalid]="focusToggle">
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-12 col-md-12">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="ReplacesC"
+                                                    formControlName="Replaces" (change)="onChangeCopytoCurrent()">
+                                                <label class="custom-control-label" for="ReplacesC">
+                                                    {{ 'Label.LOTS01.CopyToCurrent' | translate }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.BuildingName' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingName">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.No' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingNo">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.VillageNo' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="VillageNo">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Alley' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Alley">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Street' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Street">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.Province' | translate }}</label>
+                                            <ng-select [items]="ProvinceList" required [bindLabel]="'Text'+lang.CURRENT"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ProvinceId"
+                                                (change)="onChangeProvince($event, MgmAddressCorrentForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.District' | translate }}</label>
+                                            <ng-select [items]="DistrictCurrentList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="DistrictId"
+                                                (change)="onChangeDistrict($event, MgmAddressCorrentForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label class="require">{{ 'Label.LOTS01.SubDistrict' | translate }}</label>
+                                            <ng-select [items]="SubDistrictCurrentList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="SubDistrictId">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.PostCode' | translate }}</label>
+                                            <ng-select [items]="zipcodeListCurrentList" bindLabel="PostalCode"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ZipCode">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+                            <br />
+                            <card header="{{'Label.LOTS16.AddressWork' | translate}}">
+                                <div class="card-content" [formGroup]="MgmAddressWorkForm">
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-12 col-md-12">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="ReplacesW"
+                                                    formControlName="Replaces" (change)="onChangeCopytoWorkplace()">
+                                                <label class="custom-control-label" for="ReplacesW">
+                                                    {{ 'Label.LOTS01.CopyToCardAddress' | translate }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.BuildingName' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingName">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.No' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="BuildingNo">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.VillageNo' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="VillageNo">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Alley' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Alley">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Street' | translate }}</label>
+                                            <input type="text" class="form-control" formControlName="Street">
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.Province' | translate }}</label>
+                                            <ng-select [items]="ProvinceList" required [bindLabel]="'Text'+lang.CURRENT"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ProvinceId"
+                                                (change)="onChangeProvince($event, MgmAddressWorkForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.District' | translate }}</label>
+                                            <ng-select [items]="DistrictWorkList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="DistrictId"
+                                                (change)="onChangeDistrict($event, MgmAddressWorkForm)">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.SubDistrict' | translate }}</label>
+                                            <ng-select [items]="SubDistrictWorkList" required
+                                                [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                                placeholder="กรุณาเลือก" formControlName="SubDistrictId">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-sm-6 col-md-3">
+                                            <label>{{ 'Label.LOTS01.PostCode' | translate }}</label>
+                                            <ng-select [items]="zipcodeListWorkList" bindLabel="PostalCode"
+                                                bindValue="Value" placeholder="กรุณาเลือก" formControlName="ZipCode">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </card>
+                        </tab>
+                        <tab heading="{{'Label.LOTS16.ContactNumber' | translate}}" (select)="onSelect($event)">
+
+                            <form [formGroup]="MgmMasterForm" [class.validated]="submitted"
+                                [focusInvalid]="focusToggle">
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <card header="{{ 'Label.LOTS01.ContactNumber' | translate }}"
+                                                *ngIf="this.mgm.MgmCode == null">
+                                                <div class="card-menu">
+                                                    <button type="button"
+                                                        (click)="addPhoneNumber(); phoneNumberGrd.goLastPage();"
+                                                        class="btn btn-sm btn-circle btn-secondary"
+                                                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="row">
+                                                        <div class="col-12" formArrayName="PhoneNumber">
+                                                            <aaa-grid #phoneNumberGrd [rows]="PhoneNumber.getRawValue()"
+                                                                [formArray]="PhoneNumber">
+                                                                <ngx-datatable-column name="MobileNumber">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper require">{{ 'Label.LOTS01.PhoneNumber' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <input type="text" class="form-control"
+                                                                                formControlName="MobileNumber"
+                                                                                pattern="[0-9]{10}" maxlength="10">
+                                                                            <div class="invalid-feedback">
+                                                                                {{'Message.'+ this.showAlert | translate}}
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column name="MobileDescription">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper require">{{ 'Label.LOTS01.Detail' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <input type="text" class="form-control"
+                                                                                formControlName="MobileDescription">
+                                                                            <div class="invalid-feedback">
+                                                                                {{ 'Message.STD00000' | translate }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+
+                                                                <ngx-datatable-column name="Default" width="50"
+                                                                    [cellClass]="'text-center'">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper require">{{ 'Label.LOTS01.Defual' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <label class="datatable-checkbox">
+                                                                                <input type="checkbox"
+                                                                                    formControlName="Default">
+                                                                            </label>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+
+                                                                <ngx-datatable-column [cellClass]="'text-center'"
+                                                                    width="50">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <button type="button"
+                                                                            class="btn btn-outline-primary btn-sm"
+                                                                            (click)="removePhoneNumber(rowIndex)">
+                                                                            <i class="far fa-trash-alt"></i>
+                                                                        </button>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                            </aaa-grid>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </card>
+
+                                            <card header="{{ 'Label.LOTS01.ContactNumber' | translate }}"
+                                                *ngIf="this.mgm.MgmCode != null">
+                                                <div class="card-menu" *ngIf="this.mgm.CustomerCode == null">
+                                                    <button (click)="openEdit(editPhone)"
+                                                        style="background-color: #005fb7;"
+                                                        class="btn btn-sm btn-secondary"
+                                                        tooltip="{{ 'Label.LOTS01.SaveAndEdit' | translate }}"
+                                                        [disabled]="flafDisable">
+                                                        {{ 'Label.LOTS01.SaveAndEdit' | translate }}
+                                                    </button>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <aaa-table [rows]="phoneList" [count]="countPhoneList"
+                                                                [loading]="loadingPhoneList"
+                                                                (onTableEvent)="onEventPhone($event)">
+                                                                <ngx-datatable-column prop="MobileNumber"
+                                                                    [sortable]="false">
+                                                                    <ng-template let-sort="sortFn"
+                                                                        ngx-datatable-header-template>
+                                                                        <label class="datatable-header-cell-wrapper"
+                                                                            (click)="sort()">{{ 'Label.LOTS01.PhoneNumber' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row"
+                                                                        ngx-datatable-cell-template>
+                                                                        {{row.MobileNumber}}
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+
+                                                                <ngx-datatable-column prop="MobileDescription"
+                                                                    [sortable]="false">
+                                                                    <ng-template let-sort="sortFn"
+                                                                        ngx-datatable-header-template>
+                                                                        <label class="datatable-header-cell-wrapper"
+                                                                            (click)="sort()">{{ 'Label.LOTS01.Detail' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row"
+                                                                        ngx-datatable-cell-template>
+                                                                        {{row.MobileDescription}}
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+
+                                                                <ngx-datatable-column [cellClass]="'text-center'"
+                                                                    prop="ApprovedDate" [sortable]="false">
+                                                                    <ng-template let-sort="sortFn"
+                                                                        ngx-datatable-header-template>
+                                                                        <label class="datatable-header-cell-wrapper"
+                                                                            (click)="sort()">{{ 'Label.LOTS01.Defual' | translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row"
+                                                                        ngx-datatable-cell-template>
+                                                                        <i class="fas fa-check"
+                                                                            *ngIf="row.Default == true "></i>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                            </aaa-table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </card>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </tab>
+                        <tab heading="{{'Label.LOTS16.Attachment' | translate}}" (select)="onSelect($event)">
+                            <form [formGroup]="MgmMasterForm" [class.validated]="submitted"
+                                [focusInvalid]="focusToggle">
+                                <div class="animated fadeIn">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <card header="{{ 'Label.LOTS16.Attachment' | translate }}">
+                                                <div class="card-menu">
+                                                    <button type="button"
+                                                        (click)="addAttachment(); AttachmentGrd.goLastPage();"
+                                                        class="btn btn-sm btn-circle btn-secondary"
+                                                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}"
+                                                        [disabled]="flafDisable">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="card-content">
+                                                    <div class="row">
+                                                        <div class="col-12" formArrayName="Attachment">
+                                                            <aaa-grid #AttachmentGrd [rows]="Attachment.getRawValue()"
+                                                                [formArray]="Attachment">
+                                                                <ngx-datatable-column name="AttachmentTypeCode">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper require">{{'Label.LOTS03.attachmentTypeCode'|
+                                                                            translate}}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <ng-select class="sm" appendTo="body"
+                                                                                dropdownPosition="bottom"
+                                                                                [items]="attachmentTypes"
+                                                                                [bindLabel]="'Text'+lang.CURRENT"
+                                                                                bindValue="Value"
+                                                                                (open)="filterAttachmentTypes(row.MgmAttachmentId)"
+                                                                                formControlName="AttachmentTypeCode"
+                                                                                placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                                                                            </ng-select>
+                                                                            <div class="invalid-feedback">
+                                                                                {{ 'Message.STD00000' | translate }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column name="FileName">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="require">{{ 'Label.LOTS03.attachment'| translate }}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <!-- <file-upload
+                                                                                [file]="attachmentFiles[rowIndex]"
+                                                                                [category]="category"
+                                                                                formControlName="FileName">
+                                                                            </file-upload> -->
+                                                                            <file-upload-auto
+                                                                                [file]="attachmentFiles[rowIndex]"
+                                                                                [fileName]="Attachment.getRawValue()[rowIndex].FileName"
+                                                                                [category]="category"
+                                                                                (fileNameReturn)="fileNameReturn($event, rowIndex)"
+                                                                                formControlName="AttahmentId">
+                                                                            </file-upload-auto>
+                                                                            <div class="invalid-feedback">
+                                                                                {{ 'Message.STD00000' | translate }}
+                                                                            </div>
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column>
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS03.Description'|
+                                                                            translate}}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-value="value"
+                                                                        let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <div [formGroupName]="rowIndex">
+                                                                            <input type="text"
+                                                                                class="form-control form-control-sm"
+                                                                                formControlName="Description">
+                                                                        </div>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                                <ngx-datatable-column [cellClass]="'text-center'"
+                                                                    width="50">
+                                                                    <ng-template ngx-datatable-header-template>
+                                                                        <label
+                                                                            class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                                                    </ng-template>
+                                                                    <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                        ngx-datatable-cell-template>
+                                                                        <button class="btn btn-outline-primary btn-sm"
+                                                                            (click)="removeAttachment(rowIndex);">
+                                                                            <i class="far fa-trash-alt"></i>
+                                                                        </button>
+                                                                    </ng-template>
+                                                                </ngx-datatable-column>
+                                                            </aaa-grid>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </card>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<ng-template #editPhone>
+    <modal-layout (onClose)="closeEdit(true)" header="{{ 'Label.LOTS01.ContactNumber' | translate }}">
+        <form [formGroup]="MgmMasterForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="animated fadeIn">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <card header="{{ 'Label.LOTS01.ContactNumber' | translate }}">
+                            <div class="card-menu">
+                                <button type="button" (click)="addPhoneNumber(); phoneNumberGrd.goLastPage();"
+                                    class="btn btn-sm btn-circle btn-secondary"
+                                    tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-12" formArrayName="PhoneNumber">
+                                        <aaa-grid #phoneNumberGrd [rows]="PhoneNumber.getRawValue()"
+                                            [formArray]="PhoneNumber">
+                                            <ngx-datatable-column name="MobileNumber">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper require">{{ 'Label.LOTS01.PhoneNumber' | translate }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <input type="text" class="form-control"
+                                                            formControlName="MobileNumber" pattern="[0-9]{10}"
+                                                            maxlength="10">
+                                                        <div class="invalid-feedback">
+                                                            {{'Message.'+ this.showAlert | translate}}
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="MobileDescription">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper">{{ 'Label.LOTS01.Detail' | translate }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <input type="text" class="form-control"
+                                                            formControlName="MobileDescription">
+                                                        <div class="invalid-feedback">
+                                                            {{ 'Message.STD00000' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column name="Default" width="50" [cellClass]="'text-center'">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper require">{{ 'Label.LOTS01.Defual' | translate }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <label class="datatable-checkbox">
+                                                            <input type="checkbox" formControlName="Default">
+                                                        </label>
+                                                        <div class="invalid-feedback">
+                                                            {{ 'Message.STD00000' | translate }}
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+
+                                            <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        (click)="removePhoneNumber(rowIndex)">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="container-fluid ">
+            <div class="row" style="background-color: #005fb7;">
+                <div class="col text-center" (click)="onSubmit();closeEdit(true);">
+                    <button class="btn btn-footer" [disabled]="saving" style="color: white;">
+                        <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                        <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save' | translate }}</button>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="flafDisable || saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

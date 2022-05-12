@@ -1,0 +1,176 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+                <div class="card-menu">
+                    <button (click)="search(true)" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{'Label.GLOBAL.Search' | translate}}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm" (keyup.enter)="search(true)">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <label>{{'Label.LOMT13.BrandName'| translate}}</label>
+                                <ng-select [items]="BrandCBB" bindLabel="Text" bindValue="Value"
+                                    placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="Brand">
+                                </ng-select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label>{{'Label.LOMT13.Model'| translate}}</label>
+                                <ng-select [items]="ModelCBB" bindLabel="Text" bindValue="Value"
+                                    placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="Model">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <label>{{'Label.LOMT13.IdentificationNo'| translate}}</label>
+                                <input type="text" class="form-control" formControlName="IdentificationNo"
+                                    placeholder="{{'Label.LOMT13.IdentificationNo' | translate}}">
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label>{{'Label.LOMT13.EngineNo'| translate}}</label>
+                                <input type="text" class="form-control" formControlName="EngineNo"
+                                    placeholder="{{'Label.LOMT13.EngineNo' | translate}}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <label>{{'Label.LOMT13.Year'| translate}}</label>
+                                <input type="number" class="form-control" max="9999" formControlName="Year" style="text-align: left !important;">
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT13.UploadExcelFile'| translate}}">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-6">
+                            <form [formGroup]="uploadForm">
+                                <label>{{ 'Label.LOMT13.UploadExcelFile'| translate}}</label>
+                                <file-upload [file]="attachmentFile" [excel]="true"
+                                    formControlName="FileName">
+                                </file-upload>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT13.ManagerMiddleMotorcyclePrice'| translate}}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="motorcyclePriceLists" [page]="page"
+                                (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column prop="BrandName">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.BrandName'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="edit(row.MotorcycleId)">{{row.BrandName}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="ModelName">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.Model'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.ModelName}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="IdentificationNo">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.IdentificationNo'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.IdentificationNo }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="EngineNo">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.EngineNo'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.EngineNo }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" prop="Year">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.Year'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.Year }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-right'" prop="Price">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.LOMT13.MiddleMotorcyclePrice'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{ row.Price | number:'1.2-2' }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="80">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-primary btn-sm"
+                                            (click)="remove(row.MotorcycleId, row.RowVersion)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<ng-template #LogError>
+    <modal-layout (onClose)="closePopup()" header="{{'Label.LOMT13.UploadExcelFileErrorCard'| translate}}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <form [formGroup]="errorForm">
+                        <label>{{ 'Label.LOMT13.UploadExcelFileError'| translate}}</label>
+                        <textarea rows="6" class="form-control" formControlName="error"></textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>

@@ -1,0 +1,285 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <card header="{{'ข้อมูลใบนำฝากเงินสด(รออนุมัติ)' | translate}}">
+        <div class="card-menu">
+          <button type="button" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="search()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search()">
+            <div class="row">
+              <div class="form-group col-12 col-sm-3 col-md-6">
+                <label>{{ 'เลขที่ใบนำฝากเงินสด' | translate }}</label>
+                <input type="text" class="form-control" formControlName="cashSubmitNo">
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'ตั้งแต่สาขา' | translate}}</label>
+                <ng-select [items]="branchDDL" [bindLabel]="'CompanyName'+lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="fromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'ถึงสาขา' | translate}}</label>
+                <ng-select [items]="branchDDL" [bindLabel]="'CompanyName'+lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="toBranch" placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'ตั้งแต่วันที่'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="fromDate"
+                  [maxDate]="searchForm.controls.toDate.value" bsDatepicker />
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'ถึงวันที่'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="toDate"
+                  [minDate]="searchForm.controls.fromDate.value" bsDatepicker />
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{'รายการใบนำฝากเงินสด(รออนุมัติ)' | translate}}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanPaymentsList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS09.Branch' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.CompanyCode }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="cashSubmitDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'วันที่นำฝากเงินสด' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CashSubmitDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CreatedDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เวลาที่บันทึก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CreatedDate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SubmitTime">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เวลาที่ฝาก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.SubmitTime}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CashSubmitNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่ใบนำฝากเงินสด' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.CashSubmitHeadId)">{{ row.CashSubmitNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="NetAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จำนวนเงินที่นำฝาก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.NetAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CreatedBy">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'พนักงานที่บันทึก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CreatedBy}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="110" [cellClass]="'text-center'" prop="FileName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เอกสารแนบ' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button class="btn btn-primary btn-sm" (click)="open(row.FileName);"
+                      [disabled]="row.FileName==null">
+                      เอกสารแนบ
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="VouchNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่เอกสาร FINC' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.VouchNo }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+      <card header="{{'ข้อมูลใบนำฝากเงินสด(อนุมัติ)' | translate}}">
+        <div class="card-menu">
+          <button type="button" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="searchApprove()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchFormApprove" (keyup.enter)="searchApprove()">
+            <div class="row">
+              <div class="form-group col-12 col-sm-3 col-md-6">
+                <label>{{ 'เลขที่ใบนำฝากเงินสด' | translate }}</label>
+                <input type="text" class="form-control" formControlName="cashSubmitNoApprove">
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'ตั้งแต่สาขา' | translate}}</label>
+                <ng-select [items]="branchDDL" [bindLabel]="'CompanyName'+lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="fromBranchApprove" placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'ถึงสาขา' | translate}}</label>
+                <ng-select [items]="branchDDL" [bindLabel]="'CompanyName'+lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="toBranchApprove" placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'ตั้งแต่วันที่'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="fromDateApprove"
+                  [maxDate]="searchForm.controls.toDate.value" bsDatepicker />
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'ถึงวันที่'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="toDateApprove"
+                  [minDate]="searchForm.controls.fromDate.value" bsDatepicker />
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{'รายการใบนำฝากเงินสด(อนุมัติ)' | translate}}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanPaymentsListApprove" [page]="pageApprove"
+                (onTableEvent)="onTableEventApprove($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS09.Branch' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.CompanyCode }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="cashSubmitDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'วันที่นำฝากเงินสด' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CashSubmitDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CreatedDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เวลาที่บันทึก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CreatedDate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SubmitTime">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เวลาที่ฝาก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.SubmitTime}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CashSubmitNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่ใบนำฝากเงินสด' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.CashSubmitHeadId)">{{ row.CashSubmitNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="NetAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จำนวนเงินที่นำฝาก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.NetAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CreatedBy">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'พนักงานที่บันทึก' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CreatedBy}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="110" [cellClass]="'text-center'" prop="FileName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เอกสารแนบ' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <button class="btn btn-primary btn-sm" (click)="open(row.FileName);"
+                      [disabled]="row.FileName==null">
+                      เอกสารแนบ
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="VouchNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่เอกสาร FINC' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.VouchNo }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

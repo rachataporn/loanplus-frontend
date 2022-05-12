@@ -1,0 +1,257 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS07.Search' | translate}}">
+        <div class="card-menu">
+          <!-- <button (click)="modalGenerateInvoice(GenerateInvoiceTemplate)" class="btn btn-sm btn-circle btn-secondary"
+            type="button" tooltip="Generate new invoice">
+            <i class="fas fa-spinner"></i>
+          </button> -->
+          <button (click)="search()" type="button" class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.LOTS07.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="SearchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.ContractNo' | translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="LoanNo" holder="{{'Label.LOTS07.ContractNo' | translate}}"
+                  searchUrl="loan/invoice/invoiceNoLOV" [content]="Lots07LookupContent" formControlName="LoanNo">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-9">
+                <label>{{'Label.LOTS07.Customer' | translate}}</label>
+                <input type="text" (keyup.enter)="search()" class="form-control" formControlName="Customer" placeholder="{{'Label.LOTS07.CustomerCode' | translate}}, {{'Label.LOTS07.CustomerName' | translate}}" maxlength="200">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.FromInvoiceDate' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="InvoiceDateFrom"
+                  [maxDate]="SearchForm.controls['InvoiceDateTo'].value" bsDatepicker>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.ToInvoiceDate' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="InvoiceDateTo"
+                  [minDate]="SearchForm.controls['InvoiceDateFrom'].value" bsDatepicker>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.FromInvoiceNo' | translate}}</label>
+                <!-- <ng-select [items]="invoiceDDL" bindLabel="Text" bindValue="Value" formControlName="InvoiceNoFrom">
+                </ng-select> -->
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="InvoiceNo" holder="{{'Label.LOTS07.InvoiceNo' | translate}}"
+                  searchUrl="loan/invoice/invoiceNoLOV" [content]="Lots07LookupInvoiceNoContent"
+                  formControlName="InvoiceNoFrom" maxlength="20">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.ToInvoiceNo' | translate}}</label>
+                <!-- <ng-select [items]="invoiceDDL" bindLabel="Text" bindValue="Value" formControlName="InvoiceNoTo">
+                </ng-select> -->
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="InvoiceNo" holder="{{'Label.LOTS07.InvoiceNo' | translate}}"
+                  searchUrl="loan/invoice/invoiceNoLOV" [content]="Lots07LookupInvoiceNoContent"
+                  formControlName="InvoiceNoTo" maxlength="20">
+                </lookup-input>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.FromDueDate' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="StartDueDate"
+                  [maxDate]="SearchForm.controls['EndDueDate'].value" bsDatepicker>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LOTS07.ToDueDate' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="EndDueDate"
+                  [minDate]="SearchForm.controls['StartDueDate'].value" bsDatepicker>
+              </div>
+              <div class="form-group col-sm-6">
+                <label>{{'Label.LOTS07.DocStatus' | translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="InvoiceStatus">
+                  <button type="button" [btnRadio]="invoiceStatuss.Value" *ngFor="let invoiceStatuss of invoiceStatus"
+                    class="btn btn-outline-warning" tabindex="0" (click)="clickStatus()">
+                    {{ invoiceStatuss['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-4">
+                <label>{{'Label.LOTS07.LineSendStatus' | translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="LineStatus">
+                  <button type="button" [btnRadio]="lineStatuss.Value" *ngFor="let lineStatuss of lineStatus"
+                    class="btn btn-outline-warning" tabindex="0" (click)="clickStatus()">
+                    {{ lineStatuss['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label>{{'Label.LOTS07.EmailSendStatus' | translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="EmailStatus">
+                  <button type="button" [btnRadio]="emailStatuss.Value" *ngFor="let emailStatuss of emailStatus"
+                    class="btn btn-outline-warning" tabindex="0" (click)="clickStatus()">
+                    {{ emailStatuss['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-sm-4">
+                <label>{{'Label.LOTS07.PrintInvoiceStatus' | translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="PrintStatus">
+                  <button type="button" [btnRadio]="printStatuss.Value" *ngFor="let printStatuss of printStatus"
+                    class="btn btn-outline-warning" tabindex="0" (click)="clickStatus()">
+                    {{ printStatuss['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS07.InvoiceList' | translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="onSendLine()" [disabled]="saving" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.LOTS07.SendLineMeassage' | translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="fab fa-line" [hidden]="saving"></i>
+          </button>
+          <button type="button" (click)="onSendEMail()" [disabled]="saving" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.LOTS07.SendEmail' | translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="fas fa-envelope" [hidden]="saving"></i>
+          </button>
+          <button type="button" (click)="onPrint()" [disabled]="printing" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.LOTS07.PrintInvoice' | translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+            <i class="fas fa-print" [hidden]="printing"></i>
+          </button>
+          <button type="button" (click)="add()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.LOTS07.AddInvoice' | translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <aaa-table [rows]="invoiceList" [page]="page" [rowSelect]="selected"
+                (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                  [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="InvoiceDate" width="120">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.InvoiceDate' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.InvoiceDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="InvoiceNo" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.InvoiceNo' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row)">
+                      {{row.InvoiceNo}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="LoanNo" width="150">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.ContractNo' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.LoanNo}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="Period" width="60">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.Period' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Period}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode" width="80">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.CustomerCode' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CustomerCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.CustomerName' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row['CustomerName'+lang.CURRENT]}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" [cellClass]="'text-right'" prop="TotalAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.TotalAmount' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.TotalAmount | number : '1.2-2' }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" prop="InvoiceStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.DocStatus' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['InvoiceStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="130" prop="PrintStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.PrintInvoiceStatus' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['PrintStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="130" prop="EmailStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.EmailSendStatus' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['EmailStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="130" prop="LineStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS07.LineSendStatus' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['LineStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+<ng-template #GenerateInvoiceTemplate>
+  <modal-layout (onClose)="closeModal()" header="กรอกวันที่เพื่อสร้างใบ invoice ใหม่">
+    <form [formGroup]="generateInvoiceForm">
+      <div class="row">
+        <div class="form-group col-md-12">
+          <label class="require">วันที่</label>
+          <input type="text" class="form-control" formControlName="Date" placeholder="วันที่">
+          <div class="invalid-feedback">
+            {{ 'Message.STD00000' | translate }}
+          </div>
+        </div>
+      </div>
+    </form>
+    <button type="button" class="btn btn-primary" (click)="GenerateInvoice()">Generate new invoice</button>
+  </modal-layout>
+</ng-template>

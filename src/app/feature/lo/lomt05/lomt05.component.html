@@ -1,0 +1,187 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT05.Header' | translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{'Label.GLOBAL.Search' | translate}}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label>{{ 'Label.LOMT05.ReceiveTypeCode' | translate }}</label>
+                                <ng-select [items]="receiveTypeList" [bindLabel]="'Text' + lang.CURRENT"
+                                    bindValue="Value" placeholder="{{ 'Label.LOMT05.All' | translate }}"
+                                    formControlName="ReceiveTypeCode">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label>{{ 'Label.LOMT05.CompanyCode' | translate }}</label>
+                                <ng-select [items]="companyCodeList" [bindLabel]="'Text' + lang.CURRENT"
+                                    bindValue="Value" placeholder="{{ 'Label.LOMT05.All' | translate }}"
+                                    formControlName="CompanyCode">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12 ">
+                                <label>{{ 'Label.LOMT05.BankCode' | translate }}</label>
+                                <ng-select [items]="bankList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                    placeholder="{{ 'Label.LOMT05.All' | translate }}" formControlName="BankCode"
+                                    (change)="changeBankCode()">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label>{{ 'Label.LOMT05.BranchName' | translate }}</label>
+                                <!-- <input type="text" (keyup.enter)="search()" class="form-control"
+                                    formControlName="BranchName" maxlength="100"> -->
+                                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect' | translate }}"
+                                    formControlName="BranchCode">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label>{{ 'Label.LOMT05.BankAccountTypeCode' | translate }}</label>
+                                <ng-select [items]="accountTypeList" bindLabel="Text" bindValue="Value"
+                                    placeholder="{{ 'Label.LOMT05.All' | translate }}"
+                                    formControlName="BankAccountTypeCode"></ng-select>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12">
+                                <label>{{ 'Label.LOMT05.AccountNo' | translate }}</label>
+                                <input type="text" (keyup.enter)="search()" class="form-control"
+                                    formControlName="AccountNo" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6 col-sm-12 text-left">
+                                <label>{{ 'Label.LOMT05.AccountName' | translate }}</label>
+                                <input type="text" (keyup.enter)="search()" class="form-control"
+                                    formControlName="AccountName" maxlength="100">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+            <card header="{{ 'Label.LOMT05.HeaderTable' | translate }}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="col-12">
+                        <aaa-table [rows]="companyAccountList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.CompanyCode' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CompanyCode}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CompanyName{lang}">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.CompanyName' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row['CompanyName'+lang.CURRENT]}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="ReceiveTypeName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.ReceiveTypeCode' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ReceiveTypeName}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="BankCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.BankCode' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.BankName}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="AccountNo">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.AccountNo' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span class="link" (click)="edit(row.CompanyAccountId)">{{row.AccountNo}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="AccountName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.AccountName' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.AccountName}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="BankAccountTypeCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.BankAccountTypeCode' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.BankAccountTypeDescription}}
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="BranchName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOMT05.BranchName' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span>{{row.BranchName}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column prop="Active" width="50" [cellClass]="'text-center'">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.GLOBAL.Active' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <i class="fas fa-check" *ngIf="row.Active == true "></i>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                                <ng-template ngx-datatable-header-template>
+                                    <label
+                                        class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                        (click)="onRemove(row.CompanyAccountId, row.RowVersion, row.AccountNo)">
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,92 @@
+<modal-layout (onClose)="close()" header="รายละเอียดหลักทรัพย์">
+    <card header="ค้นหา">
+        <div class="card-menu">
+            <button (click)="search()" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <div class="form-row">
+                    <div class="form-group col-12 col-md-6">
+                        <label class="require">{{ 'Label.LOTS02.AssetType' | translate }}</label>
+                        <ng-select [items]="assetTypeList" bindLabel="TextTha" bindValue="Value"
+                            formControlName="CreditType" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}">
+                        </ng-select>
+                        <div class="invalid-feedback">
+                            {{ 'Message.STD00000' | translate }}
+                        </div>
+                    </div>
+                    <div class="form-group col-12 col-md-6">
+                        <label class="require">จังหวัด</label>
+                        <ng-select [items]="province" bindLabel="TextTha" bindValue="Value" formControlName="Province"
+                            placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}">
+                        </ng-select>
+                        <div class="invalid-feedback">
+                            {{ 'Message.STD00000' | translate }}
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="itemsLOV" [page]="page" (onTableEvent)="onTableEvent()">
+                            <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false">
+                                <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <button type="button" class="btn btn-primary btn-sm" (click)="select(row.Description)">
+                                        เลือก
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="CategoryNameTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{ 'Label.LOTS02.AssetType' | translate }}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CategoryNameTha}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="ProvinceNameTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">จังหวัด</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ProvinceNameTha}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="Description">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">รายละเอียดหลักทรัพย์</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.Description}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="EstimateAmount">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">มูลค่าสินทรัพย์</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.EstimateAmount | number:'1.2-2'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="loanLimitAmount">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">วงเงินที่กู้ได้</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.loanLimitAmount | number:'1.2-2'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </card>
+</modal-layout>

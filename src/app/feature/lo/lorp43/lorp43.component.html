@@ -1,0 +1,60 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP43.Title'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'ณ วันที่'| translate}}</label>
+                <input type="text" class="form-control" formControlName="date" bsDatepicker [maxDate]="now">
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-4">
+                <label>{{ 'Label.LORP43.Province'| translate}}</label>
+                <ng-select [items]="provinceList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="provinceId" placeholder="{{'Label.GLOBAL.All' | translate}}"
+                  (change)="changeProvince()">
+                </ng-select>
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <label>{{'Label.LORP43.District'| translate}}</label>
+                <ng-select [items]="districtList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="districtId" placeholder="{{'Label.GLOBAL.All'| translate}}"
+                  (change)="changeDistrict()">
+                </ng-select>
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <label>{{'Label.LORP43.SubDistrict'| translate}}</label>
+                <ng-select [items]="subDistrictList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="subDistrictId" placeholder="{{'Label.GLOBAL.All'| translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-12 col-sm-6 col-md-4">
+                <label class="require">{{'Label.LORP43.TypeReport'| translate}}</label>
+                <ng-select [items]="reportList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="TypeReport" placeholder="{{'Label.DBMT07.PleaseSelect'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,698 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <form [formGroup]="TrackingForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <div class="form-row">
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <card header="{{ 'Label.GLOBAL.Detail' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row" *ngIf="tracking.ProfileImage">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center">
+                                        <img style="width: 150px;height: 150px;" src="{{tracking.ProfileImage}}" alt="">
+                                        <!-- <image-upload-base64 placeholder="" formControlName="ProfileImage">
+                                        </image-upload-base64> -->
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center"
+                                        *ngIf="TrackingForm.controls.TrackingId.value !== null">
+                                        <h4>{{tracking.CustomerNameTha}}</h4>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center"
+                                        *ngIf="TrackingForm.controls.TrackingId.value === null">
+                                        <lookup-input lookupName="CustomerLookup" [small]="false"
+                                            keyColumn="CustomerCode" holder="{{ 'Label.TRTS01.Customer'| translate}}"
+                                            [content]="Trts02LookupContent" formControlName="CustomerNameTha">
+                                        </lookup-input>
+                                        <div class="invalid-feedback">
+                                            {{ "Message.STD00000" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.OverDue' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.DueDate | thaidate}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.ContractNo' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"
+                                        *ngIf="TrackingForm.controls.TrackingId.value !== null">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                            (click)="linkToContract(tracking.MainContractHeadId)">{{tracking.ContractNo}}</button>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6"
+                                        *ngIf="TrackingForm.controls.TrackingId.value === null">
+                                        <ng-select #contractDDL [items]="ContractByCustomerList"
+                                            [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                            formControlName="ContractNo" (change)="changeContractDDL(contractDDL)"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{ "Message.STD00000" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.TelNo' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"> 
+                                        {{tracking.MobileNo}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>เบอร์โทรเพิ่มเติม</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"> 
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                        (click)="openModal(MobileNumberOther,tracking.CustomerCode)">เบอร์โทรเพิ่มเติม</button>
+                                    </div>
+                                </div>
+                                <div class="form-row" *ngFor="let item of amountList">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>{{item.DescriptionTha}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{item.AmountToBePay | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.BalanceTotal' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.TotalAmount | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-8">
+                        <card header="{{ 'Label.GLOBAL.Detail' | translate }}">
+                            <div class="card-content">
+                                <tabset>
+                                    <tab heading="{{'Label.TRTS01.SaveTracking' | translate}}" (select)="tabSelect(0)">
+                                        <div class="form-row">
+
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <label>{{'Label.TRTS01.Count' | translate}} </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="CountTime">
+                                            </div>
+
+                                            <div class="form-group col-12 col-sm-1 col-md-1">
+                                                <label>{{'Label.TRTS01.Activity' | translate}} </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="TrackingItemNameTha">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label>{{'Label.TRTS01.TrackingDate' | translate}} </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="TrackingDate" bsDatepicker [placement]="'top'">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">{{'Label.TRTS01.StatusTracking' | translate}}
+                                                </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <ng-select [items]="statusDDLList" [bindLabel]="'Text'+lang.CURRENT"
+                                                    bindValue="Value" formControlName="HomeTrackingStatus"
+                                                    placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                </ng-select>
+                                                <div class="invalid-feedback">
+                                                    {{ "Message.STD00000" | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row"
+                                            *ngIf="this.TrackingForm.controls.HomeTrackingStatus.value == 'M'">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">{{'Label.TRTS01.MeetingDate' | translate}}
+                                                </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="MeetingDate" bsDatepicker [placement]="'top'"
+                                                    [minDate]=dateNow>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row"
+                                            *ngIf="this.TrackingForm.controls.HomeTrackingStatus.value == 'MH'">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">{{'Label.TRTS02.DateHome' | translate}} </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <input type="text" class="form-control text-center"
+                                                    formControlName="MeetingHome" bsDatepicker [placement]="'top'"
+                                                    [minDate]=minDate>
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row"
+                                            *ngIf="TrackingForm.controls.HomeTrackingStatus.value == 'MF'">
+                                            <div class="form-group col-12 col-sm-3 col-md-3">
+                                                <label class="require">{{'ค่าใช้จ่ายย้ายรีไฟแนนซ์' | translate}}
+                                                </label>
+                                            </div>
+                                            <div class="form-group col-12 col-sm-5 col-md-5">
+                                                <!-- <input type="text" class="form-control text-right"
+                                                    formControlName="CostMoveRefinance">
+                                                <div class="invalid-feedback">
+                                                    {{ 'Message.STD00000' | translate }}
+                                                </div> -->
+                                                <ngx-numeric-textbox inputClass="form-control form-control"
+                                                    formControlName="CostMoveRefinance" [decimals]="0">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 col-sm-12 col-md-12">
+                                                <label>{{'Label.TRTS01.Remark' | translate}}</label>
+                                                <textarea rows="3" class="form-control" formControlName="Remark"
+                                                    formControlName="Remark"></textarea>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab heading="{{'Label.TRTS01.HisCall' | translate}}" (select)="tabSelect(1)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="callHis" [count]="callHisCount"
+                                                            (onTableEvent)="onTableEventCallHis($event)">
+                                                            <ngx-datatable-column width="30" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Count' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.TrackingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.MeetingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.MeetingDate | thaidate}}
+                                                                    <label *ngIf="row.MeetingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="110" [cellClass]="'text-left'"
+                                                                prop="TrackingItemNameTha">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.StatusTracking'
+                                                                        | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingItemNameTha}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="180" [cellClass]="'text-left'"
+                                                                prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Remark' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+
+                                    </tab>
+                                    <tab heading="{{'Label.TRTS01.HisCompany' | translate}}" (select)="tabSelect(2)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="comHis" [count]="comHisCount"
+                                                            (onTableEvent)="onTableEventComHis($event)">
+                                                            <ngx-datatable-column width="30" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Count' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.TrackingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.MeetingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.MeetingDate | thaidate}}
+                                                                    <label *ngIf="row.MeetingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS02.DateHome' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.MeetingHome | thaidate}}
+                                                                    <label *ngIf="row.MeetingHome==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="110" [cellClass]="'text-left'"
+                                                                prop="TrackingItemNameTha">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.StatusTracking'
+                                                                        | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingItemNameTha}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="180" [cellClass]="'text-left'"
+                                                                prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Remark' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+                                    </tab>
+                                    <tab heading="{{'Label.TRTS01.HisNpl' | translate}}" (select)="tabSelect(3)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <aaa-table [rows]="nplHis" [count]="nplHisCount"
+                                                            (onTableEvent)="onTableEventNplHis($event)">
+                                                            <ngx-datatable-column width="30" [cellClass]="'text-center'"
+                                                                [sortable]="false">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Count' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.RowNum}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.TrackingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingDate | thaidate}}
+                                                                    <label *ngIf="row.TrackingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.MeetingDate' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.MeetingDate | thaidate}}
+                                                                    <label *ngIf="row.MeetingDate==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-center'"
+                                                                prop="TrackingDate">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS02.DateHome' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.MeetingHome | thaidate}}
+                                                                    <label *ngIf="row.MeetingHome==null">-</label>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="110" [cellClass]="'text-left'"
+                                                                prop="TrackingItemNameTha">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.StatusTracking'
+                                                                        | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.TrackingItemNameTha}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="180" [cellClass]="'text-left'"
+                                                                prop="Remark">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS01.Remark' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{row.Remark}}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+                                    </tab>
+                                    <tab heading="{{'Label.TRTS02.HisAttach' | translate}}" (select)="tabSelect(4)">
+                                        <card header="{{ 'Label.TRTS02.Detail'| translate}}">
+                                            <div class="card-content">
+                                                <div class="row">
+                                                    <div class="col-md-12" formArrayName="AttachHis">
+                                                        <aaa-table [rows]="AttachHis.getRawValue()"
+                                                            [count]="attachHisCount"
+                                                            (onTableEvent)="onTableEventAttachHis($event)">
+                                                            <ngx-datatable-column width="60" [cellClass]="'text-left'"
+                                                                prop="AttachmentType">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS02.AttachmentType'
+                                                                        | translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{ row.AttachmentType }}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="180" [cellClass]="'text-left'"
+                                                                prop="FileName">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS02.FileName' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" let-value="value"
+                                                                    let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                    <div [formGroupName]="rowIndex">
+                                                                        <file-upload-auto
+                                                                            [fileName]="AttachHis.getRawValue()[rowIndex].FileName"
+                                                                            [category]="category"
+                                                                            formControlName="AttahmentId">
+                                                                        </file-upload-auto>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                            <ngx-datatable-column width="180" [cellClass]="'text-left'"
+                                                                prop="Description">
+                                                                <ng-template let-sort="sortFn"
+                                                                    ngx-datatable-header-template>
+                                                                    <label class="datatable-header-cell-wrapper"
+                                                                        (click)="sort()">{{'Label.TRTS02.Description' |
+                                                                        translate}}</label>
+                                                                </ng-template>
+                                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                                    {{ row.Description }}
+                                                                </ng-template>
+                                                            </ngx-datatable-column>
+                                                        </aaa-table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </card>
+                                    </tab>
+                                </tabset>
+                            </div>
+                            <br>
+                        </card>
+
+                        <card header="{{ 'เอกสารแนบ'| translate}}">
+                            <div class="card-menu">
+                                <button type="button" class="btn btn-sm btn-circle btn-secondary"
+                                    (click)="addAttachment()" [disabled]="isDisableAttachment">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12" formArrayName="TrackingAttachment">
+                                        <aaa-grid #detailgrid [rows]="trackingAttach.getRawValue()"
+                                            [formArray]="trackingAttach">
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                [sortable]="false">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'วันที่/เวลา' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.CreatedDate | thaidate: 'datetime'}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                [sortable]="false">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'พนักงานที่แนบเอกสาร' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.CreatedBy}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column name="FileName">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label class="require">{{ 'Label.LOTS03.attachment'| translate
+                                                        }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <file-upload-auto [file]="attachmentFiles2[rowIndex]"
+                                                            [fileName]="trackingAttach.getRawValue()[rowIndex].FileName"
+                                                            [category]="category2"
+                                                            [isDisableDownload]="trackingAttach.getRawValue()[rowIndex].IsDisableAttachment"
+                                                            (fileNameReturn)="fileNameReturn($event, rowIndex)"
+                                                            formControlName="AttahmentId">
+                                                        </file-upload-auto>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column>
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">{{
+                                                        'Label.LOTS03.Description'|
+                                                        translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            formControlName="Description">
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'|
+                                                        translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                                        (click)="removeAttachment(rowIndex);"
+                                                        [disabled]="isDisableAttachment">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+
+                        <card header="{{'Label.TRTS01.Borrower' | translate}}">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <aaa-grid-no-pager [rows]="borrowerList">
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                [sortable]="false">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'Label.TRTS01.Name' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.CustomerNameTha}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                prop="TrackingDate">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'Label.TRTS01.TelNo' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.MobileNumber}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button type="button" class="btn btn-sm btn-primary"
+                                                        (click)="openModal(MobileNumberOther,row.CustomerCode)">เบอร์โทรเพิ่มเติม</button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid-no-pager>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="disabled" (click)="onSubmit()">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>
+                    {{ 'Label.GLOBAL.Save' | translate }}
+                </button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="back()">
+                    <i class="fas fa-undo-alt"></i>
+                    {{ 'Label.GLOBAL.Back'| translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<ng-template #MobileNumberOther>
+    <modal-layout (onClose)="closeModal()">
+        <card header="เบอร์โทรเพิ่มเติม">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <aaa-grid-no-pager [rows]="TelOther">
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                prop="TrackingDate">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.TRTS01.TelNo' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.MobileNumber}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                [sortable]="false">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">รายละเอียด</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.Description}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-grid-no-pager>
+                    </div>
+                </div>
+            </div>
+        </card>
+    </modal-layout>
+</ng-template>

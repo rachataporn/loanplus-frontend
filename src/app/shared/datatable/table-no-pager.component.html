@@ -1,0 +1,12 @@
+<ngx-datatable class="bootstrap" [rows]="rows" [headerHeight]="40" [rowHeight]="'auto'" [columnMode]="'force'"
+    [scrollbarH]="true" [virtualization]="false" [selectAllRowsOnPage]="false" [offset]="page.index"
+    (page)="onPage($event)" [limit]="page.size" (select)='onSelect($event)' [selected]="rowSelect"
+    [selectionType]="'checkbox'" [trackByProp]="trackByProp" [rowIdentity]="rowIdentity" [summaryRow]="summaryRow"
+    [summaryPosition]="'bottom'" [summaryHeight]="'auto'" [rowClass]="getRowClass">
+    <ng-content></ng-content>
+</ngx-datatable>
+<div *ngIf="loading" class="table-loading">
+    <div class="loading-icon fa-3x">
+        <i class="fas fa-sync fa-spin"></i>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<ul class="menu-container"  >
+    <ng-template #recursiveList let-menus let-level="level">
+        <ng-container *ngFor="let menu of menus">
+            <ng-template [ngIf]="hasChild(menu.Value)" [ngIfElse]="lastChild">
+                <li *ngIf="hasChild(menu.Value)" role="menuitem" class="menu-tree-item menu-dropdown" [class.active]="active(menu.Value)">
+                    <i class="fas fa-angle-right" [class.menu-icon-down]="open[menu.Value]"></i>
+                    <a (click)="toggle(menu.Value)" class="nav-menu">
+                        {{ menu['Text'+lang.CURRENT] }} <span  class="caret"></span></a>
+                    <ul *ngIf="open[menu.Value]" class="ul-menu">
+                        <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: children(menu.Value),level:level+1 }"></ng-container>
+                    </ul>
+                </li>
+            </ng-template>
+            <ng-template #lastChild>
+                <li *ngIf="!hasChild(menu.Value)" role="menuitem" class="menu-tree-item" [class.active]="active(menu.Value)">
+                    <a (click)="onSelect(menu.Value)" class="nav-menu">{{ menu['Text'+lang.CURRENT] }}</a>
+                </li>
+            </ng-template>
+        </ng-container>
+    </ng-template>
+    <ng-container *ngTemplateOutlet="recursiveList; context:{ $implicit: children(null),level:0 }"></ng-container>
+</ul>

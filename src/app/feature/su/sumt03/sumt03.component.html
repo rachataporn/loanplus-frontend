@@ -1,0 +1,79 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.SUMT03.ManageProgram'| translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="inputSearch"
+                    placeholder="{{'Label.SUMT03.SearchPlaceHolder'| translate}}">
+                  <div class="input-group-append">
+                    <button type="button" (click)="search()" class="btn btn-warning">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <aaa-table [rows]="programData" [page]="page" (onTableEvent)="onTableEvent($event)">
+                  <ngx-datatable-column prop="ProgramCode" [cellClass]="'text-center'" width="100">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.SUMT03.ProgramCode'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="edit(row.ProgramCode)">{{row.ProgramCode}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="ProgramName" [cellClass]="'text-left'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.SUMT03.ProgramName'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ProgramName}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="ProgramPath" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.SUMT03.ProgramPath'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ProgramPath}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="ApiFileName" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.SUMT03.ApiFileName'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ApiFileName}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="100">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button type="button" class="btn btn-outline-primary btn-sm" (click)="remove(row.ProgramCode,row.RowVersion)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm">
+        <card header="{{ 'Label.LORF09.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORF09.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORF09.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORF09.FromCustomerCode'| translate}}</label>
+                <ng-select [items]="fromCustomerCodeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromCustomerCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORF09.ToCustomerCode'| translate}}</label>
+                <ng-select [items]="toCustomerCodeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToCustomerCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="FromContractDate">{{"Label.LORF09.FromContractDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="FromContractDate"
+                  [maxDate]=this.searchForm.controls.ToContractDate.value />
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label for="ToContractDate">{{"Label.LORF09.ToContractDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ToContractDate"
+                  [minDate]=this.searchForm.controls.FromContractDate.value />
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{ 'Label.LORF09.FromContractNo'| translate}}</label>
+                <ng-select [items]="fromContractNoList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromContractNo" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label>{{ 'Label.LORF09.ToContractNo'| translate}}</label>
+                <ng-select [items]="toContractNoList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToContractNo" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORF09.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

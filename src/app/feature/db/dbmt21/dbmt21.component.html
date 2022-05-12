@@ -1,0 +1,92 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="search(true)" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search(true)">
+            <div class="form-row">
+              <!-- <div class="form-group col-sm-6">
+                <label>{{'Label.SUMT07.UserName' | translate}}</label>
+                <input type="text" class="form-control" formControlName="UserSearch">
+              </div> -->
+              <div class="form-group col-sm-12">
+                <label>{{'Label.DBMT21.Department' | translate}}</label>
+                <input type="text" class="form-control" formControlName="keyword"
+                  placeholder="{{'Label.DBMT21.DepartmentPlaceHolder' | translate}}">
+              </div>
+            </div>
+            <!-- <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label>{{'Label.SUMT07.StatusDesc' | translate}}</label>
+                <ng-select [items]="statusList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All' | translate}}" formControlName="StatusSearch">
+                </ng-select>
+              </div>
+            </div> -->
+          </form>
+        </div>
+      </card>
+      <card header="แผนก">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <aaa-table [rows]="departmentList" [page]="page" (onTableEvent)="onTableEvent()">
+            <ngx-datatable-column prop="DepartmentCode" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT21.DepartmentCode' | translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span class="link" (click)="edit(row.DepartmentCode)">{{row.DepartmentCode}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <!-- <ngx-datatable-column prop="DepartmentCode" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT21.DepartmentCode' | translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.DepartmentId}}
+              </ng-template>
+            </ngx-datatable-column> -->
+            <ngx-datatable-column prop="DepartmentName{lang}">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT21.DepartmentName' | translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row['DepartmentName'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper"
+                  (click)="sort()">{{ 'Label.GLOBAL.Active'| translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <i *ngIf="row.Active" class="fas fa-check"></i>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+              <ng-template ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                <button class="btn btn-outline-primary btn-sm" (click)="remove(row.DepartmentCode,row.RowVersion)">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

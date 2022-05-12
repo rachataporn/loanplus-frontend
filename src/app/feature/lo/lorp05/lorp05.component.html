@@ -1,0 +1,88 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LORP06.condition'| translate}}">
+        <div class="card-menu">
+          <button (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.LORP08.Print'| translate}}">
+            <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+            <i class="fas fa-print" [hidden]="printing"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form #report [formGroup]="searchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-6">
+                <label>{{'Label.LORP05.Branch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-6">
+                <label>{{'Label.LORP05.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-6">
+                <label>{{'Label.LORP05.FromContractType'| translate}}</label>
+                <ng-select [items]="fromContractTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromContractType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-6">
+                <label>{{'Label.LORP05.ToContractType'| translate}}</label>
+                <ng-select [items]="toContractTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToContractType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+
+              <div class="form-group col-12 col-sm-6 col-md-3">
+                <label for="FromContractDate">{{'Label.LORP05.FromTheContractDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control" formControlName="FromTheContractDate"
+                  [maxDate]=this.searchForm.controls.ToTheContractDate.value />
+                <!-- <input type="text" class="form-control text-center" formControlName="StartDate" bsDatepicker
+                [maxDate]="searchForm.controls['StartDate'].value"> -->
+              </div>
+              <div class="form-group col-12 col-sm-6 col-md-3">
+                <label for="ToContractDate">{{'Label.LORP05.ToTheContractDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control" formControlName="ToTheContractDate"
+                  [minDate]=this.searchForm.controls.FromTheContractDate.value />
+                <!-- <input type="text" class="form-control text-center" formControlName="EndDate" bsDatepicker
+                [minDate]="searchForm.controls['EndDate'].value"> -->
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LORP16.ExportType'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="ExportType">
+                  <button type="button" [btnRadio]="type.Value" *ngFor="let type of exportType"
+                    class="btn btn-outline-warning" tabindex="0" >
+                    {{ type['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{'Label.LORP05.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

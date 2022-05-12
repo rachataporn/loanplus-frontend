@@ -1,0 +1,101 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.SUMT04.MenuDetail'| translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="InputSearch"
+                    placeholder="{{'Label.SUMT04.Placeholder'| translate}}">
+                  <div class="input-group-append">
+                    <button type="button" (click)="search()" class="btn btn-warning">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <aaa-table [rows]="MenuList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                  <ngx-datatable-column prop="SystemCode" [cellClass]="'text-center'" width="100">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.Website'| translate}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="MenuCode" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.MenuCode'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="edit(row.MenuCode)">{{row.MenuCode}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="MainMenu" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.MainMenu'| translate}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="ProgramCode" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.ProgramCode'| translate}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="MenuNameTha" [cellClass]="'text-left'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.MenuNameTha'| translate}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="MenuNameEng" [cellClass]="'text-left'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.MenuNameEng'| translate}}</label>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column prop="Active" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.SUMT04.Active'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <i *ngIf="row.Active" class="fas fa-check"></i>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" >
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button type="button" class="btn btn-outline-primary btn-sm"
+                        (click)="remove(row.MenuCode,row.RowVersion)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

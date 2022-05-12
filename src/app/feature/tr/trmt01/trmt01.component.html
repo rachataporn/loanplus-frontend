@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search()" class="form-control"
+                                        formControlName="InputSearch"
+                                        placeholder="{{'Label.TRMT01.TrackingEventplacholder'| translate}}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="search()" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="form-group col-12 col-sm-3 col-md-3">
+                                <label>{{ 'สถานะ'| translate}}</label>
+                                <div class="btn-group d-block" btnRadioGroup>
+                                    <button [btnRadio]="Status.Value" *ngFor="let Status of StatusList"
+                                        class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                                        {{ Status['text'+lang.CURRENT]}}
+                                    </button>
+                                </div>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+            </card>
+
+            <card header="{{'Label.TRMT01.TrackingEventTypeDetail'| translate}}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="trackingList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column width="200" [cellClass]="'text-left'" prop="trackingItemNameTha">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.TRMT01.TrackingEventNameTha'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="edit(row)">{{row.trackingItemNameTha}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="200" [cellClass]="'text-left'" prop="trackingItemNameEng">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.TRMT01.TrackingEventNameEng'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.trackingItemNameEng}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="50" [cellClass]="'text-center'" prop="active">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.GLOBAL.Active'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.active" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="50">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-primary btn-sm" (click)="remove(row)">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

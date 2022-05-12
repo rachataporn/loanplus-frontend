@@ -1,0 +1,140 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.SUMT06.PolicyPasswordSetting '| translate}}">
+                <div class="card-content">
+                    <form [formGroup]="passwordForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label class="require"> {{'Label.SUMT06.PolicyCode'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="PasswordPolicyCode"
+                                            maxlength="10">
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label class="require"> {{'Label.SUMT06.PolicyName'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="PasswordPolicyName"
+                                            maxlength="100">
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.Explanation'| translate}}</label>
+                                        <input type="text" class="form-control"
+                                            formControlName="PasswordPolicyDescription" maxlength="200">
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.NumberSpecifyPassword'| translate}}</label>
+                                        <ngx-numeric-textbox style="width:100%;" inputClass="form-control"
+                                            formControlName="FailTime" [decimals]="0" [max]="999999999">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.PasswordAge'| translate}}</label>
+                                        <ngx-numeric-textbox style="width:100%;" inputClass="form-control"
+                                            formControlName="PasswordAge" [decimals]="0" [max]="999999999">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.NumberTimesPassword'| translate}}</label>
+                                        <ngx-numeric-textbox style="width:100%;" inputClass="form-control"
+                                            formControlName="MaxDupPassword" [decimals]="0" [max]="999999999">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.MinimumNumber'| translate}}</label>
+                                        <ngx-numeric-textbox style="width:100%;" inputClass="form-control"
+                                            formControlName="PasswordMinimumLength" [decimals]="0" [max]="999999999">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-md-6 col-sm-6 ">
+                                        <label>{{'Label.SUMT06.CharactersLimit'| translate}}</label>
+                                        <ngx-numeric-textbox style="width:100%;" inputClass="form-control"
+                                            formControlName="PasswordMaximumLength" [decimals]="0" [max]="999999999">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="UsingUppercase"
+                                                formControlName="UsingUppercase">
+                                            <label class="custom-control-label" for="UsingUppercase">
+                                                {{'Label.SUMT06.UseCapitalLetters'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="UsingLowercase"
+                                                formControlName="UsingLowercase">
+                                            <label class="custom-control-label" for="UsingLowercase">
+                                                {{'Label.SUMT06.UseLowercaseLetters'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="UsingNumericChar"
+                                                formControlName="UsingNumericChar">
+                                            <label class="custom-control-label" for="UsingNumericChar">
+                                                {{'Label.SUMT06.UseNumbers'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="UsingSpecialChar"
+                                                formControlName="UsingSpecialChar">
+                                            <label class="custom-control-label" for="UsingSpecialChar">
+                                                {{'Label.SUMT06.SpecialCharacters'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                            <input class="custom-control-input" type="checkbox" id="Active"
+                                                formControlName="Active">
+                                            <label class="custom-control-label" for="Active">
+                                                {{'Label.GLOBAL.Active'| translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>
+                    {{'Label.GLOBAL.Save' | translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back(false)">
+                    <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

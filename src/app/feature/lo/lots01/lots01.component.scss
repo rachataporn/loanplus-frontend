@@ -1,0 +1,52 @@
+#video { background-color: grey;
+  height: 180px;
+  width: 185px;}
+.bg-webcam{
+  width: 180px;
+  height: 180px;
+  position: relative;
+  border-radius: 2px;
+  border: 1px solid #e8e8e8;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.bd_webimg{
+  background-image: url("../../../../assets/img/webcam/icon-webcam.png");
+}
+
+.bg-webcam1{
+  background-color: grey;
+  height: 240px;
+  width: 185px;
+}
+
+agm-map {
+  height: 400px;
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Prompt;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+#pac-input-current {
+  background-color: #fff;
+  font-family: Prompt;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 300px;
+}
+
+.red {
+  color: red;
+}

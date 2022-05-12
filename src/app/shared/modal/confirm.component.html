@@ -1,0 +1,7 @@
+<modal-layout (onClose)="decline()" header="{{ 'Label.GLOBAL.Confirm' | translate}}">
+    <p>{{ message | translate}}</p>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="decline()">{{ 'Label.GLOBAL.No' | translate }}</button>
+        <button type="button" class="btn btn-primary" (click)="confirm()">{{ 'Label.GLOBAL.Ok' | translate }}</button>
+    </div>
+</modal-layout>

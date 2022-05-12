@@ -1,0 +1,93 @@
+<div class="col-sm-12" style="background-color: white; padding-top: 10px; height: 7%; border-bottom: solid 2px #ffc107">
+    <div class="row">
+        <div class="form-group col-12">
+            <h5 class="text-center" style="font-weight: 900;">ชำระค่าเบี้ย</h5>
+        </div>
+    </div>
+</div>
+
+<div class="animated fadeIn" style="background-color: white; padding-top: 10px;">
+    <div class="col-sm-12">
+        <div class="form-group col-12">
+            <div class="form-row">
+                <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+                    <label style="font-weight: 900"><i class="far fa-id-card"></i> ข้อมูลการชำระเงิน </label>
+                </div>
+            </div>
+            <form [formGroup]="ContractHeadFrom" [class.validated]="submitted">
+                <div class="form-row">
+                    <div class="form-group col-12 col-sm-3">
+                        <label class="require">เลขที่สัญญา</label>
+                        <ng-select [items]="getConreactDDL" bindLabel="Text" bindValue="Value"
+                            formControlName="ContractHeadId" placeholder="{{ 'Label.GLOBAL.All' | translate }}"
+                            (change)="searchLinePay()">
+                        </ng-select>
+                    </div>
+                </div>
+            </form>
+            <form [formGroup]="linePayForm" [class.validated]="submitted">
+                <div class="form-row">
+                    <div class="form-group col-12 col-sm-3">
+                        <label class="require">ชื่อ-นามสกุล</label>
+                        <input type="text" class="form-control text-center" formControlName="FirstName">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-12 col-sm-3">
+                        <label class="require">งวด</label>
+                        <ngx-numeric-textbox inputClass="form-control text-center" formControlName="Period"
+                            [decimals]="0">
+                        </ngx-numeric-textbox>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12 col-sm-3">
+                        <label class="require">จำนวนเงิน</label>
+                        <ngx-numeric-textbox inputClass="form-control text-center" formControlName="TotalAmount"
+                            [decimals]="2">
+                        </ngx-numeric-textbox>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12 col-sm-3">
+                        <label class="require">ชำระเงินภายใน</label>
+                        <input type="text" class="form-control text-center" formControlName="DueDate">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+                        <label class="require" style="font-weight: 900"><i class="far fa-images"></i> รูปหลักฐานการชำระ
+                            (รองรับ jpg)
+                        </label>
+                    </div>
+                    <div class="col-4 col-sm-4"></div>
+                    <div class="form-group col-12 col-sm-12" style="border: dashed 1px #FFD800">
+                        <ks-modal-gallery class="text-center" [id]="0" [modalImages]="images"
+                            [plainGalleryConfig]="plainGalleryGrid" [enableCloseOutside]="false"
+                            (buttonAfterHook)="onButtonAfterHook($event)"
+                            [buttonsConfig]="customButtonsFontAwesomeConfig" [dotsConfig]="{visible: false}">
+                        </ks-modal-gallery>
+                        <div class="text-center upload-mb" (click)="onClick(fileInput)">
+                            <div><i class="fa fa-camera-retro" style="font-size: 35px;"></i></div>
+                            <input type="file" accept="image/*,.svg" #fileInput (change)="onFileChange($event)"
+                                style="display:none" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br>
+        <br>
+    </div>
+</div>
+
+<footer class="app-footer-btn">
+    <div class="container-fluid">
+        <div class="col text-center">
+            <button type="button" class="btn btn-footer" (click)="onSave()" [disabled]="saving">
+                <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                <i class="far fa-check-circle" [hidden]="saving"></i> บันทึก</button>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,238 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'รายงานดอกเบี้ยค้างรับ'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+              <i class="fas fa-search"></i>
+            </button>
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6 form-group ">
+                <label class="require">{{ 'รูปแบบรายงาน'| translate}}</label>
+                <ng-select [items]="exportType" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ExportType" placeholder="{{'Label.GLOBAL.All' | translate}}" (change)="changeType()">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6 form-group ">
+                <label>{{ 'Label.LORP04.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'CompanyName' + lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP04.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'CompanyName' + lang.CURRENT" bindValue="CompanyCode"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="this.searchForm.controls.ExportType.value == 2">
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">จากเดือน</label>
+                <ng-select [items]="mount" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromMount" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">{{ 'ถึงเดือน'| translate}}</label>
+                <ng-select [items]="mount" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToMount" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="this.searchForm.controls.ExportType.value == 3">
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">จากปี</label>
+                <ng-select [items]="year" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromYear" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">{{ 'ถึงปี'| translate}}</label>
+                <ng-select [items]="year" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" formControlName="ToYear"
+                  placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="this.searchForm.controls.ExportType.value == 1">
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">{{ 'Label.LORP10.FromDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="StartDate"
+                  [maxDate]="now" [minDate]="minDate" bsDatepicker />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">{{ 'Label.LORP10.ToDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="EndDate"
+                  [maxDate]="now" [minDate]="minDate" bsDatepicker />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <aaa-table [rows]="list" [page]="page" (onTableEvent)="onTableEvent($event)">
+                  <ngx-datatable-column width="100" [cellClass]="'text-left'" prop="ReportName">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'ชื่อรายงาน' |
+                        translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ReportName}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="150" [cellClass]="'text-center'" prop="ReportType">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'รูปแบบรายงาน' |
+                        translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ReportType}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="FromBranchCode" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ตั้งแต่ สาขา'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.FromBranchCode}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="ToBranchCode" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ถึง สาขา'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ToBranchCode}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="FromDay" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ตั้งแต่วันที่'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.FromDay |thaidate}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="ToDay" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ถึงวันที่'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.ToDay |thaidate}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="FromMonth" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จากเดือน'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{getMonth(row.FromMonth)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="ToMonth" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ถึงเดือน'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{getMonth(row.ToMonth)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="80" prop="FromYear" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'จากปี'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{getYear(row.FromYear)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="80" prop="ToYear" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ถึงปี'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{getYear(row.ToYear)}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="100" prop="CreatedDate" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'วันที่พิมพ์'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.CreatedDate |thaidate}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column width="50" prop="FilePath" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{'พิมพ์'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="dowload(row.FilePath)"><i class="fas fa-print"></i></span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-table>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #AlertConfirm>
+  <modal-layout>
+    <div class="row text-center">
+      <div class="col-1 center">
+      </div>
+      <div class="col-10 center">
+        <h1 class="text-center">ระบบกำลังพิมพ์รายงาน!
+          ถ้าหากรายงานพิมพ์เสร็จเรียบร้อยจะแสดงในตารางด้านล่างตามเงื่อนไขที่เลือกในการออกรายงาน</h1>
+      </div>
+      <div class="col-1 center">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="close()">ตกลง</button>
+    </div>
+  </modal-layout>
+</ng-template>

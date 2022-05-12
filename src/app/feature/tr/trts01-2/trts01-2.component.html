@@ -1,0 +1,165 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'การโทรติดตามหนี้' | translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="open(add)" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'เพิ่ม'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="form-group col-sm-4 col-md-4">
+              <label>{{ 'สาขา'| translate}}</label>
+              <ng-select [items]="branchList" bindLabel="Text" bindValue="Value"
+                placeholder="{{'Label.GLOBAL.All' | translate}}">
+              </ng-select>
+            </div>
+            <div class="form-group col-sm-4 col-md-4">
+              <label>วันที่ดำเนินการ จาก</label>
+              <input type="text" class="form-control text-center" bsDatepicker [placement]="'top'">
+            </div>
+            <div class="form-group col-sm-4 col-md-4">
+              <label>ถึง</label>
+              <input type="text" class="form-control text-center" bsDatepicker [placement]="'top'">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label>{{ "สถานะการติดตาม" | translate }}</label>
+              <div>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input class="custom-control-input" type="checkbox" id="a">
+                  <label class="custom-control-label" for="a">
+                    ไม่ได้ติดตาม
+                  </label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input class="custom-control-input" type="checkbox" id="b">
+                  <label class="custom-control-label" for="b">
+                    ลูกค้านัดชำระ
+                  </label>
+                </div>
+                <div class="custom-control custom-checkbox custom-control-inline">
+                  <input class="custom-control-input" type="checkbox" id="c">
+                  <label class="custom-control-label" for="c">
+                    ติดต่อไม่ได้, ไม่นัดชำระ
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'รายละเอียด' | translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <aaa-table [rows]="sendSmsList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="DueDate" width="50">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สาขา' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.BranchCode }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="DueDate" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'due date ที่เริ่มค้าง' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.DueDate }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CompanyCode" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่สัญญา' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ContractNo}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-left'" prop="ContractNo" width="120">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ผู้กู้' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Name}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="CustomerCode" width="80">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ยอดค้าง' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Total}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName{lang}" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'สถานะก่อนหน้า' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Before}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName{lang}" [cellClass]="'text-center'" width="100">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'สถานะปัจจุบัน' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="next()">{{row.Current}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="CustomerName{lang}" [cellClass]="'text-center'" width="80">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'วันที่ดำเนินการ' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.TrDate}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+
+<ng-template #add>
+  <modal-layout (onClose)="closeReset()" header="{{ 'เพิ่มรายชื่อติดตามที่บ้าน' | translate }}">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col-sm-10 col-md-10">
+          <div class="form-group col-sm-12 col-md-12">
+            <label>เลขที่สัญญา</label>
+            <ng-select [items]="branchList" bindLabel="Text" bindValue="Value"
+              placeholder="{{'กรุณาระบุ' | translate}}">
+            </ng-select>
+          </div>
+          <div class="row">
+            <div class="col-sm-6 col-md-6">
+              <button type="submit" (onClose)="closeReset()" class="btn btn-success btn-block justify-content-center ">
+                {{ 'ตกลง'| translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </modal-layout>
+</ng-template>

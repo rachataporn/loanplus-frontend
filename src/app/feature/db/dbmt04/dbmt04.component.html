@@ -1,0 +1,140 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <card header="{{'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+          <button (click)="search(true)" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search(true)" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="form-row">
+              <div class="form-group col-md-3  col-sm-6 col-12">
+                <label>{{'Label.DBMT04.System' | translate}}</label>
+                <ng-select [items]="systems" bindLabel="SystemCode" bindValue="SystemCode" formControlName="SystemCode"
+                  placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+              </div>
+
+              <div class="form-group col-md-3 col-sm-6 col-12">
+                <label class="require">{{'Label.DBMT04.GeneralInfoGroup' | translate}}</label>
+                <ng-select [items]="listItemGroupsFilter" bindLabel="ListItemGroupName" bindValue="ListItemGroupCode"
+                  formControlName="ListItemGroupCode" placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-sm-12 col-12">
+                <label>{{'Label.DBMT04.Data' | translate}}</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" maxlength="50"
+                    formControlName="Keyword" placeholder="{{'Label.DBMT04.PlaceHolderData' | translate}}">
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{'Label.GLOBAL.Detail' | translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="form-row">
+            <div class="col-12">
+              <aaa-table [rows]="listItems" [page]="page" (onTableEvent)="onTableEvent()">
+                <ngx-datatable-column width="180" prop="ListItemGroupCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.GeneralInfoGroup' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ListItemGroupName}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="60" prop="SystemCode" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.System' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.SystemCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="120" prop="CodeOrder" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.DataCode' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ListItemCode}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="150" prop="ListItemNameTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.DataNameTH' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.ListItemGroupCode,row.ListItemCode)">
+                      {{row.ListItemNameTha}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="150" prop="ListItemNameEng">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.DataNameEN' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ListItemNameEng}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="120" prop="Remark">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.DBMT04.Remark' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.Remark}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.GLOBAL.Active'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <i *ngIf="row.Active" class="fas fa-check"></i>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <button class="btn btn-outline-primary btn-sm"
+                      (click)="remove(row.ListItemGroupCode,row.ListItemCode,row.RowVersion)">
+                      <i class="far fa-trash-alt"></i>
+                    </button>
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

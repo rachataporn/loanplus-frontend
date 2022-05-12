@@ -1,0 +1,45 @@
+<div class="gray-bg">
+
+  <div class="container-fluid account-screen animated fadeInDown">
+    <div class="row mt-5">
+      <div class="col-12">
+        <h2 class="text-center font-weight-bold text-secondary mt-3">{{ 'Label.SUMT06.ResetPassword' | translate }}</h2>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-8 col-md-6 col-lg-4 col-xl-3">
+        <form class="mt-3" [formGroup]="resetForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="form-group">
+            <input type="password" required formControlName="Password" class="form-control" placeholder="{{ 'Label.SUMT06.NewPassword' | translate}}">
+            <div *ngIf="NewPassword.errors">
+                <small class="text-danger d-block" *ngIf="NewPassword.errors['minlength']">
+                  {{ 'Message.SU00010' | translate:{ min : NewPassword.errors['minlength'].requiredLength } }}
+                </small>
+                <small class="text-danger d-block" *ngIf="NewPassword.errors['maxlength']">
+                  {{ 'Message.SU00011' | translate:{ max: NewPassword.errors['maxlength'].requiredLength } }}
+                </small>
+                <small class="text-danger d-block" *ngIf="NewPassword.errors['pattern']">
+                  {{ 'Message.SU00013' | translate }}
+                  <span *ngIf="policy.upper">{{ 'Message.SU00014' | translate }} </span>
+                  <span *ngIf="policy.lower"> {{ 'Message.SU00015' | translate }} </span>
+                  <span *ngIf="policy.number"> {{ 'Message.SU00016' | translate }} </span>
+                  <span *ngIf="policy.special"> {{ 'Message.SU00017' | translate }} </span>
+                </small>
+              </div>
+          </div>
+          <div class="form-group">
+            <input type="password" compare="Password" required formControlName="ConfirmPassword" class="form-control border-1"
+              placeholder="{{ 'Label.SUMT06.ConfirmPassword' | translate}}">
+              <div class="invalid-feedback" *ngIf="ConfirmPassword.errors && ConfirmPassword.errors.compare">
+                  {{ 'Message.SU00009' | translate }}
+                </div>
+          </div>
+          <button type="submit" [disabled]="loading || resetForm.invalid" class="btn btn-warning btn-block mb-3">
+            <i class="fas fa-sign-in-alt" [hidden]="loading"></i>
+            <i class="fas fa-cog fa-spin" [hidden]="!loading"></i>
+            {{ 'Label.GLOBAL.Save' | translate}} </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

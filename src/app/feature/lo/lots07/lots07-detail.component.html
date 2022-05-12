@@ -1,0 +1,167 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.LOTS07.invoiceDetail' | translate}}">
+                <div class="card-content">
+                    <form [formGroup]="InvoiceForm">
+
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label class="require">{{'Label.LOTS07.ContractNo' | translate}}</label>
+                                <lookup-input lookupName="LoanLookup" [small]="false" [detailCheck]="true"
+                                    [detailFlag]="true" keyColumn="LoanNo"
+                                    holder="{{'Label.LOTS07.ContractNo' | translate}}"
+                                    [content]="Lots07LookupDetailContent" formControlName="ContractNo"
+                                    (detail)="loanDetailOutput($event)" searchUrl="loan/invoice/invoiceNoLOV">
+                                </lookup-input>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label class="require">{{'Label.LOTS07.Period' | translate}}</label>
+                                <input type="text" class="form-control" style="text-align: center"
+                                    formControlName="Period" disabled>
+                            </div>
+                            <div class="form-group col-sm-3"></div>
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.DocStatus' | translate}}</label>
+                                <div>
+                                    <h5>
+                                        <span class="badge badge-primary w-100"
+                                            style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                            {{ invoiceStatusText }}
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.InvoiceNo' | translate}}</label>
+                                <input type="text" class="form-control" style="text-align: center"
+                                    formControlName="InvoiceNo" disabled>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label class="require">{{'Label.LOTS07.InvoiceDate' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="InvoiceDate" bsDatepicker>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label class="require">{{'Label.LOTS07.DueDate' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="DueDate" bsDatepicker disabled>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.LineSendStatus' | translate}}</label>
+                                <div>
+                                    <h5>
+                                        <span class="badge badge-primary w-100"
+                                            style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                            {{ lineStatusText }}
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.CustomerCode' | translate}}</label>
+                                <input type="text" class="form-control" style="text-align: center"
+                                    formControlName="CustomerCode" disabled>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>{{'Label.LOTS07.CustomerName' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="CustomerName" disabled>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.EmailSendStatus' | translate}}</label>
+                                <div>
+                                    <h5>
+                                        <span class="badge badge-primary w-100"
+                                            style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                            {{ emailStatusText }}
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label class="require">{{'Label.LOTS07.CreatedDate' | translate}}</label>
+                                <input type="text" class="form-control" formControlName="InputDate" bsDatepicker
+                                    disabled>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label class="require">{{'Label.LOTS07.CreatedBy' | translate}}</label>
+                                <input type="text" class="form-control" style="text-align: center"
+                                    formControlName="NameCreatedBy" disabled>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.PrintInvoiceStatus' | translate}}</label>
+                                <div>
+                                    <h5>
+                                        <span class="badge badge-primary w-100"
+                                            style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                            {{ printStatusText }}
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.PeriodAmount' | translate}}</label>
+                                <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                    formControlName="PeriodAmount"></ngx-numeric-textbox>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>{{'Label.LOTS07.AccruedAmont' | translate}}</label>
+                                <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                    formControlName="AccruedAmount"></ngx-numeric-textbox>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>{{'Label.LOTS07.FineAmont' | translate}}</label>
+                                <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                    formControlName="FineAmount"></ngx-numeric-textbox>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <label>{{'Label.LOTS07.TrackingAmont' | translate}}</label>
+                                <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                    formControlName="TrackingAmount"></ngx-numeric-textbox>
+                            </div>
+                            <div class="form-group col-sm-3">
+                                <label>{{'Label.LOTS07.TotalAmountF' | translate}}</label>
+                                <ngx-numeric-textbox inputClass="form-control" [decimals]="2"
+                                    formControlName="TotalAmount"></ngx-numeric-textbox>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-12">
+                                <label>{{'Label.LOTS07.Remark' | translate}}</label>
+                                <textarea ng-model="Remark" rows="2" class="form-control" maxlength="500"
+                                    formControlName="Remark"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+
+    <footer class="app-footer-btn animated fadeIn">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col text-center">
+                    <button class="btn btn-footer" [disabled]="saving" (click)="onSave()">
+                        <i class="far fa-save"></i> บันทึก</button>
+                </div>
+                <div class="col text-center">
+                    <button class="btn btn-footer" [disabled]="printStatus" (click)="printInvoice()">
+                        <i class="fas fa-print"></i> พิมพ์ใบแจ้งหนี้</button>
+                </div>
+                <div class="col text-center">
+                    <button class="btn btn-footer" (click)="back()">
+                        <i class="fas fa-undo-alt"></i> ย้อนกลับ</button>
+                </div>
+            </div>
+        </div>
+    </footer>

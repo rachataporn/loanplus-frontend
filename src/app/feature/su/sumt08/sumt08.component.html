@@ -1,0 +1,90 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search' | translate }}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.GLOBAL.Search' | translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6 ">
+                <label>{{ 'Label.SUMT08.ParameterGroup' | translate }}</label>
+                <ng-select [items]="parameterGroupCodeDDL" bindLabel="Value" bindValue="Value"
+                  placeholder="{{ 'Label.GLOBAL.All' | translate }}" formControlName="ParameterGroupCodeSearch">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-6 col-sm-6 ">
+                <label>{{ 'Label.SUMT08.ParameterData' | translate }}</label>
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="InputSearch"
+                    placeholder="{{ 'Label.SUMT08.Placeholder' | translate }}">
+                  <div class="input-group-append">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{ 'Label.SUMT08.ParameterDetail' | translate }}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <div class="col-12">
+            <aaa-table [rows]="Parameterlist" [page]="page" (onTableEvent)="onTableEvent($event)">
+              <ngx-datatable-column prop="ParameterGroupCode" [cellClass]="'text-left'" width="100">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.SUMT08.ParameterGroup' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <span class="link" (click)="edit(row.ParameterGroupCode, row.ParameterCode)">
+                    {{row.ParameterGroupCode}}</span>
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="ParameterCode" [cellClass]="'text-left'">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.SUMT08.ParameterCode' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.ParameterCode}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="ParameterValue" [cellClass]="'text-left'">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.SUMT08.ParameterValue' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.ParameterValue}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="Remark" [cellClass]="'text-left'">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.SUMT08.Detail' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.Remark}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column prop="Active" [cellClass]="'text-center'">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.SUMT08.Active' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  <i *ngIf="row.Active" class="fas fa-check"></i>
+                </ng-template>
+              </ngx-datatable-column>
+            </aaa-table>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

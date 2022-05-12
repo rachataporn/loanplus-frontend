@@ -1,0 +1,153 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-12 col-md-3">
+                <label>{{ 'Label.GLOBAL.Search'| translate}}</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" formControlName="InputSearch" (keyup.enter)="search()"
+                    placeholder="{{ 'Label.LOTS02.Name'| translate}}">
+                </div>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{ 'Label.LOTS02.AssetType'| translate}}</label>
+                <ng-select [items]="assetTypeList" bindLabel="TextTha" bindValue="Value" formControlName="assetType"
+                  placeholder="{{ 'Label.GLOBAL.All'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-12 col-sm-3 col-md-3">
+                <label>{{ 'Label.LOTS02.StartDate'| translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="StartDate" bsDatepicker
+                  [maxDate]="searchForm.controls['EndDate'].value">
+              </div>
+              <div class="form-group col-12 col-sm-3 col-md-3">
+                <label>{{ 'Label.LOTS02.EndDate'| translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="EndDate" bsDatepicker
+                  [minDate]="searchForm.controls['StartDate'].value">
+              </div>
+            </div>
+            <div class="row">
+              <!-- <div class="form-group col-md-4">
+                <label>{{ 'Label.LOTS02.Status'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="status">
+                  <button [btnRadio]="docStatus.Value" *ngFor="let docStatus of docStatusList"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ docStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-md-5">
+                <label>{{ 'Label.LOTS02.FlagApprove'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="flagApprove">
+                  <button [btnRadio]="approvalStatus.Value" *ngFor="let approvalStatus of approvalStatusList"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ approvalStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div> -->
+              <div class="form-group col-md-3">
+                <label>{{ 'Label.LOTS02.ChannelsForLoan'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="requestWait">
+                  <button [btnRadio]="loanChannel.Value" *ngFor="let loanChannel of loanChannelList"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ loanChannel['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+
+      <card header="{{ 'Label.LOTS02.NewLoanRequest'| translate}}">
+        <div class="card-menu"></div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-12">
+              <aaa-table [rows]="customerList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column [cellClass]="'text-center'" prop="CreateDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS02.CreateDate'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.CreateDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS02.Name'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.CustomerCode, true)">{{row.CustomerName}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="MobileNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.MobileNo'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.MobileNo}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-left'" prop="SecuritiesTypeNameTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.AssetType'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['SecuritiesTypeName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="LoanAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.LoanAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.LoanAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="LoanChannelTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.ChannelsForLoan'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['LoanChannel'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ContractStatusTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.Status'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['ContractStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ApproveStatusTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS02.FlagApprove'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['ApproveStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

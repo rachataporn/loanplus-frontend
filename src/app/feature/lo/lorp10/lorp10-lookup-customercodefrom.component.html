@@ -1,0 +1,63 @@
+<modal-layout (onClose)="close()" header="{{'Label.LORP10.SearchCustomerCode' | translate}}">
+    <card header="{{'Label.LOTS07.Search' | translate}}">
+        <div class="card-menu">
+            <button type="button" (click)="search(true)" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>s
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label>{{ 'Label.LORP10.CustomerCode'| translate}}</label>
+                        <input type="text" (keyup.enter)="search(true)" class="form-control"
+                            formControlName="CustomerNo" maxlength="20" placeholder="{{ 'Label.LORP10.CustomerCode'| translate}}">
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label>{{'Label.LORP10.CustomerName' | translate}}</label>
+                        <input type="text" (keyup.enter)="search(true)" class="form-control"
+                            formControlName="CustomerName" maxlength="200" placeholder="{{'Label.LORP10.CustomerName' | translate}}">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="itemsLOV" [page]="page" (onTableEvent)="onTableEvent($event)">
+                            <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="80">
+                                <ng-template ngx-datatable-header-template>
+                                    <label
+                                        class="datatable-header-cell-wrapper">{{ 'Label.LORP10.Select'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template
+                                    width="100">
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                        (click)="select(row.CustomerCode)">
+                                        {{'Label.LORP10.Select' | translate}}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode" width="60">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LORP10.CustomerCode' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CustomerCode}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName{lang}" width="300">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LORP10.CustomerName' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row['CustomerName'+lang.CURRENT]}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </card>
+</modal-layout>

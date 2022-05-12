@@ -1,0 +1,181 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate }}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary" tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" (keyup.enter)="search()">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>ค้นหา</label>
+                <input type="text" class="form-control" formControlName="Keyword"
+                  placeholder="เลขที่สัญญา,ชื่อ-นามสกุล" maxlength="100">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="Company">{{'Label.LOTS19.Company' | translate}}</label>
+                <ng-select [items]="Branch" [bindLabel]="'TextTha'" bindValue="Value"
+                  formControlName="Company" placeholder="ทั้งหมด">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="FromDate">{{'ตั้งแต่วันที่เจ้าของหลักทรัพย์เสียชีวิต' |
+                  translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="FromDate"
+                [maxDate]="this.searchForm.controls.ToDate.value"  bsDatepicker >
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="ToDate">{{'ถึง' |
+                  translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="ToDate" 
+                [minDate]="this.searchForm.controls.FromDate.value" bsDatepicker >
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ 'สถานะคำขอ'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="DocStatus">
+                  <button type="button" [btnRadio]="docStatus.Value" *ngFor="let docStatus of docStatusList"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ docStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP02.LoanType" | translate }}</label>&nbsp;<label class="text-danger">{{
+                  "Label.LORP02.SelectAll" | translate }}</label>
+                <div formArrayName="ContractStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of contractStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChkcontractStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChkcontractStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'รายการเจ้าของหลักทรัพย์เสียชีวิต' | translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="detailList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column prop="ReqCode" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขคำขอ' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link"
+                      (click)="searchEdit(row.SecuritiesOwnerDeadId)">{{row.ReqCode}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="MainContractNo" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เลขที่สัญญา' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link"
+                      (click)="linkContractDetail(row.MainContractHeadId)">{{row.MainContractNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractType" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ประเภทสัญญา' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                   {{row.ContractType}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="BorrowerName" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'ชื่อผู้กู้' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.BorrowerName}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="PrincipleAmount" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เงินต้น' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.PrincipleAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="BalancePrincipleAmount" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'เงินต้นคงเหลือ' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.BalancePrincipleAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="ContractStatus" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สถานะสัญญา' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ContractStatus}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="OwnerDeadDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'วันที่เจ้าของหลักทรัพย์เสียชีวิต' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.OwnerDeadDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="StatusReq" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'สถานะคำขอ' |
+                      translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.StatusReq}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

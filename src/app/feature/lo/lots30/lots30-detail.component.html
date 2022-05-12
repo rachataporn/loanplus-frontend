@@ -1,0 +1,284 @@
+<div class="animated fadeIn">
+  <form [formGroup]="CashSubmitForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+    <div class="row">
+      <div class="col-sm-12">
+        <card header=" บันทึกยอดเงินสดประจำวัน">
+          <div class="card-content">
+
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>{{'เลขที่ใบนำฝากเงินสด'| translate}}</label>
+                <input type="text" class="form-control" style="text-align: center" formControlName="CashSubmitNo">
+              </div>
+              <div class="form-group col-md-4">
+                <label class="require">{{ 'วันที่'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="CashSubmitDate"
+                  bsDatepicker />
+              </div>
+              <div class="form-group col-md-4">
+                <label>{{'สถานะใบนำฝากเงินสด'| translate}}</label>
+                <div>
+                  <h5>
+                    <span class="badge badge-primary w-100" style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                      {{ getCashSubmitStatus['Text'+lang.CURRENT] }}
+                    </span>
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>{{ 'Label.LOTS01.Branch' | translate }}</label>
+                <ng-select [items]="Companies" [bindLabel]="'CompanyNameTha'" bindValue="CompanyCode"
+                  formControlName="CompanyCode">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-4">
+                <label>{{ 'ยอดยกมา' | translate }}</label>
+                <ngx-numeric-textbox inputClass="form-control" formControlName="OfferAmount" [decimals]="2" [min]="0">
+                </ngx-numeric-textbox>
+              </div>
+              <div class="form-group col-md-4">
+                <label class="require">{{ 'ประเภทการนำฝาก' | translate }}</label>
+                <ng-select [items]="DepositTypeList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="DepositType">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>{{ 'นำฝากเงินสดเข้าบัญชี' | translate }}</label>
+                <ng-select [items]="BankAccount" [bindLabel]="'AccountNo'" bindValue="AccountNo"
+                  formControlName="AccountNo">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-4">
+                <label>{{'ธนาคาร'| translate}}</label>
+                <input type="text" class="form-control" style="text-align: center" formControlName="BankName">
+              </div>
+              <div class="form-group col-md-4">
+                <label>{{'สาขาธนาคาร'| translate}}</label>
+                <input type="text" class="form-control" style="text-align: center" formControlName="BranchName">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>{{'เวลานำฝากเงินสด'| translate}}</label>
+                <input type="text" class="form-control" style="text-align: center" formControlName="SubmitTime">
+              </div>
+            </div>
+            <br />
+            <div class="row" [formGroup]="CashSubmitForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+              <div class="col-12" formArrayName="CashSubmitDetailForm">
+                <aaa-grid-no-pager #detailgrid [rows]="getCashSubmitDetails.getRawValue()" [trackByProp]="'guid'"
+                  [formArray]="getCashSubmitDetails" [summaryRow]="true">
+                  <!-- <ngx-datatable-column [cellClass]="'text-center'" width="20">
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <input type="checkbox" formControlName="IsSelectRow" (change)="checkDisableRow(rowIndex)">
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column> -->
+                  <ngx-datatable-column [cellClass]="'text-center'" width="200">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'วันที่ใบเสร็จ'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      {{ row.ReceiptDate | thaidate}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" width="200">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'เลขที่สัญญา'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      {{ row.ContractNo }}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" width="200" [summaryTemplate]="summaryLabel">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'เลขที่ใบเสร็จ'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      {{ row.ReceiptNo }}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column [cellClass]="'text-center'" width="100" [summaryTemplate]="sumReceiptAmount">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'จำนวนเงินตามใบเสร็จ (คงเหลือ/ยกมา)'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      {{ row.ReceiptAmount | number : '1.2-2' }}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <!-- <ngx-datatable-column [cellClass]="'text-center'" width="100" [summaryTemplate]="sumAmountCarried">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'จำนวนเงินยกไป'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      {{ row.AmountCarried | number : '1.2-2' }}
+                    </ng-template>
+                  </ngx-datatable-column> -->
+                  <!-- <ngx-datatable-column [cellClass]="'text-center'" width="60">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'เต็มจำนวน'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <input type="checkbox" formControlName="IsSubmitFull"
+                          (change)="checkIsSubmitFull(row, rowIndex)">
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column> -->
+                  <ngx-datatable-column name="SubmitAmount" width="200" [summaryTemplate]="sumSubmitAmount">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="require">{{'ยอดเงินที่ต้องการนำฝาก'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <ngx-numeric-textbox inputClass="form-control" formControlName="SubmitAmount" [decimals]="2"
+                          [min]="0">
+                        </ngx-numeric-textbox>
+                        <div class="invalid-feedback"
+                          *ngIf="getCashSubmitDetails.controls[rowIndex].controls.SubmitAmount.invalid">
+                          <div *ngIf="getCashSubmitDetails.controls[rowIndex].controls.SubmitAmount.errors.required">
+                            {{ 'Message.STD00000' | translate }}
+                          </div>
+                          <div *ngIf="getCashSubmitDetails.controls[rowIndex].controls.SubmitAmount.errors.min">
+                            {{ 'ยอดเงินที่ต้องการนำฝากต้องมากกว่า 0' | translate }}
+                          </div>
+                          <div *ngIf="getCashSubmitDetails.controls[rowIndex].controls.SubmitAmount.errors.max">
+                            {{ 'ยอดเงินที่ต้องการนำฝากต้องน้อยกว่ายอดในใบเสร็จรับเงิน' | translate }}
+                          </div>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-grid-no-pager>
+                <ng-template #summaryLabel>
+                  <div class="custom-template-body text-center">
+                    {{'Label.LOTS08.Total'| translate}}
+                  </div>
+                </ng-template>
+                <ng-template #sumReceiptAmount>
+                  <div class="custom-template-body  text-center">
+                    {{ summaryReceiptAmount() | number : '1.2-2'}}
+                  </div>
+                </ng-template>
+                <!-- <ng-template #sumAmountCarried>
+                  <div class="custom-template-body  text-center">
+                    {{ summaryAmountCarried() | number : '1.2-2'}}
+                  </div>
+                </ng-template> -->
+                <ng-template #sumSubmitAmount>
+                  <div class="custom-template-body  text-right">
+                    {{ summarySubmitAmount() | number : '1.2-2'}}
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="form-group col-md-4">
+                <label>{{ 'ยอดเงินสดสุทธิ' | translate }}</label>
+                <ngx-numeric-textbox inputClass="form-control payment-label" formControlName="NetAmount" [decimals]="2"
+                  [min]="0">
+                </ngx-numeric-textbox>
+              </div>
+              <div class="form-group col-md-4">
+                <label>{{ 'ยอดคงเหลือที่จะนำฝากครั้งถัดไป' | translate }}</label>
+                <ngx-numeric-textbox inputClass="form-control payment-label" formControlName="AmountCarried"
+                  [decimals]="2" [min]="0">
+                </ngx-numeric-textbox>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{'เพิ่มหมายเหตุสำหรับสาขา'| translate}}</label>
+                <textarea formControlName="RemarkBranch" id="RemarkBranch" name="RemarkBranch" rows="3"
+                  class="form-control"></textarea>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{'หมายเหตุสำหรับAccount'| translate}}</label>
+                <textarea formControlName="RemarkAccount" id="RemarkAccount" name="RemarkAccount" rows="3"
+                  class="form-control"></textarea>
+              </div>
+            </div>
+          </div>
+        </card>
+        <card header="{{ 'Label.LOTS03.attachment'| translate }}">
+          <div class="card-content">
+            <div class="form-row" [formGroup]="CashSubmitForm">
+              <div class="col-12" formArrayName="CashSubmitAttachmentsForm">
+                <aaa-grid #detailgrid [rows]="getCashSubmitAttachments.getRawValue()" [trackByProp]="'guid'"
+                  [formArray]="getCashSubmitAttachments">
+                  <ngx-datatable-column name="FileName">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="require">{{ 'Label.LOTS03.attachment'| translate
+                        }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <file-upload-auto [file]="attachmentFiles[rowIndex]"
+                          [fileName]="getCashSubmitAttachments.getRawValue()[rowIndex].FileName" [category]="category"
+                          [isDisableDownload]="getCashSubmitAttachments.getRawValue()[rowIndex].IsDisableAttachment"
+                          (fileNameReturn)="fileNameReturn($event, rowIndex)" formControlName="AttachmentId">
+                        </file-upload-auto>
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column>
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{
+                        'Label.LOTS03.Description'|
+                        translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <div [formGroupName]="rowIndex">
+                        <input type="text" class="form-control form-control-sm" formControlName="Description">
+                      </div>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-grid>
+              </div>
+            </div>
+          </div>
+        </card>
+      </div>
+    </div>
+  </form>
+  <footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center" style="background-color: #5cb85c;"
+          *ngIf="CashSubmitForm.controls.CashSubmitStatus.value == '1'">
+          <button type="button" class="btn btn-footer" (click)="onSubmit('2')" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{ 'อนุมัติ'| translate}}</button>
+        </div>
+        <div class="col text-center" style="background-color: #ffc107;"
+          *ngIf="CashSubmitForm.controls.CashSubmitStatus.value == '1'">
+          <button type="button" class="btn btn-footer" (click)="onSubmit('4')" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{ 'ข้อมูลไม่สมบูรณ์'| translate}}</button>
+        </div>
+        <!-- <div class="col text-center" style="background-color: red;"
+          *ngIf="CashSubmitForm.controls.CashSubmitStatus.value == '1'">
+          <button type="button" class="btn btn-footer" (click)="onSubmit('3')" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{ 'ไม่อนุมัติ'| translate}}</button>
+        </div> -->
+        <div class="col text-center">
+          <button type="button" class="btn btn-footer" [disabled]="saving" (click)="back()">
+            <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

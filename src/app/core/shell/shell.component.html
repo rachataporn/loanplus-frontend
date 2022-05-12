@@ -1,0 +1,46 @@
+<app-header [fixed]="true"
+  [navbarBrandFull]="{src: 'assets/img/brand/pico.svg', width: 180, height: 40, alt: 'Pico Logo'}"
+  [sidebarToggler]="'lg'" [asideMenuToggler]="false" [mobileAsideMenuToggler]="false">
+  <ul class="nav navbar-nav ml-auto">
+    <!-- <li class="nav-item dropdown" dropdown *ngIf="supportLanguages.length">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false" dropdownToggle (click)="false" style="color: #f7f7f7;">
+        <i class="fas fa-globe-americas"></i>
+        {{ currentLang.text }} <span class="caret"></span>
+      </a>
+      <div class="dropdown-menu shadow lang" *dropdownMenu >
+          <button  (click)="setLang(lang.value)" class="dropdown-item" [class.active]="currentLang.value == lang.value" type="button"
+           *ngFor="let lang of supportLanguages">{{ lang.text }}</button>
+      </div>
+    </li> -->
+    <li class="nav-item dropdown ml-2 mr-3" dropdown>
+      <a class="nav-link dropdown-toggle font-weight-bold" data-toggle="dropdown" href="#" role="button"
+        aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false" style="color: #f7f7f7;">
+        <i class="fas fa-user" ></i>
+        <span class="d-none d-sm-inline"> {{ userName | async}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right shadow user" *dropdownMenu>
+        <a class="dropdown-item d-block d-sm-none" routerLink="/">
+          <i class="fa fa-user"></i> {{ userName | async}}</a>
+        <a class="dropdown-item" routerLink="/login">
+          <i class="fa fa-lock" ></i> Logout</a>
+      </div>
+    </li>
+  </ul>
+</app-header>
+<div class="app-body">
+  <app-nav></app-nav>
+  <!-- Main content -->
+  <main class="main">
+    <!-- Breadcrumb -->
+    <ol class="breadcrumb" *ngIf="showBreadcrumb">
+      <app-breadcrumb></app-breadcrumb>
+      <!-- Breadcrumb Menu-->
+    </ol>
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <br>
+    <br>
+  </main>
+</div>

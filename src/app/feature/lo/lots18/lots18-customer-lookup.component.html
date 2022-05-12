@@ -1,0 +1,72 @@
+<modal-layout (onClose)="close()" header="{{ 'Label.LOTS03.SearchCustomer' | translate }}">
+    <card header="{{ 'Label.LOTS04.LookupCustomer' | translate }}">
+        <div class="card-menu">
+            <button (click)="search()" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <label>{{'Label.LOTS04.lookupCustomerPlaceholder'| translate}}</label>
+                        <div class="input-group">
+                            <input type="text" (keyup.enter)="search()" class="form-control" formControlName="keyword"
+                                placeholder="{{ 'Label.LOTS04.lookupCustomerPlaceholder' | translate }}">
+                            <div class="input-group-append">
+                                <button type="button" (click)="search()" class="btn btn-warning">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-12">
+                        <label>{{'เลขที่บัตรประชาชน'| translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="IdCard">
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <aaa-table [rows]="customers" [page]="page" (onTableEvent)="onTableEvent($event)">
+                        <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                            <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                <button type="button" class="btn btn-primary btn-sm" (click)="select(row.idCard)">
+                                    {{'Label.GLOBAL.Select'| translate}}
+                                </button>
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'Label.LOTS04.lookupCustomerCode'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.CustomerCode}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column prop="CustomerName+lang">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'Label.LOTS04.lookupCustomerName'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row['CustomerName'+lang.CURRENT] }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column prop="CustomerName+lang">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'เลขที่บัตรประชาชน'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.idCard }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </aaa-table>
+                </div>
+            </div>
+        </div>
+    </card>
+</modal-layout>

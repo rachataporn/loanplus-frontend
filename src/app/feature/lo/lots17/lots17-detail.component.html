@@ -1,0 +1,367 @@
+<div class="animated fadeIn">
+    <form [formGroup]="ReceiptForm">
+        <div class="form-row">
+            <div class="col-sm-12">
+                <div class="form-row">
+                    <div class="col-sm-12">
+                        <card header="{{'Label.LOTS08.LoanDetails'| translate}}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.LoanContractNumber'| translate}}</label>
+                                        <input type="text" class="form-control" style="text-align: center"
+                                            formControlName="ContractNo" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.Type'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="LoanType" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.BorrowerCode'| translate}}</label>
+                                        <input type="text" class="form-control" style="text-align: center"
+                                            formControlName="CustomerCode" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.CustomerName'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="CustomerName" disabled>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.LoanBalance'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control" formControlName="LoanTotalAmount"
+                                            [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.InterestRatePerYear'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control"
+                                            formControlName="LoanInterestLate" [decimals]="2">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.PaymentInstallmentsDate'| translate}}</label>
+                                        <ngx-numeric-textbox inputClass="form-control" formControlName="LoanPayDay"
+                                            [decimals]="0">
+                                        </ngx-numeric-textbox>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.PaymentByInstallments'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="LoanPeriodAmount"
+                                            disabled>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.InvoiceNumber'| translate}}</label>
+                                        <input type="text" class="form-control" style="text-align: center"
+                                            formControlName="InvoiceNo" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.InvoiceDate'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="InvoiceDate"
+                                            bsDatepicker disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.InvoiceRecorders'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="InvoiceBy" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.InvoiceStatus'| translate}}</label>
+                                        <div>
+                                            <h5>
+                                                <span class="badge badge-primary w-100"
+                                                    style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                                    {{ getInvoiceStatus['Text'+lang.CURRENT] }}
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+
+                            </div>
+                        </card>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="form-row">
+        <div class="col-sm-12">
+            <div class="form-row">
+                <div class="col-sm-12">
+                    <card header="{{'Label.LOTS08.PaymentDetails'| translate}}">
+                        <div class="card-content">
+                            <form [formGroup]="ReceiptForm">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.ReceiptNumber'| translate}}</label>
+                                        <input type="text" class="form-control" style="text-align: center"
+                                            formControlName="ReceiptNo" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label class="require">{{'Label.LOTS08.DateOfReceipt'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="ReceiptDate"
+                                            bsDatepicker>
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.ReceiptRecorder'| translate}}</label>
+                                        <input type="text" class="form-control" formControlName="ReceiptBy" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label>{{'Label.LOTS08.ReceiptStatus'| translate}}</label>
+                                        <div>
+                                            <h5>
+                                                <span class="badge badge-primary w-100"
+                                                    style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                                    {{ getReceiptStatus['Text'+lang.CURRENT] }}
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <tabset>
+                                <tab heading="{{'Label.LOTS08.Payment'| translate}}" (select)="onSelect($event)">
+                                    <form [formGroup]="ReceiptForm" [class.validated]="submitted"
+                                        [focusInvalid]="focusToggle">
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3">
+                                                <strong
+                                                    style="display: inline-block;margin-bottom: 0.5rem;">{{'Label.LOTS08.AmountToBePaid'| translate}}</strong>
+                                                <ngx-numeric-textbox inputClass="form-control"
+                                                    formControlName="InvoiceTotalAmount" [decimals]="2"
+                                                    [min]="-999999999" [max]="999999999">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                            <div class="form-group col-sm-3">
+                                                <strong
+                                                    style="display: inline-block;margin-bottom: 0.5rem;">{{'Label.LOTS08.PaymentAmount'| translate}}</strong>
+                                                <ngx-numeric-textbox inputClass="form-control"
+                                                    formControlName="ReceiptTotalAmount" [decimals]="2">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                            <div class="form-group col-sm-3">
+                                                <label *ngIf="prepay"
+                                                    class="payment-label">{{'Label.LOTS08.Overpaid'| translate}}</label>
+                                                <label *ngIf="!prepay"
+                                                    class="payment-label">{{'Label.LOTS08.RemainingPayment'| translate}}
+                                                </label>
+                                                <ngx-numeric-textbox inputClass="form-control payment-label"
+                                                    formControlName="DifferenceTotalAmount" [decimals]="2"
+                                                    [min]="-999999999" [max]="999999999">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                            <div class="form-group col-sm-3">
+                                                <strong
+                                                    style="display: inline-block;margin-bottom: 0.5rem;">{{'Label.LOTS08.BalancePrincipleAmount'| translate}}</strong>
+                                                <ngx-numeric-textbox inputClass="form-control"
+                                                    formControlName="BalancePrincipleAmount" [decimals]="2">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-sm-3">
+                                                <strong
+                                                    style="display: inline-block;margin-bottom: 0.5rem;">{{'Label.LOTS08.PrepaymentForPeriod'| translate}}</strong>
+                                                <input type="text" class="form-control"
+                                                    formControlName="PrePaymentPeriod" disabled>
+                                            </div>
+                                            <div class="form-group col-sm-3">
+                                                <strong
+                                                    style="display: inline-block;margin-bottom: 0.5rem;">{{'Label.LOTS08.AdvancePaymentAmount'| translate}}</strong>
+                                                <ngx-numeric-textbox inputClass="form-control"
+                                                    formControlName="AdvancePaymentAmount" [decimals]="2"
+                                                    [min]="-999999999" [max]="999999999">
+                                                </ngx-numeric-textbox>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <card header="{{'Label.LOTS08.MethodPayment'| translate}}">
+                                        <div class="card-content">
+                                            <div class="row" [formGroup]="ReceiptForm" [class.validated]="submitted"
+                                                [focusInvalid]="focusToggle">
+                                                <div class="col-12" formArrayName="PaymentForm">
+                                                    <aaa-grid-no-pager #detailgrid [rows]="getPayments.getRawValue()"
+                                                        [trackByProp]="'guid'" [formArray]="getPayments">
+                                                        <ngx-datatable-column name="ReceiveTypeCode" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="require">{{'Label.LOTS08.PayBy'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex">
+                                                                    <ng-select [items]="receiveType" appendTo="body"
+                                                                        dropdownPosition="bottom"
+                                                                        [bindLabel]="'Text' + lang.CURRENT"
+                                                                        bindValue="Value"
+                                                                        formControlName="ReceiveTypeCode"
+                                                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                                    </ng-select>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="PaidAmount" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="require">{{'Label.LOTS08.Amount'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex">
+                                                                    <ngx-numeric-textbox
+                                                                        inputClass="form-control payment-label"
+                                                                        formControlName="PaidAmount" [decimals]="2"
+                                                                        [min]="0" (keyup)="calculateMoneyKeyUp()">
+                                                                    </ngx-numeric-textbox>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="ReceiveDate" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="require">{{'Label.LOTS08.Date'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex">
+                                                                    <input bsDatepicker class="form-control" type="text"
+                                                                        [minDate]="minDateTranfer"
+                                                                        formControlName="ReceiveDate" />
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column name="AccountNo" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label>{{'Label.LOTS08.DestinationAccountNumber'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                <div [formGroupName]="rowIndex"
+                                                                    *ngIf="row.ReceiveTypeCode != ReceiveTypeCash">
+                                                                    <ng-select [items]="bankAccount" appendTo="body"
+                                                                        dropdownPosition="bottom" bindLabel="AccountNo"
+                                                                        bindValue="AccountNo"
+                                                                        formControlName="AccountNo"
+                                                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                                    </ng-select>
+                                                                </div>
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column [cellClass]="'text-left'" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{'Label.LOTS08.DestinationBank'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.BankName }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <ngx-datatable-column [cellClass]="'text-left'" width="200">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{'Label.LOTS08.DestinationBranch'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-value="value"
+                                                                let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                                                {{ row.BranchName }}
+                                                            </ng-template>
+                                                        </ngx-datatable-column>
+                                                        <!-- <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                                            <ng-template ngx-datatable-header-template>
+                                                                <label
+                                                                    class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                                            </ng-template>
+                                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                                ngx-datatable-cell-template>
+                                                                <button class="btn btn-outline-primary"
+                                                                    [disabled]="editMode"
+                                                                    (click)="removeRow(rowIndex);">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </ng-template>
+                                                        </ngx-datatable-column> -->
+                                                    </aaa-grid-no-pager>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </card>
+                                </tab>
+                                <tab heading="{{'Label.LOTS08.ProofPayment'| translate}}" (select)="onSelect($event)">
+                                    <div class="form-row" [formGroup]="ReceiptForm">
+                                        <div class="col-sm-6" formArrayName="AttachmentsForm"
+                                            style="border-right: solid 1px black">
+                                            <div class="form-row">
+                                                <div class="col-sm-12">
+                                                    <label
+                                                        style="font-weight: 800">{{'Label.LOTS08.AllPictures'| translate}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-sm-12">
+                                                    <ks-modal-gallery class="text-center" [id]="0"
+                                                        [modalImages]="imagesOld"
+                                                        [plainGalleryConfig]="plainGalleryGrid"
+                                                        [buttonsConfig]="customButtonsOldConfig"
+                                                        (buttonAfterHook)="onCustomButtonAfterHook($event, 0)">
+                                                    </ks-modal-gallery>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-row">
+                                                <div class="col-sm-12">
+                                                    <label
+                                                        style="font-weight: 800">{{'Label.LOTS08.SelectedPicture'| translate}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-sm-12">
+                                                    <ks-modal-gallery class="text-center" [id]="1"
+                                                        [modalImages]="imagesNew"
+                                                        [plainGalleryConfig]="plainGalleryGrid"
+                                                        [buttonsConfig]="customButtonsNewConfig"
+                                                        (buttonAfterHook)="onCustomButtonAfterHook($event, 1)">
+                                                    </ks-modal-gallery>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving || editMode" (click)="onSubmit()">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>
+                    {{'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="!editMode" (click)="onPrint()">
+                    <i class="fas fa-print"></i> {{'Label.LOTS08.PrintReceipt'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

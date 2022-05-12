@@ -1,0 +1,57 @@
+<div [formGroup]="form">
+  <label *ngIf="formsBase.required==true" class="require"
+    [attr.for]="formsBase.key">{{ formsBase['label'+lang.CURRENT] }}</label>
+  <label *ngIf="formsBase.required==false" [attr.for]="formsBase.key">{{ formsBase['label'+lang.CURRENT] }}</label>
+
+  <div [ngSwitch]="formsBase.controlType">
+
+    <input *ngSwitchCase="'Textbox'" [formControlName]="formsBase.key" class="form-control" [id]="formsBase.key"
+      [type]="formsBase.type">
+    <div *ngIf="formsBase.controlType=='Textbox' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <ng-select *ngSwitchCase="'List'" [items]="items" [formControlName]="formsBase.key"
+      [bindLabel]="'Text'+lang.CURRENT" bindValue="Value" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+    </ng-select>
+    <div *ngIf="formsBase.controlType=='List' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <input bsDatepicker *ngSwitchCase="'Date'" [formControlName]="formsBase.key" class="form-control" type="text"
+      [id]="formsBase.key" />
+    <div *ngIf="formsBase.controlType=='Date' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <ngx-numeric-textbox *ngSwitchCase="'Number'" inputClass="form-control" [formControlName]="formsBase.key"
+      [decimals]="0">
+    </ngx-numeric-textbox>
+    <div *ngIf="formsBase.controlType=='Number' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <year-input *ngSwitchCase="'Year'" [formControlName]="formsBase.key">
+    </year-input>
+    <div *ngIf="formsBase.controlType=='Year' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <div *ngSwitchCase="'Radio'">
+      <div class="form-check form-check-inline" style="margin-right: 1.5rem !important;" *ngFor="let item of items">
+        <input class="form-check-input" type="radio" [formControlName]="formsBase.key" id="{{item.TextEng}}"
+          value="{{item.Value}}">
+        <label class="form-check-label" for="{{item.Value}}">{{item['Text'+lang.CURRENT]}}</label>
+      </div>
+    </div>
+    <div *ngIf="formsBase.controlType=='Radio' && formsBase.required==true" class="invalid-feedback">
+      {{ 'Message.STD00000' | translate }}
+    </div>
+
+    <!-- <div *ngSwitchCase="'Main'">
+
+    </div> -->
+
+  </div>
+
+</div>

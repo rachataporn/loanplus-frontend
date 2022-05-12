@@ -1,0 +1,66 @@
+<modal-layout (onClose)="close()" header="{{ 'Label.LOMT01.Attribute'| translate}}">
+    <card header="{{ 'Label.LOMT01.Attribute'| translate}}">
+        <div class="card-menu">
+            <button (click)="select()" class="btn btn-sm btn-circle btn-secondary"
+                tooltip="{{ 'Label.GLOBAL.Select'| translate}}" [disabled]="getSelectData()">
+                <i class=" fas fa-check"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" (keyup.enter)="onSearch()" class="form-control"
+                                formControlName="keywords"
+                                placeholder="{{ 'Label.LOMT01.AttributeNameTha'| translate}}, {{ 'Label.LOMT01.AttributeNameEng'| translate}}, {{ 'Label.LOMT01.AttributeType'| translate}}">
+                            <div class="input-group-append">
+                                <button type="button" (click)="onSearch()" class="btn btn-warning">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="row">
+                <div class="col-12">
+                    <aaa-table [rows]="attributes" [rowSelect]="attributeSelected" [page]="page"
+                        (onTableEvent)="onTableEvent($event)">
+                        <ngx-datatable-column [width]="40" [sortable]="false" [canAutoResize]="false"
+                            [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                        </ngx-datatable-column>
+                        <ngx-datatable-column prop="AttributeNameTha">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'Label.LOMT01.AttributeNameTha'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.AttributeNameTha}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column prop="AttributeNameEng">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'Label.LOMT01.AttributeNameEng'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{row.AttributeNameEng}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column prop="AttributeType{lang}" [cellClass]="'text-center'">
+                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                <label class="datatable-header-cell-wrapper"
+                                    (click)="sort()">{{ 'Label.LOMT01.AttributeType'| translate}}</label>
+                            </ng-template>
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                {{ row['AttributeType'+lang.CURRENT] }}
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </aaa-table>
+                </div>
+            </div>
+        </div>
+    </card>
+</modal-layout>

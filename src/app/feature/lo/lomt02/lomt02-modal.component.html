@@ -1,0 +1,54 @@
+<modal-layout (onClose)="close()">
+  <card header="{{ 'Label.LOMT02.Company' | translate }}">
+    <div class="card-menu">
+      <button type="button" (click)="select()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{ 'Label.GLOBAL.Select' | translate }}">
+        <i class="fas fa-check"></i>
+      </button>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="searchForm">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <label>{{ 'Label.LOMT02.Company' | translate }}</label>
+          <div class="input-group">
+            <input type="text" (keyup.enter)="search(true)" class="form-control" formControlName="CompanyCode" placeholder="{{ 'Label.LOMT02.PlaceholderModal' | translate }}">
+            <div class="input-group-append">
+              <button type="button" (click)="search(true)" class="btn btn-warning">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <div class="row">
+        <div class="col-12">
+          <aaa-table [rows]="modalList"  [rowSelect]="companySelected" [page]="page" 
+            (onTableEvent)="onTableEvent($event)">
+            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+              [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+            </ngx-datatable-column>
+            <ngx-datatable-column name="CompanyCode" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT02.BranchCode' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.CompanyCode}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column name="CompanyNameTha" prop="CompanyNameTha">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT02.BranchName' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{row.CompanyNameTha}}
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </form>
+    </div>
+  </card>
+</modal-layout>

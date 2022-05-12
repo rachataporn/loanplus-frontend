@@ -1,0 +1,116 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-md-12">
+      <card header="{{ 'Label.LOTS01.CustomerMember' | translate }}">
+        <div class="card-menu">
+            <button type="button" (click)="onSearch()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="form-group  col-12 col-md-4">
+                  <label>{{ 'Label.LOTS01.CustomerCode' | translate }}</label>
+                  <input (keyup.enter)="onSearch()" type="text" class="form-control" formControlName="CustomerCode">
+              </div>
+              <div class="form-group col-4">
+                  <label>{{ 'Label.LOTS01.FullName' | translate }}</label>
+                  <input (keyup.enter)="onSearch()" type="text" class="form-control" formControlName="CustomerName">
+              </div>
+              <div class="form-group  col-12 col-md-4">
+                  <label>{{ 'Label.LOTS01.CardId' | translate }}</label>
+                  <input (keyup.enter)="onSearch()" type="text" class="form-control" formControlName="IdCard">
+              </div>
+              
+            </div>
+            <div class="row">
+                <div class="form-group col-4">
+                    <label>{{ 'Label.LOTS01.BlackList' | translate }}</label>
+                    <div>
+                        <div class="btn-group d-block" btnRadioGroup formControlName="BlackList">
+                            <button type="button" [btnRadio]="bl.Value" *ngFor="let bl of BlackLists"
+                              class="btn btn-outline-warning" tabindex="0" (click)="searchStatus()">
+                              {{ bl['Text'+lang.CURRENT]}}
+                            </button>
+                          </div>
+                    </div>
+                </div>
+              </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{ 'Label.LOTS01.CustomerMember' | translate }}">
+          <div class="card-menu">
+            <button (click)="add()" class="btn btn-sm btn-circle btn-secondary" tooltip="เพิ่มลูกค้า/สมาชิกใหม่">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+                <div class="col-md-12">
+                  <aaa-table [rows]="customerList" [page]="page" 
+                    (onTableEvent)="onTableEvent($event)">
+                    <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.CustomerCode' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        <span class="link" (click)="edit(row.CustomerCode)">{{row.CustomerCode}}</span>
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                    <ngx-datatable-column width="200" prop="CustomerName">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.FullName' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.CustomerName}}
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                    <ngx-datatable-column [cellClass]="'text-center'" prop="IdCard">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.CardId' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.IdCard}}
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                    <ngx-datatable-column [cellClass]="'text-center'" prop="BlackList">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.BlackList' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        <i class="fas fa-check" *ngIf="row.BlackList == true "></i>
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                    <ngx-datatable-column prop="Credit">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.Credit' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.Credit}}
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                    <ngx-datatable-column [cellClass]="'text-center'" prop="UpdatedBy">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS01.CreateBy' | translate }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.UpdatedBy}}
+                      </ng-template>
+                    </ngx-datatable-column>
+    
+                  </aaa-table>
+                </div>
+              </div>
+          </div>
+        </card>
+    </div>
+  </div>
+</div>

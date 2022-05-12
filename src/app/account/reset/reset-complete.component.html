@@ -1,0 +1,18 @@
+<div class="gray-bg">
+  <div class="container-fluid animated fadeInDown">
+      <div class="row mt-5">
+          <div class="col-12 text-center">
+            <h2 *ngIf="isComplete" class="font-weight-bold text-secondary mt-3">{{ 'Label.SUMT06.ResetComplete' | translate }}</h2>
+            <h2 *ngIf="!isComplete" class="font-weight-bold text-secondary mt-3">{{ 'Label.SUMT06.ResetAgainHead' | translate }}</h2>
+            <a routerLink="/login" *ngIf="isComplete" >  
+             <h5>
+                {{ 'Label.SUMT06.LoginLink' | translate }}
+             </h5>
+           </a>
+            <h5 *ngIf="!isComplete" >
+                {{ 'Label.SUMT06.ResetAgain' | translate }}
+            </h5>
+          </div>
+        </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="ลูกหนี้ครบกำหนดแจ้งหนี้">
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="inputSearch"
+                                        placeholder="ค้นหาข้อมูล">
+                                </div>
+                            </div>
+
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <aaa-table [rows]="menuList" [count]="count" 
+                                    (onTableEvent)="onTableEvent($event)" [rowSelect]="selected" >
+                                   
+                                  <ngx-datatable-column [width]="30"[sortable]="false" [canAutoResize]="false" [draggable]="false"
+                                    [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                                  </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="50" [cellClass]="'text-center'" name="MainMenu">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">รหัสสาขา</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.branchCode}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="MainMenu">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">วันที่ครบกำหนด</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.DueDate}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="80" [cellClass]="'text-center'" name="ProgramCode">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">เลขที่สัญญา</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.Contractnumber}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="MainMenu">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">รหัสผู้กู้</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.Borrowercode}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="ProgramCode">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อผู้กู้</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.name}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="MenuNameTha">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">ยอดเงินค้างชำระ</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template
+                                            style="white-space:nowrap;overflow:hidden;">
+                                            {{row.Arrears}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [width]="80" [cellClass]="'text-center'" name="MenuNameEng">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template >
+                                            <label class="datatable-header-cell-wrapper" (click)="sort()">เบอร์โทร</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.tel}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                    <ngx-datatable-column [width]="100" [cellClass]="'text-center'" name="MenuCode">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper" (click)="sort()">ดูข้อมูล</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <!-- <span class="link" (click)="edit(row)">ดูข้อมูล</span> -->
+                                            <i class="fas fa-folder-open"></i>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    
+                                   
+                                </aaa-table>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </card>
+            <div class="row">
+                    <div class="col-12 text-center">
+                        <br>
+                        <button class="btn btn-primary" (click)="ConfirmSmS()" type="button">ส่ง SMS</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+<!-- <footer class="app-footer-btn animated fadeIn">
+        
+                <div class="row">
+                        <div class="col-12 text-center">
+                            <br>
+                            <button class="btn btn-primary" type="button">ส่ง SMS</button>
+                        </div>
+                    </div>
+            
+        
+    </footer> -->

@@ -1,0 +1,297 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-4">
+            <card header="บันทึกติดตามที่บ้าน">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <span style="font-size: 25px"><label><u>บันทึกติดตามที่บ้าน</u></label></span>
+                                </div>
+                                <div class="col-12 text-center">
+                                        <img src="assets/img/brand/user.png" class="rounded-circle" width="50%" style="margin-top: 5%;">
+                                </div>
+                                <div class="col-12 text-center">
+                                    <span style="font-size: 20px"><label>นาง อัมพิกา พลเยี่ยม</label></span>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>งวดชำระทุกวันที่</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>01/08/62</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>เลขที่สัญญา</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>000L61-0603</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>รหัสผู้กู้</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>C001845</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>เบอร์มือถือ</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>0833755172</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>เบอร์โทรศัพท์</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label></label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>เงินต้นคงค้าง</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>79,240.00</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>ดอกเบี้ยคงค้าง</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>59,432.00</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>จำนวนงวด</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>8</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>ค่าปรับ</label>
+                                </div>
+                                <div class="col-6 text-right" style="color: #0099CC;">
+                                    <label>8,092.00</label>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-6 text-left">
+                                    <label>ยอดเงินรวม</label>
+                                </div>
+                                <div class="col-6 text-right" style="color:#0099CC;">
+                                    <label>146,764.00</label>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+
+                    </div>
+                </div>
+            </card>
+        </div>
+        <div class="col-8">
+            <form [formGroup]="dataHistory">
+                <tabset>
+                    <tab heading="บันทึกติดตาม">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-2 text-right">
+                                        <label>ค่าติดตาม:</label>
+                                    </div>
+                                    <div class="form-group col-sm-2">
+                                        <div style="background-color: lightgrey;
+                                            width: 195px;
+                                            height: 35px;
+                                            padding: 15px;"></div>
+                                    </div>
+                                    <div class="form-group col-sm-6 text-right">
+                                        <label>ครั้งที่:</label>
+                                    </div>
+                                    <div class="form-group col-sm-1">
+                                        <input type="text" class="form-control" formControlName="input1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-12">
+                                <div class="form-row">
+                                    <div class="form-group col-sm-2 text-right">
+                                        <label>สถานะติดตาม:</label>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <ng-select [items]="statusDDL" required bindLabel="text" bindValue="value"
+                                            placeholder="กรุณาระบุ">
+                                        </ng-select>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <input type="text" class="form-control" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        <textarea type="text" class="form-control" rows="10"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="ประวัติโทรติดตามหนี้">
+                        <div class="animated fadeIn">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <aaa-table [rows]="hisTelList" [count]="count" 
+                                        [page]="page" (onTableEvent)="onTableEvent($event)">
+
+                                        <ngx-datatable-column [cellClass]="'text-center'" name="column1" [width]="5">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper"
+                                                    (click)="sort()">ครั้งที่</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{row.column1}}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column [cellClass]="'text-center'" name="column2" [width]="7">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper"
+                                                    (click)="sort()">วันที่</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{row.column2}}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column [cellClass]="'text-left'" name="column3" [width]="250">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper"
+                                                    (click)="sort()">รายละเอียด</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{row.column3}}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column [cellClass]="'text-center'" name="column4" [width]="5">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper"
+                                                    (click)="sort()">สถานะติดตาม</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                {{row.column4}}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-table>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="ประวัติติดตามหนี้ที่บ้าน">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <aaa-table [rows]="hisHomeList" [count]="count" 
+                                    [page]="page" (onTableEvent)="onTableEvent($event)">
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" name="column1" [width]="5">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">ครั้งที่</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.column1}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" name="column2" [width]="7">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper" (click)="sort()">วันที่</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.column2}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-left'" name="column3" [width]="250">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">รายละเอียด</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.column3}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" name="column4" [width]="5">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">สถานะติดตาม</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.column4}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" name="column4" [width]="5">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">สถานะค่าติดตาม</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.column5}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </aaa-table>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group col-12 text-center">
+                                    <button type="button" class="btn btn-warning">พิมพ์</button>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i>ย้อนกลับ</button>
+            </div>
+            <!-- <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>บันทึก</button>
+            </div> -->
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,20 @@
+// If you want to override variables do it here
+@import "variables";
+
+@import 'src/app/shared/datepicker/bs-datepicker';
+// Import styles
+@import '~ngx-toastr/toastr.css';
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/bootstrap.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+@import "node_modules/@coreui/coreui/scss/coreui";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome";
+@import "~@fortawesome/fontawesome-free/scss/brands";
+@import "~@fortawesome/fontawesome-free/scss/regular";
+@import "~@fortawesome/fontawesome-free/scss/solid";
+
+// If you want to add something do it here
+@import "custom";
+@import "form";

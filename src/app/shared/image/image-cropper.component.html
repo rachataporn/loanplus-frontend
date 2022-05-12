@@ -1,0 +1,31 @@
+<div class="upload-container">
+    <div class="img-container-cropper" *ngIf="state == 'cropped'">
+        <div class="img-wrapper" [style.width]="imageWidth" [style.height]="imageHeight">
+            <img class="img-preview" [src]="file.Uploaded ? image.encode(file.Url) : imageSrc">
+            <div class="img-remove">
+                <button type="button" class="btn btn-danger btn-sm" [disabled]="isDisable" (click)="onRemove(inputToCrop)">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="state == 'crop'" class="form-row">
+        <div class="form-group col-md-12 text-center" style="margin-left:auto;margin-right:auto;">
+            <ngx-cropperjs #imageToCrop [cropperOptions]="config" [imageUrl]="imageUrl"></ngx-cropperjs>
+        </div>
+        <div class="form-group col-md-12 text-center">
+            <button type="button" class="btn btn-danger" (click)="onCut()">
+                <i class="fas fa-crop-alt"></i> ตัด
+            </button>
+        </div>
+    </div>
+    <div [hidden]="state != 'select'" draggable="true" class="area" [class.disabled]="isDisable" [class.over]="isOver" [class.leave]="!isOver"
+        (click)="openInputFile(inputToCrop)">
+        <div *ngIf="placeholder" class="file-placeholder">{{placeholder}}</div>
+        <div><i class="fas fa-plus fa-2x"></i></div>
+        <input type="file" accept="image/*,.svg" #inputToCrop (change)="onInputFileChange($event)" style="display:none" />
+    </div>
+</div>
+<div class="text-danger" *ngIf="errors.length">
+    <small *ngFor="let error of errors">{{ error }}</small>
+</div>

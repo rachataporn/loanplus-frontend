@@ -1,0 +1,304 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <tabset>
+        <tab heading="Form Control">
+          <card header="card name">
+            <div class="card-menu">
+              <button class="btn btn-sm btn-circle btn-secondary" tooltip="action">
+                <i class="fas fa-search"></i>
+              </button>
+              <button class="btn btn-sm btn-circle btn-secondary" tooltip="action">
+                <i class="fas fa-print"></i>
+              </button>
+              <button class="btn btn-sm btn-circle btn-secondary" tooltip="action">
+                <i class="fas fa-envelope"></i>
+              </button>
+            </div>
+            <div class="card-content">
+              <form [formGroup]="programForm" [class.validated]="submitted">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="textValue" class="require">Text Value</label>
+                    <input type="text" class="form-control" placeholder="textbox" formControlName="TextValue">
+                    <div class="invalid-feedback">
+                      please enter
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Radio Value</label>
+                    <div class="btn-group d-block" btnRadioGroup formControlName="RadioValue">
+                      <button type="button" btnRadio="A" class="btn btn-outline-warning" tabindex="0">radio 1</button>
+                      <button type="button" btnRadio="B" class="btn btn-outline-warning" tabindex="0">radio 2</button>
+                      <button type="button" btnRadio="C" class="btn btn-outline-warning" tabindex="0">radio 3</button>
+                    </div>
+                    <div class="invalid-feedback">
+                      please enter
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="checkboxValue">Checkbox Value</label>
+                    <div>
+                      <label class="switch switch-label switch-warning">
+                        <input type="checkbox" class="switch-input" formControlName="CheckboxValue">
+                        <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label>Lookup Value</label>
+                    <lookup-input [small]="false" lookupName="SingleLookup" keyColumn="ListItemCode"
+                      [param]="getParameterForSingleLookup" holder="Single Item lookup"
+                      searchUrl="system/listitem/lookup/search" descUrl="system/listitem/lookup/description"
+                      [content]="SingleLookupContent" formControlName="LookupValue"></lookup-input>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label>Lookup Description</label>
+                    <input class="form-control form-control" lookupParent="SingleLookup" name="ListItemNameTha"
+                      disabled>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="DateValule">Date Value</label>
+                    <input type="text" class="form-control" formControlName="DateValue" bsDatepicker>
+                    <div class="invalid-feedback">
+                      please enter
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="numberValue">Number Value</label>
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="NumberValue" [decimals]="0">
+                    </ngx-numeric-textbox>
+                    <div class="invalid-feedback" *ngIf="NumberValue.invalid">
+                      <div *ngIf="NumberValue.errors.required">
+                        please enter
+                      </div>
+                      <div *ngIf="NumberValue.errors.min || NumberValue.errors.max">
+                        between 1 and 999
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="currencyValule">Currency Value</label>
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="CurrencyValue" [decimals]="2">
+                    </ngx-numeric-textbox>
+
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="selectValue">Select Value</label>
+                    <ng-select class="" [items]="samples" bindLabel="Text" bindValue="Value"
+                      formControlName="SelectValue" placeholder="Please Select">
+
+                    </ng-select>
+                    <div class="invalid-feedback">
+                      please enter
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label>Textarea Value</label>
+                    <textarea formControlName="TextareaValue" id="textarea-input" name="textarea-input" rows="4"
+                      class="form-control" placeholder="Content.."></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label>Year Value</label>
+                    <year-input formControlName="YearValue"></year-input>
+                    <div class="invalid-feedback">
+                      please enter
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">btn in tag form</button>
+                <p class="text-danger"> * วางตำแหน่งปุ่มให้อยู่ใน tag Form เพื่อให้กด enter แล้ว submit form ได้</p>
+                <p class="text-danger"> * การใช้ tag button ทุกที่ ถ้าไม่ใช่ button เพื่อ submit ให้ใส่ type="button"
+                  เสมอ</p>
+              </form>
+            </div>
+          </card>
+        </tab>
+        <tab heading="Datatable">
+          <card header="card name">
+            <div class="card-menu">
+              <button class="btn btn-sm btn-circle btn-secondary" (click)="addAttribute()" tooltip="action">
+                <i class="fas fa-plus"></i>
+              </button>
+            </div>
+            <div class="card-content">
+              <div class="row">
+                <div class="col-12">
+                  <p class="text-danger">ปุ่มและ Icon ต่างๆใน grid ให้ใช้สี primary ให้เป็น std เดียวกัน</p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <aaa-grid [rows]="datatables" [rowSelect]="selected">
+                    <ngx-datatable-column [width]="40" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                      [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="AttributeNameTha">
+                      <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">Attribute thai</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        {{ row.AttributeNameTha}}
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="AttributeNameEng">
+                      <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">Attribute Eng</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" let-isSelected="isSelected"
+                        ngx-datatable-cell-template>
+                        <div *ngIf="isSelected"> {{ row.AttributeNameEng}} </div>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper"
+                          (click)="sort()">{{ 'Label.GLOBAL.Active'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                      </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column [cellClass]="'text-center'">
+                      <ng-template ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete'|
+                                      translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                        <button class="btn btn-outline-primary btn-sm" (click)="removeAttribute(rowIndex);">
+                          <i class="far fa-trash-alt"></i>
+                        </button>
+                      </ng-template>
+                    </ngx-datatable-column>
+                  </aaa-grid>
+                </div>
+              </div>
+            </div>
+          </card>
+        </tab>
+        <tab heading="Upload Image">
+          <div class="row">
+            <div class="col-12">
+              <card header="Form with image and file">
+                <div class="card-menu">
+                </div>
+                <div class="card-content">
+                  <form [formGroup]="uploadForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                    <div class="form-row">
+                      <div class="form-group col-sm-6 col-md-6">
+                        <label>ข้อมูล</label>
+                        <input type="text" class="form-control" formControlName="Description">
+                      </div>
+                      <div class="form-group col-sm-6 col-md-3">
+                        <label>รูป</label>
+                        <image-upload [file]="imageFile" [category]="category" formControlName="ImageName">
+                        </image-upload>
+                        <div class="invalid-feedback">
+                          please enter
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-sm-6">
+                        <label>ไฟล์</label>
+                        <file-upload [file]="attachmentFile" [category]="category" formControlName="FileName">
+                        </file-upload>
+                        <div class="invalid-feedback">
+                          please enter
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </card>
+              <card header="Form array attach file">
+                <div class="card-menu">
+                  <button class="btn btn-sm btn-circle btn-secondary" (click)="addAttachment()" tooltip="action">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                <div class="card-content">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="row" [formGroup]="uploadForm" [class.validated]="submitted">
+                        <div class="col-12" formArrayName="exampleAttachmentsForm">
+                          <aaa-grid #detailgrid [rows]="exampleAttachments.value" [trackByProp]="'guid'"
+                            [formArray]="exampleAttachments">
+                            <ngx-datatable-column name="FileName">
+                              <ng-template ngx-datatable-header-template>
+                                <label class="require">attachment</label>
+                              </ng-template>
+                              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                ngx-datatable-cell-template>
+                                <div [formGroupName]="rowIndex">
+                                  <file-upload [file]="attachmentFiles[rowIndex]" [category]="category"
+                                    formControlName="FileName">
+                                  </file-upload>
+                                </div>
+                              </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                              <ng-template ngx-datatable-header-template>
+                                <label
+                                  class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                              </ng-template>
+                              <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+
+                                <button class="btn btn-outline-primary btn-sm" (click)="removeAttachment(rowIndex);">
+                                  <i class="far fa-trash-alt"></i>
+                                </button>
+                              </ng-template>
+                            </ngx-datatable-column>
+                          </aaa-grid>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </card>
+            </div>
+          </div>
+        </tab>
+        <!-- <tab heading="Jasper Report">
+          <div class="row">
+            <div class="col-12">
+              <card header="Report">
+                <div class="card-menu">
+                  <button class="btn btn-sm btn-secondary" (click)="generateReport()" tooltip="action">
+                    Generate Report
+                  </button>
+                </div>
+                <div class="card-content">
+                  <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+                    [printResolution]="300" [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+                </div>
+              </card>
+            </div>
+          </div>
+        </tab> -->
+      </tabset>
+    </div>
+  </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-center">
+        <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+          <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+          <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+      </div>
+      <div class="col text-center">
+        <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+          <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+      </div>
+    </div>
+  </div>
+</footer>

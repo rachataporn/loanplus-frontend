@@ -1,0 +1,127 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-12">
+            <card header="{{'Label.DBMT07.Search'| translate}}">
+                <div class="card-menu">
+                    <button (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{'Label.GLOBAL.Search' | translate}}">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="form-row">
+                            <div class="form-group col-md-6 col-sm-6 col-12">
+                                <label>{{'Label.DBMT07.Company'| translate}}</label>
+                                <ng-select [items]="Company" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                    formControlName="CompanyCode" placeholder="{{'Label.DBMT07.Company1'| translate}}">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-md-6 col-sm-12 col-12">
+                                <label>{{'Label.DBMT07.Employee'| translate}}</label>
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search()" class="form-control" maxlength="100"
+                                        formControlName="inputSearch"
+                                        placeholder="{{'Label.DBMT07.EmployeeCodeEmployeeName'| translate}}">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+            <card header="{{'Label.DBMT07.EmployeeDetail'| translate}}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="form-row">
+                        <div class="col-12">
+                            <aaa-table [rows]="Employee" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column width="100" prop="EmployeeCode" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.EmployeeCode'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link 'text-left'"
+                                            (click)="edit(row.CompanyCode, row.EmployeeCode)">{{row.EmployeeCode}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" prop="EmployeeName" [cellClass]="'text-left'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.EmployeeName'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.EmployeeName}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" prop="Company{{lang.CURRENT}}"
+                                    [cellClass]="'text-left'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.Company'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row['Company'+lang.CURRENT]}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" prop="Department{{lang.CURRENT}}"
+                                    [cellClass]="'text-left'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.Department'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row['Department'+lang.CURRENT]}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" prop="Position{{lang.CURRENT}}"
+                                    [cellClass]="'text-left'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.Position'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row['Position'+lang.CURRENT]}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="50" [cellClass]="'text-center'" prop="Active">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{'Label.DBMT07.Active'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="50" [cellClass]="'text-center'" [sortable]="false"
+                                    [width]="100">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{'Label.DBMT07.Delect'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            (click)="remove(row.EmployeeCode,row.CompanyCode,row.RowVersion)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

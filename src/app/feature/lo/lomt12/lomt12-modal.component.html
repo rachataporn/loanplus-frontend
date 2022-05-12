@@ -1,0 +1,53 @@
+<modal-layout header="{{ 'Label.LOMT12.AddLoanType' | translate }}" (onClose)="close()">
+  <card header="{{ 'Label.LOMT12.LoanType' | translate }}">
+    <div class="card-menu">
+      <button type="button" (click)="onSubmit()" class="btn btn-sm btn-circle btn-secondary"
+        tooltip="{{ 'Label.GLOBAL.Save' | translate }}" [disabled]="saving">
+        <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+        <i class="far fa-save" [hidden]="saving"></i>
+      </button>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="loanAgreementForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <div class="row">
+          <div class="form-group col-sm-12">
+            <div class="form-row">
+              <div class="form-group col-sm-3">
+                <label class="require">{{ 'Label.LOMT12.LoanTypeCode' | translate }}</label>
+                <input type="text" class="form-control text-center" formControlName="LoanTypeCode" maxlength="10"
+                  (change)="checkLoanTypeCode()">
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-5">
+                <label class="require">{{ 'Label.LOMT12.LoanTypeNameTH' | translate }}</label>
+                <input type="text" class="form-control" formControlName="LoanTypeNameTha" maxlength="200">
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-2">
+                <label>{{ 'Label.LOMT12.CanRefinance'| translate }}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="CanRefinance">
+                  <button type="button" [btnRadio]="refinance.Value" *ngFor="let refinance of CanRefinances"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ refinance['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+              <div class="form-group col-sm-2">
+                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                  <input class="custom-control-input" type="checkbox" id="Active" formControlName="Active">
+                  <label class="custom-control-label" for="Active">
+                    {{ 'Label.LOMT12.Active' | translate }}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </card>
+</modal-layout>

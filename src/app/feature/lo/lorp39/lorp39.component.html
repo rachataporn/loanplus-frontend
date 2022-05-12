@@ -1,0 +1,125 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm">
+        <card header="{{ 'Label.LORP09.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="Company">{{'ตั้งแต่ สาขา' | translate}}</label>
+                <ng-select [items]="Branch" [bindLabel]="'TextTha'" bindValue="Value"
+                  formControlName="FromCompany">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="Company">{{'ถึง สาขา' | translate}}</label>
+                <ng-select [items]="Branch" [bindLabel]="'TextTha'" bindValue="Value"
+                  formControlName="ToCompany">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="FromContractType">{{'ตั้งแต่ ประเภทสัญญา' | translate}}</label>
+                <ng-select [items]="loanType" [bindLabel]="'TextTha'" bindValue="Value"
+                  formControlName="FromContractType">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="ToContractType">{{'ถึง ประเภทสัญญา' | translate}}</label>
+                <ng-select [items]="loanType" [bindLabel]="'TextTha'" bindValue="Value"
+                  formControlName="ToContractType">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="FromOwnerDeadDate">{{'ตั้งแต่วันที่เจ้าของหลักทรัพย์เสียชีวิต' |
+                  translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="FromOwnerDeadDate" 
+                  bsDatepicker>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-3 col-md-3">
+                <label for="ToOwnerDeadDate">{{'ถึง' |
+                  translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="ToOwnerDeadDate"
+                  bsDatepicker>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ 'สถานะคำขอ'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="DocStatus">
+                  <button type="button" [btnRadio]="docStatus.Value" *ngFor="let docStatus of docStatusList"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ docStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP02.LoanType" | translate }}</label>&nbsp;<label class="text-danger">{{
+                  "Label.LORP02.SelectAll" | translate }}</label>
+                <div formArrayName="ContractStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of contractStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChkcontractStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChkcontractStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label>{{'รูปแบบรายงาน'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="ExportType">
+                  <button type="button" [btnRadio]="type.Value" *ngFor="let type of exportType"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ type['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORP09.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

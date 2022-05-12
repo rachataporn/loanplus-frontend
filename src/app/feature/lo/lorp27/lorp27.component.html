@@ -1,0 +1,77 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP27.SecuritiesHistoriesReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'Label.LORP27.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'Label.LORP27.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-3">
+                <label>{{ 'Label.LORP27.ApprovedDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ApprovedDate"
+                  bsDatepicker />
+              </div>
+              <div class="form-group col-sm-12 col-md-3">
+                <label>{{ 'Label.LORP27.ToApprovedDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ToApprovedDate"
+                  bsDatepicker />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP27.SecuritiesType" | translate }}</label>&nbsp;<label class="text-danger">{{
+                  "Label.LORP13.SelectAll" | translate }}</label>
+                <div formArrayName="SecuritiesType">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of securitiesType.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChksecuritiesType'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChksecuritiesType'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP27.SecuritiesStatus" | translate }}</label>&nbsp;<label class="text-danger">{{
+                  "Label.LORP13.SelectAll" | translate }}</label>
+                <div formArrayName="SecuritiesStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of securitiesStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChksecuritiesStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChksecuritiesStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

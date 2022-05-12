@@ -1,0 +1,1774 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-12">
+            <form [formGroup]="loanAgreementForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <card header="{{'Label.LOMT12.LoanType'| translate}}">
+                    <div class="card-content">
+                        <div class="form-row">
+                            <div class="form-group col-4 col-md-4">
+                                <label>{{ 'Label.LOMT12.LoanTypeCode' | translate }}</label>
+                                <input type="text" class="form-control text-center" formControlName="LoanTypeCode"
+                                    maxlength="4" (change)="checkLoanTypeCode()">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-6 col-md-6">
+                                <label class="require">{{ 'Label.LOMT12.LoanTypeNameTH' | translate }}</label>
+                                <input type="text" class="form-control" formControlName="LoanTypeNameTha"
+                                    maxlength="200">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-2 col-md-2">
+                                <label>{{ 'Label.LOMT12.CanRefinance'| translate }}</label>
+                                <div class="btn-group d-block" btnRadioGroup formControlName="CanRefinance">
+                                    <button type="button" [btnRadio]="refinance.Value"
+                                        *ngFor="let refinance of CanRefinances" class="btn btn-outline-warning"
+                                        tabindex="0">
+                                        {{ refinance['Text'+lang.CURRENT]}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group col-2 col-md-2">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="Active"
+                                        formControlName="Active">
+                                    <label class="custom-control-label" for="Active">
+                                        {{ 'Label.LOMT12.Active' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group col-2 col-md-2">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="IsLoanInsurance"
+                                        formControlName="IsLoanInsurance">
+                                    <label class="custom-control-label" for="IsLoanInsurance">
+                                        {{ 'ประกันหนี้สิน' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-4 col-md-4">
+                                <label class="require">{{ 'Label.LOMT12.LoanType' | translate }}</label>
+                                <ng-select [items]="ContractTypeList" required bindLabel="TextTha" bindValue="Value"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect' | translate }}"
+                                    formControlName="ContractType">
+                                </ng-select>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-3 col-md-3">
+                                <label class="require">{{ 'Label.LOMT12.InterestRate' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100"
+                                    formControlName="InterestRate">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12./year' | translate }}</label>
+                            </div>
+                            <div class="form-group col-2 col-md-2">
+                                <label class="require">{{ 'Label.LOMT12.MinPeriod' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100" [decimals]="0"
+                                    formControlName="MinPeriod">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-2 col-md-2">
+                                <label class="require">{{ 'Label.LOMT12.MaxPeriod' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="200" [decimals]="0"
+                                    formControlName="MaxPeriod">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-3 col-md-3">
+                                <label class="require">{{ 'Label.LOMT12.InterestAllMax' | translate }}#1</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100"
+                                    formControlName="InterestAllMax">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12./year' | translate }}</label>
+                            </div>
+                            <div class="form-group col-2 col-md-3">
+                                <label class="require">{{ 'Label.LOMT12.InterestAllMax' | translate }}#2</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100"
+                                    formControlName="InterestAllMax2">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12./year' | translate }}</label>
+                            </div>
+                            <div class="form-group col-2 col-md-3">
+                                <label class="require">{{ 'Label.LOMT12.InterestAllMaxDisplay' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100"
+                                    formControlName="InterestAllMaxDisplay">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12./year' | translate }}</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-3 col-md-3">
+                                <label class="require">{{ 'Label.LOMT12.InterestAllMax2Display' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100"
+                                    formControlName="InterestAllMax2Display">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12./year' | translate }}</label>
+                            </div>
+                            <div class="form-group col-2 col-md-3">
+                                <label>{{ 'Label.LOMT12.NotCloseAdvance' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100" [decimals]="0"
+                                    formControlName="NotCloseAdvance">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                            </div>
+                            <div class="form-group col-2 col-md-3">
+                                <label>{{ 'Label.LOMT12.NumberMonthsPaid' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="100" [decimals]="0"
+                                    formControlName="NumberMonthsPaid">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-4 col-md-4">
+                                <label class="require">{{ 'Label.LOMT12.Category' | translate }}</label>
+                                <ng-select [items]="LoanTypeList" required bindLabel="TextTha" bindValue="Value"
+                                    placeholder="{{ 'Label.GLOBAL.PleaseSelect' | translate }}"
+                                    formControlName="CategoryId">
+                                </ng-select>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-4 col-md-4">
+                                <label>{{ 'Label.LOMT12.MaxLoanAmount' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-right" [max]="9999999999"
+                                    formControlName="MaxLoanAmount"
+                                    placeholder="{{'Label.LOMT12.Unlimited' | translate}}">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-3 col-md-3">
+                                <label>{{ 'Label.LOMT12.MortgageFee' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-center" [max]="999"
+                                    formControlName="MortgageFee" decimals="2">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-1 col-md-1">
+                                <label style="margin-top: 35px">{{ 'Label.LOMT12.Percent' | translate }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </card>
+            </form>
+
+            <card header="{{'Label.LOMT12.BorrowerDetails1'| translate}}">
+                <div class="card-content">
+                    <form [formGroup]="LoanTypeBorrower1Form">
+                        <div class="form-row">
+                            <div class="form-group col-3 col-md-3">
+                                <label>{{ 'Label.LOMT12.MaxLoanAmount' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-right" [max]="9999999999"
+                                    [decimals]="2" formControlName="ContractMaximumLimit"
+                                    placeholder="{{'Label.LOMT12.Unlimited' | translate}}">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-4 col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="IsAgeOverSixty1"
+                                        formControlName="IsAgeOverSixty">
+                                    <label class="custom-control-label" for="IsAgeOverSixty1">
+                                        {{ 'Label.LOMT12.AgeOverSixty' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div> -->
+                    </form>
+                    <hr>
+                    <h4>{{'Label.LOMT12.Execution'| translate}}</h4>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.AddressIdCard'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(idCardAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.CurrentAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(currentAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.WorkAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(workplaceAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>{{'Label.LOMT12.And'| translate}}</h4><br>
+                    <h4>{{'Label.LOMT12.Contract'| translate}}</h4>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.AddressIdCard'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailIdCardAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(idCardAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.CurrentAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailCurrentAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(currentAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.WorkAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince && !LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower1Form.value.LoanTypeBorrower1DetailWorkplaceAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower1Detail(workplaceAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>{{'Label.LOMT12.CustomerCredit'| translate}}</h4>
+                    <card header="{{'Label.LOMT12.CustomerCredit' | translate}}">
+                        <div class="card-menu">
+                            <button (click)="addRowCustomerCredit1(); detailgrid.goLastPage();"
+                                class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="row" [formGroup]="LoanTypeBorrower1Form" [class.validated]="submitted">
+                                <div class="col-12" formArrayName="CustomerCredit1Form">
+                                    <aaa-grid #detailgrid [rows]="getCustomerCredit1.value" [trackByProp]="'guid'"
+                                        [formArray]="getCustomerCredit1">
+                                        <ngx-datatable-column name="CustomerGrade" width="250">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.Customer'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ng-select class="sm" appendTo="body" dropdownPosition="bottom"
+                                                        [items]="CustomerCreditTypeList"
+                                                        [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                                        formControlName="CustomerGrade"
+                                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                    </ng-select>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="AgeNotOver" width="100">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.NotOverPerYear'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="100" [decimals]="0" formControlName="AgeNotOver">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="NewContractMaximumLimit" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.NewContractLimit'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="99999999" [decimals]="2"
+                                                        formControlName="NewContractMaximumLimit">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="RefinanceMaximumLimit" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.RefinanceLimit'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="99999999" [decimals]="2"
+                                                        formControlName="RefinanceMaximumLimit">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column name="RefinanceAdditionalPayment" width="50"
+                                            [cellClass]="'text-center'">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{ 'Label.LOMT12.RefinanceAdditionalPayment' | translate
+                                                    }}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <label class="datatable-checkbox">
+                                                        <input type="checkbox"
+                                                            formControlName="RefinanceAdditionalPayment">
+                                                    </label>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'|
+                                                    translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="removeRowCustomerCredit1(rowIndex);">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-grid>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                </div>
+            </card>
+
+            <!-- ------------------------------------------------------------Borrower2------------------------------------------------------------------------------------ -->
+            <card header="{{'Label.LOMT12.BorrowerDetails2'| translate}}">
+                <div class="card-content">
+                    <form [formGroup]="LoanTypeBorrower2Form">
+                        <div class="form-row">
+                            <div class="form-group col-3 col-md-3">
+                                <label>{{ 'Label.LOMT12.MaxLoanAmount' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control text-right" [max]="9999999999"
+                                    [decimals]="2" formControlName="ContractMaximumLimit"
+                                    placeholder="{{'Label.LOMT12.Unlimited' | translate}}">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="IsNeedLeastOneSubBorrower"
+                                        formControlName="IsNeedLeastOneSubBorrower">
+                                    <label class="custom-control-label" for="IsNeedLeastOneSubBorrower">
+                                        {{ 'Label.LOMT12.NeedLeastOneSubBorrower' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- <div class="col-4 col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="IsCreditNotEnough"
+                                        formControlName="IsCreditNotEnough">
+                                    <label class="custom-control-label" for="IsCreditNotEnough">
+                                        {{ 'Label.LOMT12.CreditNotEnough' | translate }}
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div class="col-4 col-md-4">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="IsAgeOverSixty"
+                                        formControlName="IsAgeOverSixty">
+                                    <label class="custom-control-label" for="IsAgeOverSixty">
+                                        {{ 'Label.LOMT12.AgeOverSixty' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-12 col-md-12">
+                                <div class="custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="IsNotRegisProvince"
+                                        formControlName="IsNotRegisProvince">
+                                    <label class="custom-control-label" for="IsNotRegisProvince">
+                                        {{ 'Label.LOMT12.NotRegisProvince' | translate }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-row">
+                            <div formArrayName="RegisProvinceBorrower2List">
+                                <div class="col-2 col-md-2 custom-control custom-checkbox custom-control-inline"
+                                    *ngFor="let province of RegisProvinceBorrower2List.controls; let i=index"
+                                    [formGroupName]="i">
+                                    <input class="custom-control-input" type="checkbox" [id]="'ProvinceB2'+ i"
+                                        formControlName="IsCheck">
+                                    <label class="custom-control-label" [for]="'ProvinceB2'+ i">
+                                        {{ province.controls['Text'+lang.CURRENT].value }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div> -->
+                    </form>
+                    <hr>
+                    <h4>{{'Label.LOMT12.Execution'| translate}}</h4>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.AddressIdCard'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince">
+                            <label >{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(idCardAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.CurrentAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(currentAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.WorkAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(workplaceAddress, execution)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>{{'Label.LOMT12.And'| translate}}</h4><br>
+                    <h4>{{'Label.LOMT12.Contract'| translate}}</h4>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.AddressIdCard'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailIdCardAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(idCardAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.CurrentAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailCurrentAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(currentAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.Or'| translate}}</strong>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-4 col-md-4 text-right">
+                            <strong>{{'Label.LOMT12.WorkAddress'| translate}} :</strong>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="(!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince == null) 
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince == null)
+                                    || (!LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince)">
+                            -
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.RegisProvince != null">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.RegisProvinceName}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince && !LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince">
+                            <label>{{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-6 col-md-6"
+                            *ngIf="LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsContractingProvince && LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.IsInProvince">
+                            <label class="break">{{'Label.LOMT12.InProvince'| translate}}
+                                {{LoanTypeBorrower2Form.value.LoanTypeBorrower2DetailWorkplaceAddressContractForm.RegisProvinceName}}
+                                {{'Label.LOMT12.Or'| translate}}
+                                {{'Label.LOMT12.InContractProvince'| translate}}</label>
+                        </div>
+                        <div class="form-group col-2 col-md-2">
+                            <button (click)="openEditBorrower2Detail(workplaceAddress, contract)" type="button"
+                                class="btn btn-primary btn-sm" tooltip="{{'Label.LOMT12.Edit'| translate}}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                    <h4>{{'Label.LOMT12.NotOverPerYear'| translate}}</h4>
+                    <form [formGroup]="LoanTypeBorrower2Form">
+                        <div class="form-row">
+                            <div class="form-group col-3 col-md-3">
+                                <ngx-numeric-textbox inputClass="form-control text-right" [max]="100" [decimals]="0"
+                                    formControlName="AgeNotOver">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!--<h4>{{'Label.LOMT12.CustomerCredit'| translate}}</h4>
+                    <card header="{{'Label.LOMT12.CustomerCredit' | translate}}">
+                        <div class="card-menu">
+                            <button (click)="addRowCustomerCredit2(); detailgrid.goLastPage();"
+                                class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="row" [formGroup]="LoanTypeBorrower2Form" [class.validated]="submitted">
+                                <div class="col-12" formArrayName="CustomerCredit2Form">
+                                    <aaa-grid #detailgrid [rows]="getCustomerCredit2.value" [trackByProp]="'guid'"
+                                        [formArray]="getCustomerCredit2">
+                                        <ngx-datatable-column name="CustomerGrade" width="250">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.Customer'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ng-select [items]="CustomerCreditTypeList" class="sm"
+                                                        dropdownPosition="bottom" appendTo="body"
+                                                        [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                                                        formControlName="CustomerGrade"
+                                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                    </ng-select>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="AgeNotOver" width="100">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.NotOverPerYear'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="100" [decimals]="0" formControlName="AgeNotOver">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="NewContractMaximumLimit" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.NewContractLimit'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="99999999" [decimals]="2"
+                                                        formControlName="NewContractMaximumLimit">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="RefinanceMaximumLimit" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{'Label.LOMT12.RefinanceLimit'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ngx-numeric-textbox inputClass="form-control text-center"
+                                                        [max]="99999999" [decimals]="2"
+                                                        formControlName="RefinanceMaximumLimit">
+                                                    </ngx-numeric-textbox>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column name="RefinanceAdditionalPayment" width="50"
+                                            [cellClass]="'text-center'">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label>{{ 'Label.LOMT12.RefinanceAdditionalPayment' | translate }}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <label class="datatable-checkbox">
+                                                        <input type="checkbox"
+                                                            formControlName="RefinanceAdditionalPayment">
+                                                    </label>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="removeRowCustomerCredit2(rowIndex);">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-grid>
+                                </div>
+                            </div>
+                        </div>
+                    </card> -->
+                </div>
+            </card>
+            <card header="{{'Label.LOMT12.ContractDocument'| translate}}">
+                <div class="card-content">
+                    <form [formGroup]="loanAgreementForm">
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label>{{'Label.LOMT12.ContractDocument'| translate}}</label>
+                                <textarea formControlName="ContractDocument" id="textarea-input" name="textarea-input"
+                                    rows="8" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save' | translate }}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<ng-template #editBorrower1DetailIdCardAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <div class="form-row">
+            <form [formGroup]="LoanTypeBorrower1Form">
+                <div formGroupName="LoanTypeBorrower1DetailIdCardAddressForm">
+                    <div class="form-row">
+                        <div class="form-group col-2 col-md-2">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                    formControlName="IsInProvince">
+                                <label class="custom-control-label" for="IsInProvince">
+                                    {{ 'Label.LOMT12.InProvince' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-4 col-md-4">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                    formControlName="IsContractingProvince">
+                                <label class="custom-control-label" for="IsContractingProvince">
+                                    {{ 'Label.LOMT12.InContractProvince' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-2 col-md-2">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                    formControlName="IsAllProvince">
+                                <label class="custom-control-label" for="IsAllProvince">
+                                    {{ 'ทุกจังหวัด' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <div formArrayName="RegisProvinceList">
+                            <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                                *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                                <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                    formControlName="IsCheck">
+                                <label class="custom-control-label" [for]="'Province'+ i">
+                                    {{ province.controls['Text'+lang.CURRENT].value }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower1DetailCurrentAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower1Form">
+            <div formGroupName="LoanTypeBorrower1DetailCurrentAddressForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower1DetailWorkplaceAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower1Form">
+            <div formGroupName="LoanTypeBorrower1DetailWorkplaceAddressForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower1DetailIdCardAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower1Form">
+            <div formGroupName="LoanTypeBorrower1DetailIdCardAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower1DetailCurrentAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower1Form">
+            <div formGroupName="LoanTypeBorrower1DetailCurrentAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower1DetailWorkplaceAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower1Form">
+            <div formGroupName="LoanTypeBorrower1DetailWorkplaceAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower1Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailIdCardAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <div class="form-row">
+            <form [formGroup]="LoanTypeBorrower2Form">
+                <div formGroupName="LoanTypeBorrower2DetailIdCardAddressForm">
+                    <div class="form-row">
+                        <div class="form-group col-2 col-md-2">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                    formControlName="IsInProvince">
+                                <label class="custom-control-label" for="IsInProvince">
+                                    {{ 'Label.LOMT12.InProvince' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group col-4 col-md-4">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                    formControlName="IsContractingProvince">
+                                <label class="custom-control-label" for="IsContractingProvince">
+                                    {{ 'Label.LOMT12.InContractProvince' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-2 col-md-2">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                    formControlName="IsAllProvince">
+                                <label class="custom-control-label" for="IsAllProvince">
+                                    {{ 'ทุกจังหวัด' | translate }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <div formArrayName="RegisProvinceList2">
+                            <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                                *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                                <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                    formControlName="IsCheck">
+                                <label class="custom-control-label" [for]="'Province'+ i">
+                                    {{ province.controls['Text'+lang.CURRENT].value }}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailCurrentAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower2Form">
+            <div formGroupName="LoanTypeBorrower2DetailCurrentAddressForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList2">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailWorkplaceAddress>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower2Form">
+            <div formGroupName="LoanTypeBorrower2DetailWorkplaceAddressForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList2">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailIdCardAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower2Form">
+            <div formGroupName="LoanTypeBorrower2DetailIdCardAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList2">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailCurrentAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower2Form">
+            <div formGroupName="LoanTypeBorrower2DetailCurrentAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList2">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #editBorrower2DetailWorkplaceAddressContract>
+    <modal-layout (onClose)="decline()" header="{{'Label.LOMT12.AddressIdCard'| translate}}">
+        <form [formGroup]="LoanTypeBorrower2Form">
+            <div formGroupName="LoanTypeBorrower2DetailWorkplaceAddressContractForm">
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsInProvince"
+                                formControlName="IsInProvince">
+                            <label class="custom-control-label" for="IsInProvince">
+                                {{ 'Label.LOMT12.InProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-4 col-md-4">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsContractingProvince"
+                                formControlName="IsContractingProvince">
+                            <label class="custom-control-label" for="IsContractingProvince">
+                                {{ 'Label.LOMT12.InContractProvince' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-2 col-md-2">
+                        <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                            <input class="custom-control-input" type="checkbox" id="IsAllProvince"
+                                formControlName="IsAllProvince">
+                            <label class="custom-control-label" for="IsAllProvince">
+                                {{ 'ทุกจังหวัด' | translate }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-row">
+                    <div formArrayName="RegisProvinceList2">
+                        <div class="col-md-2 custom-control custom-checkbox custom-control-inline"
+                            *ngFor="let province of RegisProvinceList2.controls; let i=index" [formGroupName]="i">
+                            <input class="custom-control-input" type="checkbox" [id]="'Province'+ i"
+                                formControlName="IsCheck">
+                            <label class="custom-control-label" [for]="'Province'+ i">
+                                {{ province.controls['Text'+lang.CURRENT].value }}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="form-row">
+            <div class="form-group col-12 col-md-12 text-center">
+                <button type="button" class="btn btn-primary" (click)="onSubmitBorrower2Detail()" [disabled]="saving">
+                    <i class="fas fa-save"></i> {{'Label.LOMT12.Agree'| translate}}
+                </button>
+                <button type="button" class="btn btn-primary" (click)="decline()" [disabled]="saving">
+                    <i class="fas fa-times"></i> {{'Label.GLOBAL.Cancel'| translate}}
+                </button>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>

@@ -1,0 +1,100 @@
+<div class="animated fadeIn">
+  <div class="row">
+      <div class="col-sm-12">
+          <card header="{{'Label.GLOBAL.Search'| translate}}">
+              <div class="card-menu">
+                  <button (click)="add()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                  <i class="fas fa-plus"></i>
+              </button>
+              </div>
+              <div class="card-content">
+                  <form [formGroup]="searchForm">
+                      <div class="row">
+                          <div class="col-sm-6 col-12">
+                              <div class="input-group">
+                                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="inputSearch" placeholder="{{'Label.DBMT08.Search'| translate}}" >
+                                  <button type="button" (click)="search()" class="btn btn-warning">
+                                      <i class="fas fa-search"></i>
+                                  </button>
+                              </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <div class="row">
+                          <div class="col-12">
+                              <aaa-table [rows]="Prefix" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                  <ngx-datatable-column width="70" [cellClass]="'text-left'" prop="PrefixNameTha">
+                                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                          <label class="datatable-header-cell-wrapper 'text-left'" (click)="sort()">{{'Label.DBMT08.PrefixNameTha'| translate}}</label>
+                                      </ng-template>
+                                      <ng-template let-row="row" ngx-datatable-cell-template>
+                                          <span class="link 'text-left'" (click)="edit(row.PrefixId)">{{row.PrefixNameTha}}</span>
+                                      </ng-template>
+                                  </ngx-datatable-column>
+
+                                  <ngx-datatable-column width="70" [cellClass]="'text-left'" prop="PrefixNameEng">
+                                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                          <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT08.PrefixNameEng'| translate}}</label>
+                                      </ng-template>
+                                      <ng-template let-row="row" ngx-datatable-cell-template>
+                                          <span>{{row.PrefixNameEng}}</span>
+                                      </ng-template>
+                                  </ngx-datatable-column>
+
+                                  <ngx-datatable-column width="70" [cellClass]="'text-left'" prop="SuffixNameTha">
+                                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                          <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT08.SuffixNameTha'| translate}}</label>
+                                      </ng-template>
+                                      <ng-template let-row="row" ngx-datatable-cell-template >
+                                        <span>{{row.SuffixNameTha}}</span>
+                                      </ng-template>
+                                  </ngx-datatable-column>
+
+                                  <ngx-datatable-column width="70" [cellClass]="'text-left'" prop="SuffixNameEng">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT08.SuffixNameEng'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template >
+                                      <span>{{row.SuffixNameEng}}</span>
+                                    </ng-template>
+                                  </ngx-datatable-column>
+
+                                  <ngx-datatable-column width="70" [cellClass]="'text-left'" prop="PersonalityType{{lang.CURRENT}}">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT08.PersonalityType'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template >
+                                      <span>{{row['PersonalityType'+lang.CURRENT]}}</span>
+                                    </ng-template>
+                                  </ngx-datatable-column>
+
+                                 <ngx-datatable-column width="30" [cellClass]="'text-center'" prop="Active">
+                                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                          <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.DBMT08.Active'| translate}}</label>
+                                      </ng-template>
+                                      <ng-template let-row="row" ngx-datatable-cell-template>
+                                          
+                                          <i *ngIf="row.Active" class="fas fa-check"></i>
+                                      </ng-template>
+                                  </ngx-datatable-column>
+
+                                  <ngx-datatable-column width="30" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+                                    <ng-template ngx-datatable-header-template>
+                                      <label class="datatable-header-cell-wrapper">{{'Label.DBMT08.Delete'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                      <button type="button" class="btn btn-outline-primary btn-sm"
+                                      (click)="remove(row.PrefixId,row.RowVersion)">
+                                        <i class="far fa-trash-alt"></i>
+                                      </button>
+                                    </ng-template>
+                                  </ngx-datatable-column>
+                              </aaa-table>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </card>
+      </div>
+  </div>
+</div>

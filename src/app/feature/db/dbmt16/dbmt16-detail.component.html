@@ -1,0 +1,145 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.DBMT16.DocumentTypeInformation'| translate }}">
+                <div class="card-content">
+                    <div class="row" [formGroup]="documentTypeFrom" [class.validated]="submitted"
+                        [focusInvalid]="focusToggle">
+                        <div class="col-12">
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label
+                                                class="require">{{ 'Label.DBMT16.DocumentTypeCode'| translate }}</label>
+                                            <input type="text" class="form-control text-center"
+                                                formControlName="DocumentTypeCode" maxlength="10">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label
+                                                class="require">{{ 'Label.DBMT16.DocumentTypeName'| translate }}</label>
+                                            <input type="text" class="form-control" formControlName="DocumentTypeName"
+                                                maxlength="100">
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-sm-6">
+                                            <label class="require">{{ 'Label.DBMT16.SystemCode'| translate }}</label>
+                                            <ng-select [items]="systemList" bindLabel="TextTha" bindValue="Value"
+                                                placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate }}"
+                                                formControlName="SystemCode">
+                                            </ng-select>
+                                            <div class="invalid-feedback">
+                                                {{ 'Message.STD00000' | translate }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                                <input class="custom-control-input" type="checkbox" id="Active"
+                                                    formControlName="Active">
+                                                <label class="custom-control-label" for="Active">
+                                                    {{ 'Label.DBMT16.Active' | translate }}
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </card>
+            <card header="{{ 'Label.DBMT16.DocumentSubType'| translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="addRow(); subTypeGrd.goLastPage();"
+                        class="btn btn-sm btn-circle btn-secondary" tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="row" [formGroup]="documentTypeFrom" [class.validated]="submitted">
+                        <div class="col-12" formArrayName="DocumentSubTypeForm" width="150">
+                            <aaa-grid #subTypeGrd [rows]="getDocumentSubType.value" [trackByProp]="'guid'"
+                                [formArray]="getDocumentSubType">
+                                <ngx-datatable-column name="DocumentSubTypeCode" width="50">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="require">{{ 'Label.DBMT16.DocumentSubTypeCode'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                        ngx-datatable-cell-template>
+                                        <div [formGroupName]="rowIndex">
+                                            <input type="text" style="width:100%;" class="form-control form-control-sm"
+                                                formControlName="DocumentSubTypeCode" maxlength="100">
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="DocumentSubTypeName" width="50">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="require">{{ 'Label.DBMT16.DocumentSubTypeName'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                        ngx-datatable-cell-template>
+                                        <div [formGroupName]="rowIndex">
+                                            <input type="text" style="width:100%;" class="form-control form-control-sm"
+                                                formControlName="DocumentSubTypeName" maxlength="100">
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column [cellClass]="'text-center'" name="Active" width="50"
+                                    [sortable]="false">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.DBMT16.Active'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                        ngx-datatable-cell-template>
+                                        <div [formGroupName]="rowIndex">
+                                            <label class="datatable-checkbox">
+                                                <input type="checkbox" formControlName="Active">
+                                            </label>
+                                        </div>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column [cellClass]="'text-center'" width="50" [sortable]="false">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            (click)="removeRow(rowIndex);">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-grid>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button type="button" class="btn btn-footer" [disabled]="saving" (click)="back(false)">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

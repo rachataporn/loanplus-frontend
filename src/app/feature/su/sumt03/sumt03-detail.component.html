@@ -1,0 +1,176 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="โปรแกรม">
+                <div class="card-content">
+                    <div class="row" [formGroup]="programForm" [class.validated]="submitted">
+                        <div class="col-12">
+                            <div class="form-row">
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label class="require">{{'Label.SUMT03.ProgramCode'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ProgramCode"
+                                        maxlength="10">
+                                    <div class="invalid-feedback" *ngIf="ProgramCode.errors">
+                                        <div *ngIf="ProgramCode.errors['required']">
+                                            {{ 'Message.STD00000' | translate }}</div>
+                                        <div *ngIf="ProgramCode.errors['pattern']">{{ 'Message.STD00033' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label>{{'Label.SUMT03.ProgramName'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ProgramName"
+                                        maxlength="200">
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label class="require">{{'Label.SUMT03.ProgramPath'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ProgramPath"
+                                        maxlength="200">
+                                    <div class="invalid-feedback" *ngIf="ProgramPath.errors">
+                                        <div *ngIf="ProgramPath.errors['required']">
+                                            {{ 'Message.STD00000' | translate }}</div>
+                                        <div *ngIf="ProgramPath.errors['pattern']">{{ 'Message.STD00033' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3 col-sm-6 ">
+                                    <label>{{'Label.SUMT03.ApiFileName'| translate}}</label>
+                                    <input type="text" class="form-control" formControlName="ApiFileName"
+                                        maxlength="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </card>
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <card header="{{'Label.SUMT03.Language'| translate}}">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="form-group col-sm-12 col-md-12">
+                                    <aaa-table [rows]="langData" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                        <ngx-datatable-column width="80" prop="LangCode" [cellClass]="'text-center'">
+                                            <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                <label class="datatable-header-cell-wrapper"
+                                                    (click)="sort()">{{'Label.SUMT03.Language'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" ngx-datatable-cell-template>
+                                                <span class="link"
+                                                    (click)="changeLang(row.LangCode)">{{row['Text'+lang.CURRENT]}}</span>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-table>
+                                </div>
+                                <div class="form-group col-sm-12 col-md-12 text-center">
+                                    <button type="button" class="btn btn-primary" (click)="copy()"> <i
+                                            class="far fa-copy"></i>{{'Label.SUMT03.CopyThToEn'| translate}}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                </div>
+                <div class="col-sm-9 col-md-9">
+                    <card header="{{'Label.SUMT03.ProgramDetail'| translate}}{{langCode}}">
+                        <div class="card-menu">
+                            <button (click)="addRow(); detailgrid.goLastPage();"
+                                class="btn btn-sm btn-circle btn-secondary" tooltip="{{'Label.GLOBAL.Add'| translate}}">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="row" [formGroup]="programForm" [class.validated]="submitted">
+                                <div class="col-12" formArrayName="ProgramLabelForm" width="150">
+                                    <aaa-grid #detailgrid [rows]="getProgramLabel.value" [trackByProp]="'guid'"
+                                        [formArray]="getProgramLabel">
+                                        <ngx-datatable-column name="Website" width="50">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="require">{{'Label.SUMT03.Website'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <ng-select [items]="systemCodeList" class="sm" appendTo="body"
+                                                        dropdownPosition="bottom" [bindLabel]="'Text' + lang.CURRENT"
+                                                        bindValue="Value" formControlName="SystemCode"
+                                                        placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                                    </ng-select>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="FieldName" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="require">{{'Label.SUMT03.FieldName'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <input type="text" style="width:100%;"
+                                                        class="form-control form-control-sm" formControlName="FieldName"
+                                                        maxlength="50">
+                                                    <div class="invalid-feedback"
+                                                        *ngIf="getProgramLabel.at(rowIndex).controls.FieldName.errors">
+                                                        <div
+                                                            *ngIf="getProgramLabel.at(rowIndex).controls.FieldName.errors['required']">
+                                                            {{ 'Message.STD00000' | translate }}</div>
+                                                        <div
+                                                            *ngIf="getProgramLabel.at(rowIndex).controls.FieldName.errors['pattern']">
+                                                            {{ 'Message.STD00033' | translate}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="LabelName" width="150">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label class="require">{{'Label.SUMT03.LabelName'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+                                                <div [formGroupName]="rowIndex">
+                                                    <input type="text" style="width:100%;"
+                                                        class="form-control form-control-sm" formControlName="LabelName"
+                                                        maxlength="1000">
+                                                </div>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                            <ng-template ngx-datatable-header-template>
+                                                <label
+                                                    class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                                            </ng-template>
+                                            <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                ngx-datatable-cell-template>
+
+                                                <button class="btn btn-outline-primary btn-sm"
+                                                    (click)="removeRow(rowIndex);">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </aaa-grid>
+                                </div>
+                            </div>
+                        </div>
+                    </card>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i> {{'Label.GLOBAL.Save' | translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

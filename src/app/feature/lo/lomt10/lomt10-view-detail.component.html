@@ -1,0 +1,65 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.LOMT10.ViewDetail' | translate }}">
+                <div class="card-content">
+                    <form [formGroup]="viewForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label class="require">{{ 'Label.LOMT10.ViewThai' | translate }}</label>
+                                <input type="text" class="form-control" formControlName="ViewNameTha" maxlength="100">
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label>{{ 'Label.LOMT10.ViewEng' | translate }}</label>
+                                <input type="text" class="form-control" formControlName="ViewNameEng" maxlength="100">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-sm-6">
+                                <label class="require">{{ 'Label.LOMT10.Ordinal' | translate }}</label>
+                                <ngx-numeric-textbox inputClass="form-control" formControlName="ViewSeq" [decimals]="0"
+                                    [max]="999999999">
+                                </ngx-numeric-textbox>
+                                <div class="invalid-feedback" *ngIf="NumberValue.invalid">
+                                    <div *ngIf="NumberValue.errors.required">
+                                        {{ 'Message.STD00000' | translate }}
+                                    </div>
+                                    <div *ngIf="NumberValue.errors.min || NumberValue.errors.max">
+                                        {{ 'Message.STD00018' | translate: '["ลำดับ","1","999,999,999"]'}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                    <input class="custom-control-input" type="checkbox" id="Active"
+                                        formControlName="Active">
+                                    <label class="custom-control-label" for="Active">
+                                        {{'Label.GLOBAL.Active'| translate}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save' | translate }}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

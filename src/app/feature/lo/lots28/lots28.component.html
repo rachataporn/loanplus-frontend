@@ -1,0 +1,173 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="จำลองการเลือกประเภทสัญญา">
+        <div class="card-content">
+          <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'ประเภทการกู้'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="TypeOfLoan">
+                  <button [btnRadio]="detail.Value" *ngFor="let detail of typeOfLoan" class="btn btn-outline-warning"
+                    tabindex="0">{{detail.Text | translate}}</button>
+                </div>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'ประเภทการชำระค่างวด'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="TypeOfPay">
+                  <button [btnRadio]="detail.Value" *ngFor="let detail of typeOfPay" class="btn btn-outline-warning"
+                    tabindex="0">{{detail.Text | translate}}</button>
+                </div>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'เกรดลูกค้า'| translate
+                  }}</label>
+                <ng-select [items]="grade" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value" formControlName="Grade"
+                  placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'ประเภทหลักทรัพย์'| translate
+                  }}</label>
+                <ng-select [items]="cate" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="CategoryId" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-4">
+                <label class="require">{{'วงเงินหลักทรัพย์ที่กู้รวมได้'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control form-control" formControlName="SecuritiesAmount"
+                  [decimals]="0" (keyup)="changeSecuritiesAmountKeyUp()">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="typeAmount1 > 0">
+              <div class="form-group col-sm-12 col-md-12">
+                <label><input type="radio" [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="onChangeLoanContractType(typeAmount1)" name="loantype"
+                    value="1">&nbsp;วงเงินสินเชื่อสูงสุด
+                  {{ typeAmount1 == null ? 0 : typeAmount1 | number:'1.2-2' }} บาท</label>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="typeAmount3 > 0">
+              <div class="form-group col-sm-12 col-md-12">
+                <label><input type="radio" [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="onChangeLoanContractType(typeAmount3)" name="loantype" value="3">&nbsp;เพิ่มวงเงิน
+                  +
+                  แถมประกันคุ้มครองหนี้สิน
+                  วงเงินสินเชื่อสูงสุด {{ typeAmount3 == null ? 0 : typeAmount3 | number:'1.2-2' }} บาท</label>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="typeAmount4 > 0">
+              <div class="form-group col-sm-12 col-md-12">
+                <label><input type="radio" [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="onChangeLoanContractType(typeAmount4)" name="loantype" value="4">&nbsp;จดจำนอง
+                  วงเงินสินเชื่อสูงสุด
+                  {{ typeAmount4 == null ? 0 : typeAmount4 | number:'1.2-2' }} บาท</label>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="typeAmount5 > 0">
+              <div class="form-group col-sm-12 col-md-12">
+                <label><input type="radio" [(ngModel)]="LoanContractType" [ngModelOptions]="{standalone: true}"
+                    (ngModelChange)="onChangeLoanContractType(typeAmount5)" name="loantype" value="5">&nbsp;จดจำนอง +
+                  แถมประกัน
+                  วงเงินสินเชื่อสูงสุด
+                  {{ typeAmount5 == null ? 0 : typeAmount5 | number:'1.2-2' }} บาท</label>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label class="require" for="LoanTypeCode">{{ 'Label.LOTS04.LoanTypeCode'| translate
+                  }}</label>
+                <ng-select [items]="loanTypeData" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="LoanTypeCode" placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12 col-md-4">
+                <label class="require">{{'วงเงินขอสินเชื่อ'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control form-control" formControlName="LoanTotalAmount"
+                  [decimals]="0" (keyup)="changeLoanTotalAmountKeyUp()">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback" *ngIf="searchForm.controls.LoanTotalAmount.invalid">
+                  <div *ngIf="searchForm.controls.LoanTotalAmount.errors.required">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                  <div *ngIf="searchForm.controls.LoanTotalAmount.errors.unmatchAmountInLoanType">
+                    {{ 'วงเงินขอสินเชื่อไม่ตรงกับประเภทสัญญา' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-4">
+                <label class="require">{{'จำนวนงวด'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control form-control" formControlName="Period" [decimals]="0">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback" *ngIf="searchForm.controls.Period.invalid">
+                  <div *ngIf="searchForm.controls.Period.errors.required">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                  <div *ngIf="searchForm.controls.Period.errors.minPeriod">
+                    {{ 'Message.LO00036' | translate }}
+                  </div>
+                  <div *ngIf="searchForm.controls.Period.errors.maxPeriod">
+                    {{ 'Message.LO00035' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-4">
+                <label class="require">{{'ดอกเบี้ย % / เดือน'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control form-control" formControlName="Interest">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-12 col-md-4">
+                <label>{{'จ่ายขั้นต่ำงวดละ'| translate}}</label>
+                <label style="color: red;">* กดคำนวนเพื่อดูยอดจ่ายขั้นต่ำ</label>
+                <ngx-numeric-textbox inputClass="form-control form-control" formControlName="MinToPay" [decimals]="0">
+                </ngx-numeric-textbox>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+  <footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-footer" (click)="getMinToPay()" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{'คำนวน' | translate}}</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

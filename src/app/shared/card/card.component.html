@@ -1,0 +1,15 @@
+<div class="card">
+    <div class="card-header">
+            <span (click)="isCollapsed = !isCollapsed">
+                    <strong>{{ header }}</strong>
+                    <span class="icon-btn">
+                        <i [hidden]="!isCollapsed" class="fas fa-angle-down"></i>
+                        <i [hidden]="isCollapsed" class="fas fa-angle-up"></i>
+                    </span>
+           </span>
+           <ng-content select=".card-menu"></ng-content>
+    </div>
+    <div class="card-body" [collapse]="isCollapsed" (expanded)="expanded()" >
+            <ng-content select=".card-content"></ng-content>
+    </div>
+</div>

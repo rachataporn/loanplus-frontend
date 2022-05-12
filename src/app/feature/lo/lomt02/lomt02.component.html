@@ -1,0 +1,116 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LOMT02.ListLoanType' | translate }}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="InputSearch"
+                    placeholder=" {{ 'Label.LOMT02.LoanTypeCode' | translate }}, {{ 'Label.LOMT02.LoanTypeName' | translate }} ">
+                  <div class="input-group-append">
+                    <button type="button" (click)="search()" class="btn btn-warning">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-12">
+                <aaa-table [rows]="loanList" [page]="page" (onTableEvent)="onTableEvent($event)">
+
+                  <!-- <ngx-datatable-column width="50" [cellClass]="'text-center'" name="order">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">ลำดับ</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.order}}
+                    </ng-template>
+                  </ngx-datatable-column> -->
+
+                  <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="LoanTypeCode">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{ 'Label.LOMT02.LoanTypeCode' | translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="edit(row.LoanTypeCode)">{{row.LoanTypeCode}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="250" [cellClass]="'text-left'" prop="LoanTypeNameTha">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{ 'Label.LOMT02.LoanTypeNameTH' | translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.LoanTypeNameTha}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="250" [cellClass]="'text-left'" prop="LoanTypeNameEng">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{ 'Label.LOMT02.LoanTypeNameEN' | translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.LoanTypeNameEng}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="50" [cellClass]="'text-center'" prop="InterestRate">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{ 'Label.LOMT02.Interest' | translate }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.InterestRate}}%
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper"
+                        (click)="sort()">{{'Label.LOMT02.Active'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <i *ngIf="row.Active" class="fas fa-check"></i>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false" [width]="100">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button type="button" class="btn btn-outline-primary btn-sm"
+                        (click)="remove(row.LoanTypeCode,row.RowVersion)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </aaa-table>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-12">
+                <br>
+                <button class="btn btn-primary" type="button" button (click)="add()">เพิ่มลูกค้า/สมาชิกใหม่ </button>
+              </div>
+            </div> -->
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

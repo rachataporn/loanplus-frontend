@@ -1,0 +1,41 @@
+<div class="col-sm-12" style="background-color: white; padding-top: 10px; height: 7%; border-bottom: solid 2px #ffc107">
+  <div class="row">
+    <div class="form-group col-12">
+      <h5 class="text-center" style="font-weight: 900;">ผูกสัญญาเพื่อนแท้กับไลน์</h5>
+    </div>
+  </div>
+</div>
+
+<div class="animated fadeIn" style="background-color: white; padding-top: 10px;">
+  <div class="col-sm-12">
+    <form [formGroup]="registerForm" [class.validated]="submitted">
+      <div class="form-group col-12">
+        <div class="form-row">
+          <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+            <label style="font-weight: 900"><i class="far fa-id-card"></i> กรุณากรอกข้อมูล </label>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-6 col-sm-6">
+            <label class="require">เลขบัตรประชาชน</label>
+            <personalid-input formControlName="IdCard"></personalid-input>
+          </div>
+          <div class="form-group col-6 col-sm-6">
+            <label class="require">รหัสยืนยันตัวตน</label>
+            <input type="text" class="form-control" formControlName="SecurityCode" maxlength="50">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <br>
+</div>
+<footer class="app-footer-btn">
+  <div class="container-fluid">
+    <div class="col text-center">
+      <button type="button" class="btn btn-footer" (click)="onSave()" [disabled]="saving">
+        <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+        <i class="far fa-check-circle" [hidden]="saving"></i> เชื่อมต่อ</button>
+    </div>
+  </div>
+</footer>

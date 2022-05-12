@@ -1,0 +1,84 @@
+.account-screen{
+    font-family: sans-serif,'Prompt';
+}
+.gray-bg{
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color:#f3f3f4;
+}
+.logo-name{
+    color:#dadada;
+    font-size:3.5rem;
+    font-weight: 800;
+    margin-bottom: 0;
+}
+.logo-desc{
+  color: rgb(103, 106, 108);
+  font-weight: 600;
+  font-size: 16px;    
+}
+.account-screen .form-control
+{
+  background-color: #FFFFFF;
+  border:1px solid #e5e6e7;
+  border-radius:1px;
+  color:#5c6873;
+  display: block;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  widows: 100%;
+  font-size: 14px;
+}
+
+.account-screen .form-control:focus{
+  box-shadow:  0 0 0 0.2rem rgba(186, 187, 187, 0.25);
+}
+.account-screen form .ng-touched.ng-invalid{
+    border-color:#e5e6e7;
+}
+.account-screen .form-control::placeholder{
+    color:rgb(158, 157, 157) !important;
+}
+@-webkit-keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(-20px);
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateY(-20px);
+        -ms-transform: translateY(-20px);
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+.fadeInDown{
+    animation-name  : fadeInDown;
+}
+.animated {
+    -webkit-animation-duration: .5s;
+    animation-duration: .5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    z-index: 100;
+}
+.modal-body{
+    padding:2rem;
+}

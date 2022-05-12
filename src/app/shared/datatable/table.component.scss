@@ -1,0 +1,188 @@
+$primary: #2094d8;
+:host {
+  display: block;
+  position: relative;
+  .table-loading {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.637);
+    animation-name: fadeIn;
+    animation-duration: 0.2s;
+    text-align: center;
+    .loading-icon {
+      color: #c1c1c2;
+    }
+  }
+}
+
+:host ::ng-deep .ngx-datatable.bootstrap {
+  .datatable-row-detail {
+    width: 100vw;
+  }
+  .datatable-header-cell {
+    text-align: center;
+    font-weight: bold;
+  }
+  .datatable-body-row.active {
+    background: unset;
+    color: black;
+  }
+  .datatable-body-row.datatable-row-even {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: black;
+  }
+  .datatable-body-cell {
+    word-break: break-all;
+    .for-edit {
+      display: block;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.765625rem;
+      line-height: 1.5;
+      background-clip: padding-box;
+      min-width: 100px;
+      min-height: 28px;
+      border: 1px solid transparent;
+      border-radius: 0.2rem;
+      transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      &:hover {
+        border: 1px solid #bdbcbc;
+        background-color: white;
+      }
+    }
+    .img-table {
+      width: auto;
+      height: auto;
+    }
+    span.link {
+      cursor: pointer !important;
+      color: #53a7c5 !important; // font-weight: bold;
+      transition: color ease 0.5s;
+      &:hover {
+        color: #167495 !important;
+      }
+    }
+    .datatable-body-cell-label > .fa-check {
+      color: $primary;
+    }
+  }
+  .datatable-scroll {
+    width: 100% !important;
+  }
+  .datatable-footer {
+    background: #e4e5e6;
+    color: #ededed;
+    .page-size {
+      flex: 0 1 auto;
+      display: inline-block;
+    }
+    .page-count {
+      flex: 0 1 auto !important;
+      line-height: 1 !important;
+      height: auto !important;
+      padding: 5px 0 0 1.2rem;
+      select {
+        margin-right: 4px;
+        height: auto;
+        width: auto;
+      }
+    }
+    .datatable-pager {
+      flex: 0 1 auto !important;
+    }
+    .datatable-footer-inner {
+      flex-wrap: wrap;
+      justify-content: space-between;
+      height: auto !important;
+      .page-count {
+        color: #545454;
+        padding: 5px 0 5px 1.2rem;
+        line-height: 1;
+        height: auto;
+        label {
+          margin: 0;
+        }
+      }
+      .datatable-pager {
+        a {
+          color: #545454;
+        }
+        ul li:not(.disabled).active a,
+        ul li:not(.disabled):hover a {
+          color: #ededed;
+          background-color: #a9a9a9;
+        }
+      }
+    }
+  }
+  label.datatable-checkbox {
+    margin: 0;
+  }
+  .datatable-checkbox input[type="checkbox"],
+  input[type="checkbox"].custom {
+    position: relative;
+    margin: 0 1rem 0 0;
+    cursor: pointer;
+    outline: none;
+    width: 16px;
+    height: 16px;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      background: white;
+      border: #adb5bd solid 1px;
+      border-radius: 0.25rem;
+    }
+    &:checked:after {
+      border-color: $primary;
+      background: $primary;
+    }
+    &:checked:before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 4px;
+      transform: rotate(-45deg);
+      height: 0.3rem;
+      width: 0.5rem;
+      border-color: white;
+      border: 2px solid white;
+      border-top-style: none;
+      border-right-style: none;
+      z-index: 1;
+    }
+  }
+
+  .datatable-body-row-select {
+    &.datatable-row-even {
+      background: #ffc107 !important;
+      color: #005fb7 !important;
+      font-weight: bold !important;
+    }
+    &.datatable-row-odd {
+      background: #ffc107 !important;
+      color: #005fb7 !important;
+      font-weight: bold !important;
+    }
+  }
+
+  .datatable-body-row-select-bill-payment {
+    &.datatable-row-even {
+      background: #24bd1c !important;
+      color: #ffffff !important;
+      font-weight: bold !important;
+    }
+    &.datatable-row-odd {
+      background: #24bd1c !important;
+      color: #ffffff !important;
+      font-weight: bold !important;
+    }
+  }
+}

@@ -1,0 +1,153 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.DBMT10.Province' | translate }}">
+                <div class="card-menu">
+                    <!-- <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button> -->
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="MasterForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-6">
+                                <label>{{ 'Label.DBMT10.ProvinceNameTH' | translate }}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="ProvinceNameTha">
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 col-6">
+                                <label>{{ 'Label.DBMT10.ProvinceNameEN' | translate }}</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" formControlName="ProvinceNameEng">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+
+            <card header="{{ 'Label.DBMT10.District' | translate }}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-primary btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <!-- <div class="form-group col-sm-5 col-md-5 col-5">
+                                <label>ประเทศ</label>
+                                <ng-select [items]="CountryList" bindLabel="TextTha" bindValue="Value"
+                                    formControlName="Province" placeholder="Please Select Province">
+                                </ng-select>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div> -->
+
+                            <div class="col-sm-5 col-5">
+                                <label>{{ 'Label.DBMT10.District' | translate }}</label>
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search()" class="form-control"
+                                        formControlName="InputSearch"
+                                        placeholder="{{ 'Label.DBMT10.DistrictName' | translate }}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="search()" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <aaa-table [rows]="DistrictTableList" [page]="page"
+                                    (onTableEvent)="onTableEvent($event)">
+                                    <ngx-datatable-column width="50" [cellClass]="'text-left'" prop="district_name_tha">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'Label.DBMT10.DistrictNameTH' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link" (click)="edit(row)">{{row.district_name_tha}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="100" [cellClass]="'text-left'"
+                                        prop="district_name_eng">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'Label.DBMT10.DistrictNameEN' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span>{{row.district_name_eng}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column prop="active" width="10" [cellClass]="'text-center'"
+                                        [sortable]="false">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'Label.DBMT10.Active' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <i class="fas fa-check" *ngIf="row.active == true "></i>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="50">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                (click)="remove(row)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="50">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.DBMT10.SubDistrict' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                (click)="moveToSubDistrict(row, rowIndex)">
+                                                <i class="far fa-eye"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                </aaa-table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="onSubmit()">
+                    <i class="fas fa-undo-alt"></i>บันทึก</button>
+            </div> -->
+            <div class="col text-center">
+                <!-- <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                            <i class="fas fa-undo-alt"></i>{{ 'Label.GLOBAL.Back' | translate }}</button> -->
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+            </div>
+        </div>
+    </div>
+</footer>

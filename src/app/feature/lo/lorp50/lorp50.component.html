@@ -1,0 +1,51 @@
+<div class="animated fadeIn">
+  <div class="form-row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'รายงาน ส่งเอกสาร'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label for="FromContractDate">{{ "ตั้งแต่ วันที่"| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="FromDate">
+              </div>
+              <div class="invalid-feedback">
+                {{ "Message.STD00000" | translate }}
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label for="FromContractDate">{{ "ถึง วันที่"| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="ToDate">
+              </div>
+              <div class="invalid-feedback">
+                {{ "Message.STD00000" | translate }}
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>จาก สาขา</label>
+                <ng-select [items]="FromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>ถึง สาขา</label>
+                <ng-select [items]="ToBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP25.MgmMonthlyReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label class="require">{{ 'Label.LORP25.Month'| translate}}</label>
+                <ng-select [items]="MonthList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="Month" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label class="require">{{ 'Label.LORP25.Year'| translate}}</label>
+                <ng-select [items]="YearList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="Year" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP25.FromBranch'| translate}}</label>
+                <ng-select [items]="FromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP25.ToBranch'| translate}}</label>
+                <ng-select [items]="ToBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranch" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP25.FormContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="ContractNo"
+                  holder="{{'Label.LORP25.FormContractNo' | translate}}"
+                  searchUrl="loan/loanpaymentreport/contractNoLOV" [content]="Lorp25LookupContent"
+                  formControlName="FromContract">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP25.ToContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="ContractNo"
+                  holder="{{'Label.LORP25.ToContractNo' | translate}}" searchUrl="loan/loanpaymentreport/contractNoLOV"
+                  [content]="Lorp25LookupContent" formControlName="ToContract">
+                </lookup-input>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label class="require">{{ 'Label.LORP25.ReportType'| translate}}</label>
+                <ng-select [items]="ReportTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ReportType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-6 col-md-6" *ngIf="this.searchForm.controls.ReportType.value != '2'">
+                <label class="require">{{ 'Label.LORP25.ReportFormat'| translate}}</label>
+                <ng-select [items]="ReportFormatList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ReportFormat" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class=" invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+              </div>
+            </div>
+          </div>
+    </div>
+    </card>
+    </form>
+  </div>
+</div>
+</div>

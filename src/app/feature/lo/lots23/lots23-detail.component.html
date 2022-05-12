@@ -1,0 +1,205 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-12">
+            <form #attribute [formGroup]="DetailOwnerForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <tabset>
+                    <tab heading="{{'ข้อมูลทั่วไป'| translate}}" (select)="tabSelected(1)">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>รหัสคำขอ</label>
+                                <input type="text" class="form-control text-center" formControlName="ReqCode">
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4">
+                                <label for="FromDate">{{'วันที่สร้างคำขอ' | translate}}</label>
+                                <input type="text" class="form-control text-center" formControlName="ReqCreatedDate"
+                                    [minDate]="now" bsDatepicker>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="StatusReq">{{'Label.LOTS20.Status' | translate}}</label>
+                                <div>
+                                    <h5>
+                                        <span class="badge badge-primary w-100"
+                                            style="height: calc(2.0625rem + 2px); padding:0.5rem;">
+                                            {{ getStatusReq['Text'+lang.CURRENT] }}
+                                        </span>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-4 col-md-4">
+                                <label class="require">{{'ผู้กู้' | translate}}</label>
+                                <lookup-input [small]="false" lookupName="LoanNo" keyColumn="LoanNo"
+                                    [detailCheck]="true" [detailFlag]="true"
+                                    searchUrl="loan/SecuritiesOwnerDeadApproved/getBorrowerLOV"
+                                    [content]="Lots23BorrowerLookupContent" formControlName="Borrower"
+                                    (detail)="loanDetailOutput($event)">
+                                </lookup-input>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label class="require" for="MainContractNo">{{'เลขที่สัญญา' | translate}}</label>
+                                <ng-select [items]="contractNoList" bindLabel="Text" bindValue="Value"
+                                    formControlName="MainContractNo" placeholder="กรุณาเลือก">
+                                </ng-select>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-4 col-md-4">
+                                <label class="require" for="OwnerDeadDate">{{'วันที่เจ้าของหลักทรัพย์เสียชีวิต' |
+                                    translate}}</label>
+                                <input type="text" class="form-control text-center" formControlName="OwnerDeadDate"
+                                    [maxDate]="now" bsDatepicker>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-sm-12 col-md-12">
+                                <label>{{ 'สาเหตุการเสียชีวิต'| translate}}</label>
+                                <textarea rows="4" class="form-control" formControlName="DeadRemark"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                <label class="require">{{ 'สถานะคำขอ'| translate}}</label>
+                                <div class="btn-group d-block" btnRadioGroup formControlName="DocStatus">
+                                    <button type="button" [btnRadio]="docStatus.Value"
+                                        *ngFor="let docStatus of docStatusList" class="btn btn-outline-warning"
+                                        tabindex="0">
+                                        {{ docStatus['Text'+lang.CURRENT]}}
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback">
+                                    {{ 'Message.STD00000' | translate }}
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="{{'เอกสารแนบ'| translate}}" (select)="tabSelected(2)">
+                        <card header="{{ 'เอกสารแนบจากสัญญากู้เงิน'| translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12" formArrayName="ContractAttachment">
+                                        <aaa-grid #detailgrid [rows]="contractAttachments2.getRawValue()"
+                                            [formArray]="contractAttachments2">
+                                            <ngx-datatable-column name="FileName">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label>{{ 'Label.LOTS03.attachment'| translate
+                                                        }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <file-upload-auto [file]="attachmentFiles2[rowIndex]"
+                                                            [fileName]="contractAttachments2.getRawValue()[rowIndex].FileName"
+                                                            [category]="category"
+                                                            [isDisableDownload]="contractAttachments2.getRawValue()[rowIndex].IsDisableAttachment"
+                                                            (fileNameReturn)="fileNameReturn2($event, rowIndex)"
+                                                            formControlName="AttahmentId">
+                                                        </file-upload-auto>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column>
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">{{
+                                                        'Label.LOTS03.Description'|
+                                                        translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            formControlName="Description">
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                        <br>
+                        <card header="{{ 'เอกสารแนบหลักทรัพย์เจ้าของเสียชีวิต'| translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="col-12" formArrayName="SecuritiesOwnerDeadAttachment">
+                                        <aaa-grid #detailgrid [rows]="contractAttachments.getRawValue()"
+                                            [formArray]="contractAttachments">
+                                            <ngx-datatable-column name="FileName">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label>{{ 'Label.LOTS03.attachment'| translate
+                                                        }}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <file-upload-auto [file]="attachmentFiles[rowIndex]"
+                                                            [fileName]="contractAttachments.getRawValue()[rowIndex].FileName"
+                                                            [category]="category"
+                                                            [isDisableDownload]="contractAttachments.getRawValue()[rowIndex].IsDisableAttachment"
+                                                            (fileNameReturn)="fileNameReturn($event, rowIndex)"
+                                                            formControlName="AttachmentId">
+                                                        </file-upload-auto>
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column>
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper">{{
+                                                        'Label.LOTS03.Description'|
+                                                        translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <div [formGroupName]="rowIndex">
+                                                        <input type="text" class="form-control form-control-sm"
+                                                            formControlName="Remark">
+                                                    </div>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column [cellClass]="'text-center'" width="50">
+                                                <ng-template ngx-datatable-header-template>
+                                                    <label
+                                                        class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'|
+                                                        translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" let-rowIndex="rowIndex"
+                                                    ngx-datatable-cell-template>
+                                                    <button class="btn btn-outline-primary btn-sm"
+                                                        (click)="removeAttachment(rowIndex);"
+                                                        [disabled]="isDisableAttachment">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center" *ngIf="(detailOwnerList.ReqStatus == '1')">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="far fa-check-circle" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+                    <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>

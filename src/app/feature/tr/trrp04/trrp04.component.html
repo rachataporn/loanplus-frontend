@@ -1,0 +1,55 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP15.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>จาก วันที่เริ่มทำสัญญา</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ProcessDate"
+                  [maxDate]="this.searchForm.controls.ProcessDateTo.value" />
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>ถึง วันที่ทำสัญญา</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ProcessDateTo"
+                  [minDate]="this.searchForm.controls.ProcessDate.value" />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP02.FromBranch'| translate}}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP02.ToBranch'| translate}}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12 col-md-6">
+                <label class="require">ประเภทรายงาน</label>
+                <ng-select [items]="ReportType" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ReportType" placeholder="ประเภทรายงาน">
+                </ng-select>
+                <div class="invalid-feedback">กรุณาระบุ</div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

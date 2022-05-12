@@ -1,0 +1,18 @@
+<ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
+  <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected"
+    let-selectFn="selectFn">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" [checked]="allRowsSelected" id="customHeader" (change)="selectFn(!allRowsSelected)"
+        class="custom-control-input">
+      <label class="custom-control-label" for="customHeader"></label>
+    </div>
+  </ng-template>
+  <ng-template let-rowIndex="rowIndex"  let-row="row" ngx-datatable-cell-template let-value="value" let-isSelected="isSelected"
+    let-onCheckboxChangeFn="onCheckboxChangeFn">
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event);onChange(row);" [id]="'customCheck'+rowIndex"
+        class="custom-control-input">
+      <label class="custom-control-label" [for]="'customCheck'+rowIndex"></label>
+    </div>
+  </ng-template>
+</ngx-datatable-column>

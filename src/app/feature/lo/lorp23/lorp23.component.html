@@ -1,0 +1,67 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP02.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label class="require">{{ 'เลขที่สัญญา'| translate}}</label>
+                <lookup-input lookupName="contractNoLookup" [small]="false" keyColumn="contractNo"
+                  holder="{{'เลขที่สัญญา' | translate}}" searchUrl="loan/LoanSummaryPaymentReport/GetLoanContractNo"
+                  [content]="Lorp23LookupLoanContractContent" formControlName="contractNo" >
+                </lookup-input>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label class="require">{{ 'รูปแบบรายงาน'| translate}}</label>
+                <ng-select [items]="reportTypeList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="reportType" placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LORP16.ExportType'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="ExportType">
+                  <button type="button" [btnRadio]="type.Value" *ngFor="let type of exportType"
+                    class="btn btn-outline-warning" tabindex="0" >
+                    {{ type['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORP02.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult">
+          </ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+
+</div>

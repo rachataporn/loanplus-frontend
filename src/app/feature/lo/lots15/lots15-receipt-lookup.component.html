@@ -1,0 +1,80 @@
+<modal-layout (onClose)="close()" header="{{'Label.LOTS15.ReceiptDetails' | translate}}">
+    <card header="{{'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+            <button (click)="search()" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.CustomerCode' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="CustomerCode">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.CustomerName' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="CustomerName">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.ReceiptNumber' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="ReceiptNo">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="itemsLOV" [page]="page" (onTableEvent)="onTableEvent()">
+                            <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                                <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    <button type="button" class="btn btn-primary btn-sm"
+                                        (click)="select(row.ReceiptNo)">
+                                        {{'Label.GLOBAL.Select' | translate}}
+                                    </button>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="ReceiptNo">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.ReceiptNumber' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ReceiptNo}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="CustomerCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.CustomerCode' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CustomerCode}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.Name' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{ row['CustomerName'+lang.CURRENT]}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="LoanDate">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.DateOfReceipt' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ReceiptDate | thaidate}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </card>
+</modal-layout>

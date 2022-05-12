@@ -1,0 +1,49 @@
+<div class="col-sm-12" style="background-color: white; padding-top: 10px; height: 7%; border-bottom: solid 2px #ffc107">
+    <div class="row">
+        <div class="form-group col-12">
+            <h5 class="text-center" style="font-weight: 900;">ประวัติการชำระ</h5>
+        </div>
+    </div>
+</div>
+<div class="animated fadeIn" style="background-color: white; padding-top: 10px;">
+    <div class="col-sm-12">
+        <div class="form-group col-12">
+            <div class="form-row">
+                <div class="form-group col-12" style="border-bottom: solid 1px #FFD800">
+                    <label style="font-weight: 900"><i class="far fa-id-card"></i> ข้อมูลประวัติการชำระ </label>
+                </div>
+            </div>
+            <form [formGroup]="historypaymentForm">
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <label>เลขที่สัญญา</label>
+                        <ng-select [items]="getConreactDDL" bindLabel="Text" bindValue="Value"
+                            formControlName="ContractHeadId" placeholder="{{ 'Label.GLOBAL.All' | translate }}" (change)="searchLinePay()">
+                        </ng-select>
+                    </div>
+                </div>
+            </form>
+            <div class="col-12">
+                <aaa-grid-no-pager [rows]="getHistoryPayment">
+                    <ngx-datatable-column width="100" [cellClass]="'text-left'" prop="ReceiptDescriptionTha">
+                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                            <label class="datatable-header-cell-wrapper" (click)="sort()">รายละเอียด</label>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.ReceiptDescriptionTha}}
+                        </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column width="100" [cellClass]="'text-right'" prop="ReceiptAmount">
+                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                            <label class="datatable-header-cell-wrapper" (click)="sort()">จำนวนเงิน (บาท)</label>
+                        </ng-template>
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{row.ReceiptAmount | number}}
+                        </ng-template>
+                    </ngx-datatable-column>
+                </aaa-grid-no-pager>
+            </div>
+        </div>
+    </div>
+</div>

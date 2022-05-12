@@ -1,0 +1,106 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LOMT08.InvoiceList' | translate  }}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-6 col-12">
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="InputSearch"
+                    placeholder="{{ 'Label.LOMT08.Placeholder' | translate  }}">
+                    <div class="input-group-append">
+                  <button type="button" (click)="search()" class="btn btn-warning">
+                    <i class="fas fa-search"></i>
+                  </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-12">
+                <aaa-table [rows]="invoiceList" [page]="page"  (onTableEvent)="onTableEvent($event)">
+
+
+                  <ngx-datatable-column width="150" [cellClass]="'text-center'" prop="InvoiceItemCode">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT08.InvoiceItemCode' | translate  }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="edit(row.InvoiceItemCode)">{{row.InvoiceItemCode}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="200" [cellClass]="'text-left'" prop="InvoiceItemNameTha">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT08.InvoiceItemNameTha' | translate  }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.InvoiceItemNameTha}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="200" [cellClass]="'text-left'" prop="InvoiceItemNameEng">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT08.InvoiceItemNameEng' | translate  }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.InvoiceItemNameEng}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="200" [cellClass]="'text-center'" prop="InvoiceItemSequence">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT08.InvoiceItemSequence' | translate  }}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.InvoiceItemSequence}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column width="200" [cellClass]="'text-center'" prop="InvoiceItemPriority">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOMT08.InvoiceItemPriority' | translate  }}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.InvoiceItemPriority}}
+                      </ng-template>
+                    </ngx-datatable-column>
+
+                  <ngx-datatable-column width="80" prop="Active" [cellClass]="'text-center'">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper"
+                          (click)="sort()">{{'Label.LOMT08.Active'| translate}}</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                      </ng-template>
+                    </ngx-datatable-column>
+
+                    <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="50">
+                        <ng-template ngx-datatable-header-template>
+                            <label class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                        </ng-template>
+                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                            <button type="button" class="btn btn-outline-primary btn-sm" (click)="remove(row.InvoiceItemCode, row.RowVersion)">
+                              <i class="far fa-trash-alt"></i>
+                          </button>
+                        </ng-template>
+                    </ngx-datatable-column>
+                  
+                </aaa-table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

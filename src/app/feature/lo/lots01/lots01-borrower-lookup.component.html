@@ -1,0 +1,63 @@
+<modal-layout (onClose)="close()" header="{{ 'Label.LOTS04.SearchCustomer' | translate }}">
+        <card header="{{ 'Label.LOTS04.LookupCustomer' | translate }}">
+            <div class="card-menu">
+                <button (click)="select()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{ 'Label.GLOBAL.Select' | translate }}">
+                        <i class="fas fa-check"></i>
+                </button>
+            </div>
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-sm-6 col-12">
+                        <div class="input-group">
+                            <input type="text" (keyup.enter)="search()" class="form-control" [(ngModel)]="keyword" placeholder="{{ 'Label.LOTS04.lookupCustomerPlaceholder' | translate }}">
+                            <div class="input-group-append">
+                                <button type="button" (click)="search()" class="btn btn-warning">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div class="row">
+                    <div class="col-12">
+                        <label>{{ 'Label.LOTS04.lookupBorrowerRemark' | translate }}</label>
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="customers" [rowSelect]="customerSelected" [page]="page"  (onTableEvent)="onTableEvent($event)">
+                            <ngx-datatable-column [cellClass]="'text-center'" [width]="40" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false" [headerCheckboxable]="true"
+                                [checkboxable]="true">
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="CustomerCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS04.lookupCustomerCode'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CustomerBorrowerCode}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="CustomerName+lang">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.LOTS04.lookupCustomerName'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row['CustomerName'+lang.CURRENT] }}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column prop="DebtAmount" [cellClass]="'text-right'" >
+                                <ng-template ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS04.DebtAmount'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                    {{ row['DebtAmount'] | number:'1.2-2' }}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </div>
+        </card>
+    </modal-layout>

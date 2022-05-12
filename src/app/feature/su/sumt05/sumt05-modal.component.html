@@ -1,0 +1,53 @@
+<modal-layout (onClose)="close()">
+  <card header="{{'Label.SUMT05.Menu'| translate}}">
+    <div class="card-menu">
+      <button type="button" (click)="select()" class="btn btn-sm btn-circle btn-secondary"
+        tooltip="{{'Label.GLOBAL.Select'| translate}}">
+        <i class="fas fa-check"></i>
+      </button>
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-md-6">
+          <label>{{'Label.GLOBAL.Search'| translate}}</label>
+          <div class="input-group">
+            <input type="text" (keyup.enter)="search()" class="form-control" [(ngModel)]="keyword"
+              placeholder="{{ 'Label.SUMT05.Placeholder2'| translate}}">
+            <div class="input-group-append">
+              <button type="button" (click)="search()" class="btn btn-warning">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-12">
+          <aaa-table [rows]="getMenuLists" [rowSelect]="attributeSelected" [page]="page" 
+            (onTableEvent)="onTableEvent($event)">
+            <ngx-datatable-column [width]="40" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+              [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="MenuCode" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper" (click)="sort()">{{ 'Label.SUMT05.MenuCode'| translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <span> {{row.MenuCode}}</span>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="menuname" [sortable]="false">
+              <ng-template ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper">{{ 'Label.SUMT05.MenuName'| translate}}</label>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                <span>{{ row['MenuName'+lang.CURRENT]}} </span>
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </div>
+  </card>
+</modal-layout>

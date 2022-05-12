@@ -1,0 +1,126 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <card header="{{ 'Label.LOTS03.SignedWaitingList'| translate }}">
+        <div class="card-menu">
+          <button type="button" (click)="searchSignature()" class="btn btn-sm btn-circle btn-secondary" tooltip="ค้นหา">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="col-12">
+            <form [formGroup]="signatureForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+              <div class="form-row">
+                <div class="form-group col-sm-6 col-md-6">
+                  <label>{{ 'Label.LOTS03.RelatedDocuments'| translate }}</label>
+                  <ng-select [items]="SignatureDocuments" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                    formControlName="Remark" (change)="searchSignature()"
+                    placeholder="{{ 'Label.LOTS03.RelatedDocuments'| translate }}">
+                  </ng-select>
+                </div>
+              </div>
+            </form>
+            <div class="form-row" *ngIf="Signature.length > 0 && !IsSignCancel">
+              <div class="form-group col-sm-6 col-md-6">
+                <button class="btn btn-sm btn-primary" type="button" (click)="updateSignature()"
+                  [disabled]="IsDisableWaitSign">
+                  {{ 'Label.LOTS03.SubmitDocumentsSigned'| translate }}
+                </button>
+              </div>
+            </div>
+            <aaa-grid-no-pager #detailgrd [rows]="Signature" (onTableEvent)="onTableSignEvent($event)">
+              <ngx-datatable-column name="Period" [cellClass]="'text-center'" width="120">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.ContractNumber'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.ContractNo }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="ReceiveDate" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.lookupCustomerName'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.CustomerName}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="TotalAmount" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.Position'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.CustomerPosition}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="PrincipleAmount" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.ApplicationSubmissionDate'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.ReqSignatureDate | thaidate }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="InterestAmount" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.SigningStatus'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.SignatureStatus}}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="BalPrincipleAmount" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.SigningDate'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.SignatureDate | thaidate }}
+                </ng-template>
+              </ngx-datatable-column>
+              <ngx-datatable-column name="BalPrincipleAmount" [cellClass]="'text-center'">
+                <ng-template ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper">{{
+                    'Label.LOTS03.RelatedDocuments'| translate}}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{ row.Remark}}
+                </ng-template>
+              </ngx-datatable-column>
+            </aaa-grid-no-pager>
+            <br />
+            <div class="form-row" *ngIf="Signature.length > 0 && !IsSignCancel">
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'ยืนยันการลงนาม เพื่อดำเนินการอนุมัติสัญญาเงินกู้ต่อไป'| translate }}</label>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="Signature.length > 0 && !IsSignCancel">
+              <div class="form-group col-sm-6 col-md-6">
+                <button class="btn btn-sm btn-primary" type="button" (click)="onCheckSignature()"
+                  [disabled]="IsSignature">
+                  {{ 'ยืนยันการลงนาม'| translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </card>
+      <br />
+    </div>
+  </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col text-center">
+        <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+          <i class="fas fa-undo-alt"></i> {{'Label.GLOBAL.Back' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</footer>

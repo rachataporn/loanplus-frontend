@@ -1,0 +1,30 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP31.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">ครั้งที่</label>
+                <ngx-numeric-textbox inputClass="form-control text-center" formControlName="No" [decimals]="0">
+                </ngx-numeric-textbox>
+              </div>
+              <div class="form-group col-sm-6 col-md-4">
+                <label class="require">{{ 'Label.LORP31.AsOfDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="ProcessDate" />
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

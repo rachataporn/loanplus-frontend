@@ -1,0 +1,86 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.SUMT06.PolicyPasswordSetting '| translate}}">
+        <div class="card-menu">
+          <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Add'| translate}}">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <div class="input-group">
+                  <input type="text" (keyup.enter)="search()" class="form-control" formControlName="InputSearch"
+                    placeholder=" {{'Label.SUMT06.Placeholder'| translate}}">
+                  <div class="input-group-append">
+                    <button type="button" (click)="search()" class="btn btn-warning">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <hr>
+              <div class="col-12">
+                <aaa-table [rows]="passwordPolicy" [page]="page" (onTableEvent)="onTableEvent($event)">
+                  <ngx-datatable-column prop="PasswordPolicyCode" [cellClass]="'text-center'" width="100">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">
+                        {{'Label.SUMT06.PolicyCode'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <span class="link" (click)="edit(row.PasswordPolicyCode)">
+                        {{row.PasswordPolicyCode}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="PasswordPolicyName" [cellClass]="'text-left'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">
+                        {{'Label.SUMT06.PolicyName'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.PasswordPolicyName}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="PasswordPolicyDescription" [cellClass]="'text-left'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">
+                        {{'Label.SUMT06.Explanation'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.PasswordPolicyDescription}}
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column prop="Active" [cellClass]="'text-center'">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">
+                        {{'Label.GLOBAL.Active'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      <i *ngIf="row.Active" class="fas fa-check"></i>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="100">
+                    <ng-template ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper">{{'Label.GLOBAL.Delete'| translate}}</label>
+                    </ng-template>
+                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                      <button type="button" class="btn btn-outline-primary btn-sm"
+                        (click)="remove(row.PasswordPolicyCode,row.RowVersion)">
+                        <i class="far fa-trash-alt"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </aaa-table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'จัดการรอบส่งเอกสารตามสาขา'| translate}}">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-6">
+                        <form [formGroup]="searchForm">
+                            <div class="input-group">
+                                <input type="text" (keyup.enter)="search(true)" class="form-control"
+                                    formControlName="inputSearch" placeholder="{{'Label.SUMT01.Search'| translate}}">
+                                <div class="input-group-append">
+                                    <button type="button" (click)="search(true)" class="btn btn-warning">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="company" [page]="page" (onTableEvent)="onTableEvent($event)">
+                            <ngx-datatable-column width="50" [cellClass]="'text-left'" prop="CompanyCode">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper 'text-left'">
+                                        {{'Label.SUMT01.CompanyCode'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span>
+                                        {{row.CompanyCode}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column width="250" [cellClass]="'text-left'" prop="CompanyNameTha">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.SUMT01.CompanyNameTha'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <span>{{row.CompanyNameTha}}</span>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="Website" width="50">
+                                <ng-template ngx-datatable-header-template>
+                                    <label>{{'รอบการจัดส่ง'| translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex"
+                                    ngx-datatable-cell-template>
+                                    <div style="width: 80%;">
+                                        <ng-select [items]="dayOfWeek" class="sm" appendTo="body"
+                                            dropdownPosition="bottom" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" [(ngModel)]="row.Requisition"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                        </ng-select>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <!-- <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false"
+                                        [width]="100">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{'Label.DBMT05.Delete'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                (click)="remove(row.CompanyCode,row.RowVersion,row.MainCompany,row.IsBranch)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column> -->
+                        </aaa-table>
+                    </div>
+                </div>
+        </div>
+        </card>
+    </div>
+</div>
+</div>
+
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- </div> -->

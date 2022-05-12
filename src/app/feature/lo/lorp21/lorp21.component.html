@@ -1,0 +1,61 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP21.Condition'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content"> 
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-3">
+                <label class="require">{{ 'ณ วันที่'| translate}}</label>
+                <input type="text" class="form-control" formControlName="date" bsDatepicker>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ 'Label.LORP21.Province'| translate}}</label>
+                <ng-select [items]="provinceList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ProvinceCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- <div class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP21.FromLoanType'| translate}}</label>
+                <ng-select [items]="fromLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP21.ToLoanType'| translate}}</label>
+                <ng-select [items]="toLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div> -->
+          </div>
+        </card>
+      </form>
+    </div>
+<!-- 
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORP02.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div> -->
+  </div>
+</div>

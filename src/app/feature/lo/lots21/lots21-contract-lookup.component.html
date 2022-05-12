@@ -1,0 +1,94 @@
+<modal-layout (onClose)="close()" header="{{'Label.LOTS15.LoanDetails' | translate}}">
+    <card header="{{'Label.GLOBAL.Search' | translate}}">
+        <div class="card-menu">
+            <button (click)="search()" class="btn btn-sm btn-circle btn-secondary">
+                <i class="fas fa-search"></i>
+            </button>
+            <button type="button" (click)="select()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{'Label.GLOBAL.Select'| translate}}">
+              <i class="fas fa-check"></i>
+            </button>
+        </div>
+        <div class="card-content">
+            <form [formGroup]="searchForm">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.CustomerCode' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="CustomerCode">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.CustomerName' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="CustomerName">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.LoanContractNumber' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="LoanNo">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>{{'Label.LOTS15.NationalIdentificationNumber' | translate}}</label>
+                        <input type="text" (keyup.enter)="search()" class="form-control" formControlName="IdCard">
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-12">
+                        <aaa-table [rows]="itemsLOV" [rowSelect]="attributeSelected" [page]="page"
+                            (onTableEvent)="onTableEvent()">
+                            <ngx-datatable-column [width]="40" [sortable]="false" [canAutoResize]="false"
+                                [draggable]="false" [resizeable]="false" [headerCheckboxable]="true"
+                                [checkboxable]="true">>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="MainContractNo">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.LoanContractNumber' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.MainContractNo}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="ContractType">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS15.CustomerCode' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ContractType}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-left'" prop="CustomerName">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.LOTS15.Name'
+                                        | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.CustomerName}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="Status">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS19.ContractStatusTH' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.Status}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [cellClass]="'text-center'" prop="ReqDocumentDate">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper"
+                                        (click)="sort()">{{'Label.LOTS19.TakeDocDate' | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.ReqDocumentDate | thaidate}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </card>
+</modal-layout>

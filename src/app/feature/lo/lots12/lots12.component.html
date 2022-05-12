@@ -1,0 +1,245 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="ดอกเบี้ยเงินกู้ค้างรับ">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+              </div>
+              <div class="form-group col-sm-2 text-right">
+                <label class="require">สาขา</label>
+              </div>
+              <div class="form-group col-sm-6">
+                <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                  placeholder="กรุณาระบุ">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-2">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+              </div>
+              <div class="form-group col-sm-2 text-right">
+                <label class="require">ประเภทเงินกู้</label>
+              </div>
+              <div class="form-group col-sm-6">
+                <ng-select [items]="loneType" required bindLabel="text" bindValue="value" placeholder="กรุณาระบุ">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-2">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+              </div>
+              <div class="form-group col-sm-2 text-right">
+                <label>รหัสผู้กู้</label>
+              </div>
+              <div class="form-group col-sm-2">
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group col-sm-4">
+                <input type="text" class="form-control">
+              </div>
+              <div class="form-group col-sm-2">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-1">
+              </div>
+              <div class="form-group col-sm-2 text-right">
+                <label class="require">เลือกตาม</label>
+              </div>
+              <div class="form-group col-sm-2">
+                <label><input type="radio" name="aa" value="1" (click)="checkRadioBox()" checked>ประจำเดือน</label>
+              </div>
+              <div class="form-group col-sm-2">
+                  <ng-select [items]="invoiceDate" required bindLabel="text" bindValue="value" formControlName="invoiceDate"
+                  placeholder="กรุณาระบุ">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-2">
+                  <ng-select [items]="year" required bindLabel="text" bindValue="value" formControlName="year"
+                  placeholder="กรุณาระบุ">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-2">
+              </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-sm-1">
+                </div>
+                <div class="form-group col-sm-2 ">
+                </div>
+                <div class="form-group col-sm-2">
+                  <label><input type="radio" name="aa" value="2" (click)="checkRadioBox1()" checked>ณ วันที่</label>
+                </div>
+                <div class="form-group col-sm-2">
+                    <input type="text" class="form-control" formControlName ="dd">
+                </div>
+                <div class="form-group col-sm-2">
+                </div>
+                <div class="form-group col-sm-2">
+                </div>
+              </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6">
+              </div>
+              <div class="col-sm-12 text-center">
+                <br>
+                <button class="btn btn-primary form-group col-sm-2" type="button">ดึงข้อมูล</button>
+              </div>
+              <div class="form-group col-sm-5">
+              </div>
+            </div>
+          </form>
+          <br>
+          <hr>
+          <form>
+            <div class="form-row">
+                <div class="form-group col-sm-12">
+              <aaa-table [rows]="menuList" [count]="count" 
+              (onTableEvent)="onTableEvent($event)">
+              
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">เลขที่สัญญา</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.customerCode}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-left'" name="MainMenu" width="80">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อผู้กู้</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.name}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="ProgramCode" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดเงินกู้ยืม</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.a}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="MenuNameTha" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ได้รับสะสม</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template style="white-space:nowrap;overflow:hidden;">
+                  {{row.b}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="MenuNameEng" width="50">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">รับล่วงหน้ายกมา</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.b}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="Active" [cellClass]="'text-center'" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ค้างรับยกมา</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.b}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="x" [cellClass]="'text-center'" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ที่ต้องได้รับ</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.b}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="y" [cellClass]="'text-center'" width="30">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper" (click)="sort()">ได้รับจริง</label>
+                </ng-template>
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                  {{row.b}}
+                </ng-template>
+              </ngx-datatable-column>
+
+              <ngx-datatable-column [cellClass]="'text-center'" name="y" [cellClass]="'text-center'" width="50">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper" (click)="sort()">รับล่วงหน้ายกไป</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.b}}
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column [cellClass]="'text-center'" name="y" [cellClass]="'text-center'" width="30">
+                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                      <label class="datatable-header-cell-wrapper" (click)="sort()">ค้างรับยกไป</label>
+                    </ng-template>
+                    <ng-template let-row="row" ngx-datatable-cell-template>
+                      {{row.b}}
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column [cellClass]="'text-center'" name="y" [cellClass]="'text-center'" width="30">
+                      <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                        <label class="datatable-header-cell-wrapper" (click)="sort()">อัตราดอกเบี้ย</label>
+                      </ng-template>
+                      <ng-template let-row="row" ngx-datatable-cell-template>
+                        {{row.c}}
+                      </ng-template>
+                    </ngx-datatable-column>
+
+            </aaa-table>
+            </div>
+          </div>
+          </form>
+          <br>
+          <hr>
+          <div class="form-row">
+              <div class="form-group col-sm-1">
+              </div>
+              <div class="form-group col-sm-2 text-right">
+                <label>พิมพ์รายงาน</label>
+              </div>
+              <div class="form-group col-sm-6">
+                <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                  placeholder="กรุณาระบุ">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-1">
+              <button class="btn btn-info form-group " type="button">พิมพ์รายงาน</button>
+            </div>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                  <button class="btn btn-success form-group col-sm-2" type="button">โอนข้อมูลไป GL</button>
+                </div>
+                <div class="form-group col-sm-5">
+                </div>
+              </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

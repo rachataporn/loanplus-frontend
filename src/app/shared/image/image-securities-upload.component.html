@@ -1,0 +1,74 @@
+<div class="upload-container">
+    <div class="img-container" *ngIf="fileName">
+        <div class="img-wrapper">
+            <img class="img-preview" [src]="uploaded ? image.encode(dataUrl) : dataUrl"
+                (click)="openImg(uploaded ? image.encode(dataUrl) : dataUrl)">
+            <div class="img-remove">
+                <button *ngIf="!isSelect" type="button" class="btn btn-primary btn-sm"
+                    [disabled]="isDisable || disabled" (click)="onRemove(fileInput)">
+                    <i class="fas fa-trash-alt"></i></button>
+                <button *ngIf="isSelect" type="button" class="btn btn-primary btn-sm" [disabled]="isDisable || disabled"
+                    (click)="onSelect()">
+                    <i class="fas fa-check"></i></button>
+            </div>
+        </div>
+    </div>
+    <div [hidden]="fileName" class="area" [class.disabled]="isDisable || disabled" [class.over]="isOver"
+        (click)="onClick(fileInput)">
+        <div *ngIf="placeholder" class="file-placeholder">{{placeholder}}</div>
+        <div><i class="fas fa-plus fa-2x"></i></div>
+    </div>
+    <input type="file" accept="image/*,.svg" #fileInput (change)="onFileChange($event)" style="display:none" />
+</div>
+<div class="image-error text-danger" *ngIf="errors.length">
+    <small *ngFor="let error of errors">{{ error }}</small>
+</div>
+
+
+<ng-template #addImage>
+    <modal-layout (onClose)="closeModal()">
+        <div class="animated fadeIn">
+            <div class="text-center">{{ 'Label.LOTS13.AddSecuritiesImage'| translate}}</div>
+            <div class="card model-radius" style="box-shadow: unset !important">
+                <div class="card-body">
+                    <div class="card-content">
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-md btn-primary btn-block"
+                                    (click)="uploadOwner(fileInput)">
+                                    {{ 'Label.LOTS13.UploadOwner'| translate}}
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-md btn-primary btn-block"
+                                    (click)="uploadFromLine()">
+                                    {{ 'Label.LOTS13.UploadFromLine'| translate}}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </modal-layout>
+</ng-template>
+
+<ng-template #addImageRef>
+    <modal-layout (onClose)="closeModalImageRef()">
+        <form [formGroup]="requestSecuritiesImageForm">
+            <card
+                header="{{ 'Label.LOTS13.AddSecuritiesImage'| translate}} {{ 'Label.LOTS13.UploadFromLine'| translate}}">
+                <div class="card-content">
+                    <div formArrayName="SecuritiesImages" class="d-inline-flex flex-wrap">
+                        <div *ngFor="let detail of SecuritiesImages.controls; let i=index" [formGroupName]="i"
+                            class="mr-2 mb-2">
+                            <image-upload-securities [file]="imageFiles[i]" [category]="category" [isSelect]="true"
+                                (selected)="onSelectedImage(i,$event)" formControlName="ImageName" [pictureName]="detail.controls['ImageName'].value">
+                            </image-upload-securities>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </form>
+    </modal-layout>
+</ng-template>

@@ -1,0 +1,105 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="Notice">
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-sm-4 col-12">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="ค้นหา">
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <ng-select [items]="[]" required bindLabel="text" bindValue="value"
+                                placeholder="-----เลือกสาขา-----">
+                            </ng-select>
+                        </div>
+                        <div class="col-sm-4 col-12">
+                            <div class="input-group">
+                                <button class="btn btn-primary" type="button">ดูข้อมูลทั้งหมด</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12 col-12">
+                            <aaa-table [rows]="newLoan" [count]="countNewLoant" [page]="pageNewLoant"
+                                [loading]="loadingNewLoan">
+                                <ngx-datatable-column name="code" [cellClass]="'text-center'" width="50">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">รหัสสาขา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.code}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="name" [cellClass]="'text-center'" width="100">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">วันที่ค้างงวดแรก</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.date}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="lastName" [cellClass]="'text-center'" width="70">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">เลขที่สัญญา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.codename}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="county" [cellClass]="'text-center'" width="70">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">รหัสผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.idname}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="province" [cellClass]="'text-center'" width="70">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">ชื่อผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.name}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="province" [cellClass]="'text-center'" width="70">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">สถานะ</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.status}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="print" [cellClass]="'text-center'" width="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">พิมพ์</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-danger btn-sm">
+                                            <i class="fas fa-print"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="dodata" [cellClass]="'text-center'" width="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">ดูข้อมูล</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <button class="btn btn-outline-primary btn-sm">
+                                            <i class="far fa-folder-open"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'รายงานการส่งเอกสารล่าช้า'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP30.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP30.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-group col-sm-6 col-md-6">
+                <label for="FromContractDate">{{"Label.LORP30.FromPaymentDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="FromApprovedContractDate">
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label for="ToContractDate">{{"Label.LORP30.ToPaymentDate" | translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center"
+                  formControlName="ToApprovedContractDate"
+                  [minDate]=this.searchForm.controls.ToApprovedContractDate.value />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP02.LoanType" | translate }}</label>&nbsp;<label class="text-danger">{{
+                  "Label.LORP02.SelectAll" | translate }}</label>
+                <div formArrayName="ContractStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of contractStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChkcontractStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChkcontractStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </card>
+      </form>
+    </div>
+  </div>
+</div>

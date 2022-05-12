@@ -1,0 +1,238 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <form [formGroup]="TrackingForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+                <div class="form-row">
+                    <div class="col-12 col-sm-4 col-md-4">
+                        <card header="{{ 'Label.GLOBAL.Detail' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row" *ngIf="tracking.ProfileImage">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center">
+                                        <img style="width: 150px;height: 150px;" src="{{tracking.ProfileImage}}" alt="">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center"
+                                        *ngIf="TrackingForm.controls.TrackingId.value !== null">
+                                        <h4>{{tracking.CustomerNameTha}}</h4>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-12 col-md-12 text-center"
+                                        *ngIf="TrackingForm.controls.TrackingId.value === null">
+                                        <lookup-input lookupName="CustomerLookup" [small]="false"
+                                            keyColumn="CustomerCode" holder="{{ 'Label.TRTS01.Customer'| translate}}"
+                                            [content]="Trts06LookupContent" formControlName="CustomerNameTha">
+                                        </lookup-input>
+                                        <div class="invalid-feedback">
+                                            {{ "Message.STD00000" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.OverDue' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.DueDate | thaidate}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.ContractNo' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right"
+                                        *ngIf="TrackingForm.controls.TrackingId.value !== null">
+                                        <button class="btn btn-sm btn-primary"
+                                            (click)="linkToContract(tracking.MainContractHeadId)">{{tracking.ContractNo}}</button>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6"
+                                        *ngIf="TrackingForm.controls.TrackingId.value === null">
+                                        <ng-select #contractDDL [items]="ContractByCustomerList"
+                                            [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                                            formControlName="ContractNo" (change)="changeContractDDL(contractDDL)"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{ "Message.STD00000" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.TelNo' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.MobileNo}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>เบอร์โทรเพิ่มเติม</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        <button class="btn btn-sm btn-primary"
+                                            (click)="openModal(MobileNumberOther,tracking.CustomerCode)">เบอร์โทรเพิ่มเติม</button>
+                                    </div>
+                                </div>
+                                <div class="form-row" *ngFor="let item of amountList">
+                                    <div class="form-group col-12 col-sm-6 col-md-6"><b>{{item.DescriptionTha}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{item.AmountToBePay | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-6 col-md-6">
+                                        <b>{{'Label.TRTS01.BalanceTotal' | translate}}</b>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-6 col-md-6 text-right">
+                                        {{tracking.TotalAmount | number:'1.2-2'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                    <div class="col-12 col-sm-8 col-md-8">
+                        <card header="{{ 'Label.GLOBAL.Detail' | translate }}">
+                            <div class="card-content">
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-3 col-md-3">
+                                        <label>{{'Label.TRTS01.Activity' | translate}} </label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-5 col-md-5">
+                                        <input type="text" class="form-control text-center"
+                                            formControlName="TrackingItemNameTha">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-3 col-md-3">
+                                        <label>{{'Label.TRTS01.TrackingDate' | translate}} </label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-5 col-md-5">
+                                        <input type="text" class="form-control text-center"
+                                            formControlName="TrackingDate" bsDatepicker [placement]="'top'">
+                                        <div class="invalid-feedback">
+                                            {{ 'Message.STD00000' | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-3 col-md-3">
+                                        <label class="require">{{'Label.TRTS01.StatusTracking' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="form-group col-12 col-sm-5 col-md-5">
+                                        <ng-select [items]="statusDDLList" [bindLabel]="'Text'+lang.CURRENT"
+                                            bindValue="Value" formControlName="NplTrackingStatus"
+                                            placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                                        </ng-select>
+                                        <div class="invalid-feedback">
+                                            {{ "Message.STD00000" | translate }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-sm-12 col-md-12">
+                                        <label>{{'Label.TRTS01.Remark' | translate}}</label>
+                                        <textarea rows="3" class="form-control" formControlName="Remark"
+                                            formControlName="Remark"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </card>
+                        <card header="{{'Label.TRTS01.Borrower' | translate}}">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <aaa-grid-no-pager [rows]="borrowerList">
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                [sortable]="false">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'Label.TRTS01.Name' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.CustomerNameTha}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'"
+                                                prop="TrackingDate">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                    <label class="datatable-header-cell-wrapper"
+                                                        (click)="sort()">{{'Label.TRTS01.TelNo' | translate}}</label>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    {{row.MobileNumber}}
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                            <ngx-datatable-column width="100" [cellClass]="'text-center'">
+                                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                                </ng-template>
+                                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                                    <button class="btn btn-sm btn-primary"
+                                                        (click)="openModal(MobileNumberOther,row.CustomerCode)">เบอร์โทรเพิ่มเติม</button>
+                                                </ng-template>
+                                            </ngx-datatable-column>
+                                        </aaa-grid-no-pager>
+                                    </div>
+                                </div>
+                            </div>
+                        </card>
+                    </div>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-center" *ngIf="!tracking.TrackingId">
+                <button class="btn btn-footer" [disabled]="disabled" (click)="onSubmit()">
+                    <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+                    <i class="far fa-check-circle" [hidden]="saving"></i>
+                    {{ 'Label.GLOBAL.Save' | translate }}
+                </button>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-footer" (click)="back()">
+                    <i class="fas fa-undo-alt"></i>
+                    {{ 'Label.GLOBAL.Back'| translate }}
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<ng-template #MobileNumberOther>
+    <modal-layout (onClose)="closeModal()">
+        <card header="เบอร์โทรเพิ่มเติม">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <aaa-grid-no-pager [rows]="TelOther">
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="TrackingDate">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">{{'Label.TRTS01.TelNo'
+                                        | translate}}</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.MobileNumber}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column width="100" [cellClass]="'text-center'" [sortable]="false">
+                                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                    <label class="datatable-header-cell-wrapper" (click)="sort()">รายละเอียด</label>
+                                </ng-template>
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    {{row.Description}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </aaa-grid-no-pager>
+                    </div>
+                </div>
+            </div>
+        </card>
+    </modal-layout>
+</ng-template>

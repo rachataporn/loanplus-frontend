@@ -1,0 +1,146 @@
+<div class="animated fadeIn">
+  <form [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+    <div class="row">
+      <div class="col-sm-12">
+        <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div class="col-md-4">
+                <label class="require">{{ 'Label.LOMT03.PaymentPeriod' | translate }}</label>
+                <ng-select [items]="year" bindLabel="texttha" bindValue="value" formControlName="keywords"
+                  placeholder="{{ 'Label.GLOBAL.PleaseSelect'| translate}}" (change)="clearTable()">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ 'Message.STD00000' | translate }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="form-group col-12 col-md-4">
+              <label class="require">งวด</label>
+              <ngx-numeric-textbox style="width:100%;" inputClass="form-control" formControlName="Period" [decimals]="0"
+                [max]="99" (key.enter)="Process()">
+              </ngx-numeric-textbox>
+              <div class="invalid-feedback">
+                {{ 'Message.STD00000' | translate }}
+              </div>
+            </div> -->
+          </div>
+        </card>
+      </div>
+    </div>
+  </form>
+  <!-- <form [formGroup]="createPeriodFormModal" [class.validated]="submitted" [focusInvalid]="focusToggle"> -->
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LOMT03.CreatePeriodData' | translate }}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <button type="button" class="btn btn-warning" (click)="openModal(createP)">
+                <i class="fas fa-plus-circle"></i> {{ 'Label.LOMT03.CreatePeriodData' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LOMT03.PeriodData' | translate }}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="periods" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column name="Period" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOMT03.Period' | translate }}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.period}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="start_date" name="StartDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOMT03.StartDate' | translate }}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.start_date | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="end_date" name="EndDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOMT03.EndDate' | translate }}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.end_date | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column prop="closed_date" name="ClosedDate" [cellClass]="'text-center'">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOMT03.CloseDate' | translate }}
+                    </label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.closed_date | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+      <form [formGroup]="createPeriodFormModal" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <div class="card-content">
+          <ng-template #createP>
+            <div class="modal-header">
+              <h4 class="modal-title pull-left">{{ 'Label.LOMT03.CreatePaymentPeriod' | translate }}</h4>
+              <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-row">
+                <div class="form-group col-md-1"></div>
+                <div class="form-group col-md-4">
+                  <label class="require">{{ 'Label.LOMT03.Year' | translate }}</label>
+                  <year-input required formControlName="year"></year-input>
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+                <div class="form-group col-md-2"></div>
+                <div class="form-group col-md-4">
+                  <label class="require">{{ 'Label.LOMT03.StartDate' | translate }}</label>
+                  <input bsDatepicker required class="form-control form-control-sm" formControlName="startDate" />
+                  <div class="invalid-feedback">
+                    {{ 'Message.STD00000' | translate }}
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12" style="text-align: center">
+                  <div>
+                    <button type="button" class="btn btn-warning" (click)="dupicatePeriod()">
+                      <i class="fas fa-plus-circle"></i> {{ 'Label.LOMT03.CreatePeriodData' | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

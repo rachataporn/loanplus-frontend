@@ -1,0 +1,126 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="2.6 รายงานเฉลี่ยคืนดอกเบี้ยเงินกู้">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+              <div class="row">
+                  <div class="form-group col-sm-1">
+                    </div>
+                    <div class="form-group col-sm-2 text-right">
+                        <label>วันที่</label>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <input type="text" class="form-control" placeholder="กรุณาระบุ" bsDatepicker>
+                    </div>
+                    <div class="form-group col-sm-2">
+                        <input type="text" class="form-control" placeholder="กรุณาระบุ" bsDatepicker>
+                    </div>
+              </div>
+            <div class="row">
+                    <div class="form-group col-sm-2">
+                    </div>
+                  <div class="form-group col-sm-1 text-right">
+                      <label>สาขา</label>
+                  </div>
+                  <div class="form-group col-sm-6">
+                      <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                          placeholder="เลือกทั้งหมด">
+                      </ng-select>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-2">
+                </div>
+              <div class="form-group col-sm-1 text-right">
+                  <label>ถึงสาขา</label>
+              </div>
+              <div class="form-group col-sm-6">
+                  <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                      placeholder="เลือกทั้งหมด">
+                  </ng-select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-1">
+                </div>
+                <div class="form-group col-sm-2 text-right">
+                    <label>สมาชิก</label>
+                </div>
+                <div class="form-group col-sm-2">
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                  <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-1">
+                </div>
+                <div class="form-group col-sm-2 text-right">
+                    <label>ถึงสมาชิก</label>
+                </div>
+                <div class="form-group col-sm-2">
+                    <input type="text" class="form-control">
+                </div>
+                <div class="form-group col-sm-4">
+                  <input type="text" class="form-control">
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-1">
+                </div>
+              <div class="form-group col-sm-2 text-right">
+                  <label>ประเภทเงินกู้</label>
+              </div>
+              <div class="form-group col-sm-6">
+                  <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                      placeholder="เลือกทั้งหมด">
+                  </ng-select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-1">
+                </div>
+              <div class="form-group col-sm-2 text-right">
+                  <label>ถึงประเภทเงินกู้</label>
+              </div>
+              <div class="form-group col-sm-6">
+                  <ng-select [items]="branch" required bindLabel="text" bindValue="value"
+                      placeholder="เลือกทั้งหมด">
+                  </ng-select>
+              </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-1">
+                </div>
+                <div class="form-group col-sm-2 text-right">
+                    <label>อัตราเงินเฉลี่ยคืน</label>
+                </div>
+                <div class="form-group col-sm-2">
+                    <ngx-numeric-textbox inputClass="form-control" formControlName="input1" [decimals]="2"
+                      [max]="999999999">
+                    </ngx-numeric-textbox>
+                  </div>
+                  <label>%</label>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                </div>
+                  <div class="col-sm-12 text-center">
+                    <br>
+                       <button class="btn btn-primary form-group col-sm-2" type="button">พิมพ์รายงาน</button>
+                  </div>
+                  <div class="form-group col-sm-5">
+                    </div>
+              </div>
+           </form>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>
+
+

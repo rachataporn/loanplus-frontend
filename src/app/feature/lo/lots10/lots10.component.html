@@ -1,0 +1,259 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm" [class.validated]="submitted" >
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{'Label.LOTS10.Branch'| translate}}</label>
+                <ng-select [items]="branchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="BranchSearch">
+                </ng-select>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label>{{'Label.LOTS10.Refinance'| translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="RefinanceRadio">
+                  <button [btnRadio]="refinance.Value" *ngFor="let refinance of refinanceTypeList"
+                    class="btn btn-outline-warning" tabindex="0">
+                    {{ refinance['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="!refinanceShow" class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{'Label.LOTS10.LoanType'| translate}}</label>
+                <ng-select [items]="loanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="LoanTypeSearch">
+                </ng-select>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{'Label.LOTS10.DueMonth'| translate}}</label>
+                <ng-select [items]="dueMonthList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="DueMonthSearch">
+                </ng-select>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{'Label.LOTS10.DueYear'| translate}}</label>
+                <ng-select [items]="dueYearList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="DueYearSearch">
+                </ng-select>
+              </div>
+            </div>
+            <div *ngIf="!refinanceShow" class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{'Label.LOTS10.FromBorrowerCode'| translate}}</label>
+                <ng-select [items]="borrowerCodeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="FromBorrowerCodeSearch">
+                </ng-select>
+              </div>
+              <div class="col-sm-6 col-md-6">
+                <label>{{'Label.LOTS10.ToBorrowerCode'| translate}}</label>
+                <ng-select [items]="borrowerCodeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.All'| translate}}" formControlName="ToBorrowerCodeSearch">
+                </ng-select>
+              </div>
+            </div>
+            <div *ngIf="refinanceShow" class="form-row">
+              <div class="col-sm-6 col-md-3">
+                <label class="require">{{'Label.LOTS10.ContractNo'| translate}}</label>
+                <ng-select [items]="contractNoList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  placeholder="{{'Label.GLOBAL.PleaseSelect'| translate}}" formControlName="ContractNoSearch">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+              </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{'Label.LOTS10.NewContractDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="NewContractDate" />
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label class="require">{{'Label.LOTS10.NumberOfNewPeriods'| translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="NumberOfNewPeriods" />
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+              </div>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{'Label.LOTS10.PaymentByInstallments'| translate}}</label>
+                <ngx-numeric-textbox inputClass="form-control text-center" formControlName="PaymenByInstallments"
+                        [decimals]="2">
+                      </ngx-numeric-textbox>
+                <!-- <input type="text" class="form-control text-center" formControlName="PaymenByInstallments" /> -->
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{'Label.LOTS10.ContractDetail'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <div class="row" [formGroup]="contractForm" [class.validated]="submitted">
+            <div class="col-12" formArrayName="RefinanceForm" width="150">
+              <aaa-grid [rowIdentity]="identity" #detailgrid [rows]="getRefinance.getRawValue()" [trackByProp]="'guid'"
+                [formArray]="getRefinance" [rowSelect]="selected">
+                <custom-checkbox></custom-checkbox>
+
+                <ngx-datatable-column name="ContractNo" [cellClass]="'text-center'">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.ContractNo'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <span>{{row.ContractNo}}</span>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="EndPaymentDate" [cellClass]="'text-center'" width="100">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.EndPaymentDate'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <span>{{row.EndPaymentDate  | thaidate}}</span>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="CustomerName" [cellClass]="'text-left'">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.CustomerName'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <span>{{row['CustomerName'+ lang.CURRENT]}}</span>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="AppLoanPrincipleAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.AppLoanPrincipleAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <span>{{row.AppLoanPrincipleAmount | number:'1.2-2'}}</span>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="BalancePrincipleAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.BalancePrincipleAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <span>{{row.BalancePrincipleAmount | number:'1.2-2'}}</span>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="BalanceInterestAmount" [cellClass]="'text-right'" width="200">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.BalanceInterestAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <ngx-numeric-textbox inputClass="form-control" formControlName="BalanceInterestAmount"
+                        [decimals]="2">
+                      </ngx-numeric-textbox>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="SumLoanBalance" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.SumLoanBalance'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <ngx-numeric-textbox inputClass="form-control" formControlName="SumLoanBalance" [decimals]="2">
+                      </ngx-numeric-textbox>
+                    </div>
+                    <div class="invalid-feedback">
+                      {{'Label.LOTS10.MoneyWarning'| translate}}
+                  </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="AppLoanInterestRate" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.AppLoanInterestRate'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <ngx-numeric-textbox inputClass="form-control" formControlName="AppLoanInterestRate"
+                        [decimals]="2">
+                      </ngx-numeric-textbox>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="NewInterestAmount" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.NewInterestAmount'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <ngx-numeric-textbox inputClass="form-control" formControlName="NewInterestAmount" [decimals]="2">
+                      </ngx-numeric-textbox>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="NewLoanBalance" [cellClass]="'text-right'" width="150">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.NewLoanBalance'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <ngx-numeric-textbox inputClass="form-control" formControlName="NewLoanBalance" [decimals]="2">
+                      </ngx-numeric-textbox>
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="NewContractNo" [cellClass]="'text-center'" width="180">
+                  <ng-template ngx-datatable-header-template>
+                    <label>{{'Label.LOTS10.NewContractNo'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <div [formGroupName]="rowIndex">
+                      <input type="text" style="width:100%;" class="form-control"
+                        formControlName="NewContractNo">
+                    </div>
+                  </ng-template>
+                </ngx-datatable-column>
+
+              </aaa-grid>
+            </div>
+          </div>
+          <hr>
+          <br>
+        </div>
+      </card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col text-center">
+      <button class="btn btn-primary" (click)="onRefinance()">
+          ประมวลผลต่อสัญญา </button>
+  </div>
+  </div>
+
+</div>

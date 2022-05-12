@@ -1,0 +1,117 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.SUMT01.Company'| translate}}">
+                <div class="card-menu">
+                    <button (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search(true)" class="form-control"
+                                        formControlName="inputSearch"
+                                        placeholder="{{'Label.SUMT01.Search'| translate}}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="search(true)" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- </div>                                 
+                                    <div class="row"> -->
+                            <div class="col-12">
+                                <aaa-table [rows]="company" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                    <ngx-datatable-column width="50" [cellClass]="'text-left'" prop="CompanyCode">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper 'text-left'"
+                                                (click)="sort()">{{'Label.SUMT01.CompanyCode'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link 'text-left'"
+                                                (click)="edit(row.CompanyCode)">{{row.CompanyCode}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="250" [cellClass]="'text-left'" prop="CompanyNameTha">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{'Label.SUMT01.CompanyNameTha'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span>{{row.CompanyNameTha}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="200" [cellClass]="'text-text-left'"
+                                        prop="CompanyNameEng">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{'Label.SUMT01.CompanyNameEng'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.CompanyNameEng}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="200" [cellClass]="'text-text-left'" prop="MainCompany">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{'Label.SUMT01.MainCompany'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <!-- {{row.MainCompany}} -->
+                                            {{row['Text'+lang.CURRENT]}}
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="90" [cellClass]="'text-center'" prop="IsBranch">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{'Label.SUMT01.Branch'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <i *ngIf="row.IsBranch" class="fas fa-check"></i>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="50" [cellClass]="'text-center'" prop="Active">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{'Label.DBMT05.Active'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <i *ngIf="row.Active" class="fas fa-check"></i>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column width="80" [cellClass]="'text-center'" [sortable]="false"
+                                        [width]="100">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{'Label.DBMT05.Delete'| translate}}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                (click)="remove(row.CompanyCode,row.RowVersion,row.MainCompany,row.IsBranch)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+                                </aaa-table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+
+
+<!-- </div> -->

@@ -1,0 +1,114 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <card header="{{ 'Label.GLOBAL.Search'| translate}}">
+        <div class="card-menu">
+          <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{ 'Label.GLOBAL.Search'| translate}}">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.Company'| translate}}</label>
+                <ng-select [items]="companyList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="CompanyCode" placeholder="{{ 'Label.GLOBAL.All'| translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+                <ng-select [items]="assetTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="SecuritiesType" placeholder="{{ 'Label.GLOBAL.All'| translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label>{{ 'Label.LOTS13.SecuritiesDateFrom'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" [maxDate]="searchForm.controls['DateTo'].value"
+                  formControlName="DateFrom" />
+              </div>
+              <div class="form-group col-md-3">
+                <label>{{ 'Label.LOTS13.SecuritiesDateTo'| translate}}</label>
+                <input bsDatepicker class="form-control" type="text" [minDate]="searchForm.controls['DateFrom'].value"
+                  formControlName="DateTo" />
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ 'Label.LOTS13.Securities'| translate}}</label>
+                <input type="text" class="form-control" formControlName="Securities" (keyup.enter)="search()"
+                  placeholder="{{ 'Label.LOTS13.SecuritiesPlacholder'| translate}}">
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+
+      <card header="{{ 'Label.LOTS13.SecuritiesList'| translate}}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-12">
+              <aaa-table [rows]="detailList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <!-- <ngx-datatable-column width="150" [cellClass]="'text-center'" [sortable]="false">
+                  <ng-template ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper">{{ 'Label.LOTS13.SecuritiesImage'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                    <img *ngIf="row.ImageName" src="{{ image.encode(dataUrl + row.ImageName) }}" alt="..."
+                      class="img-thumbnail img-table">
+                  </ng-template>
+                </ngx-datatable-column> -->
+                <ngx-datatable-column prop="CompanyNameTha">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.Company'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['CompanyName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesCode">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesCode'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="edit(row.SecuritiesCode)">{{row.SecuritiesCode}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesDate'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.SecuritiesDate | thaidate}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="SecuritiesCategoryId">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['CategoryName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-left'" prop="Description">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{ 'Label.LOTS13.SecuritiesDescription'| translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.Description }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP18.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" class="btn btn-sm btn-circle btn-secondary" (click)="print()"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label class="require">{{ 'Label.LORP18.Date'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="Pidate" />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+            <br />
+
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP18.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP18.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP18.FromLoanType'| translate}}</label>
+                <ng-select [items]="fromLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP18.ToLoanType'| translate}}</label>
+                <ng-select [items]="toLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- <div class="form-group col-sm-6">
+                <label>{{ 'Label.LORP18.FromContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="LoanNo"
+                  holder="{{ 'Label.LORP18.FromContractNo'| translate}}" searchUrl="loan/invoice/invoiceNoLOV"
+                  [content]="Lorp18LookupContent" formControlName="FromContractNo">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-6">
+                <label>{{ 'Label.LORP18.ToContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="LoanNo"
+                  holder="{{ 'Label.LORP18.ToContractNo'| translate}}" searchUrl="loan/invoice/invoiceNoLOV"
+                  [content]="Lorp18LookupContent" formControlName="ToContractNo">
+                </lookup-input>
+              </div> -->
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'เลขที่สัญญา'| translate}}</label>
+                <lookup-input lookupName="contractNoLookup" [small]="false" keyColumn="contractNo"
+                  holder="{{'เลขที่สัญญา' | translate}}" searchUrl="loan/loaninvoicereport/GetLoanContractNo"
+                  [content]="Lorp18LookupContent" formControlName="FromContractNo">
+                </lookup-input>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6">
+                <label>{{ 'Label.LORP18.ToContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="LoanNo"
+                  holder="{{ 'Label.LORP18.ToContractNo'| translate}}"
+                  searchUrl="loan/loaninvoicereport/GetLoanContractNo" [content]="Lorp18LookupContent"
+                  formControlName="ToContractNo">
+                </lookup-input>
+              </div>
+              <!-- <div class="col-sm-6 col-md-6">
+                <label class="require">{{ 'รูปแบบรายงาน'| translate}}</label>
+                <ng-select [items]="reportTypeList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="reportType" placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div> -->
+            </div>
+
+
+          </div>
+        </card>
+      </form>
+    </div>
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORP02.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult"></ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

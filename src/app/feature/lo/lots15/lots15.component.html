@@ -1,0 +1,153 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-12">
+      <card header="{{'Label.LOTS15.ReceiptDetailList' | translate}}">
+        <div class="card-menu">
+          <button type="button" class="btn btn-sm btn-circle btn-secondary"
+            tooltip="{{'Label.GLOBAL.Search' | translate}}" (click)="search()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        <div class="card-content">
+          <form [formGroup]="searchForm">
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'Label.LOTS15.Branch' | translate}}</label>
+                <ng-select [items]="branchDDL" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="Branch" placeholder="{{'Label.GLOBAL.All' | translate}}"></ng-select>
+                <div class="invalid-feedback">
+                  {{'Message.STD00000' | translate}}
+                </div>
+              </div>
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.ReceiptDateFrom' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="ReceiptDateFrom"
+                  [maxDate]="searchForm.controls['ReceiptDateTo'].value" bsDatepicker>
+              </div>
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.To' | translate}}</label>
+                <input type="text" class="form-control text-center" formControlName="ReceiptDateTo"
+                  [minDate]="searchForm.controls['ReceiptDateFrom'].value" bsDatepicker>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.ContractNoFrom' | translate}}</label>
+                <lookup-input [small]="false" lookupName="ContractFrom" keyColumn="ContractNo"
+                  searchUrl="loan/receiptdetail/getContractLOV" [content]="lots15ContractLookupContent"
+                  formControlName="ContractNoFrom"></lookup-input>
+              </div>
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.To' | translate}}</label>
+                <lookup-input [small]="false" lookupName="ContractTo" keyColumn="ContractNo"
+                  searchUrl="loan/receiptdetail/getContractLOV" [content]="lots15ContractLookupContent"
+                  formControlName="ContractNoTo"></lookup-input>
+              </div>
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.ReceiptNoFrom' | translate}}</label>
+                <lookup-input [small]="false" lookupName="ReceiptFrom" keyColumn="ReceiptNo"
+                  searchUrl="loan/receiptdetail/getReceiptLOV" [content]="lots15ReceiptLookupContent"
+                  formControlName="ReceiptNoFrom"></lookup-input>
+              </div>
+              <div class="form-group col-sm-3 col-6">
+                <label>{{'Label.LOTS15.To' | translate}}</label>
+                <lookup-input [small]="false" lookupName="ReceiptTo" keyColumn="ReceiptNo"
+                  searchUrl="loan/receiptdetail/getReceiptLOV" [content]="lots15ReceiptLookupContent"
+                  formControlName="ReceiptNoTo"></lookup-input>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-12">
+                <label>{{'Label.LOTS15.Customer' | translate}}</label>
+                <input type="text" class="form-control" formControlName="CustomerCode"
+                  placeholder="{{'Label.LOTS15.CustomerPlaceholder' | translate}}" (keyup.enter)="search()">
+              </div>
+              <div class="form-group col-sm-6">
+                <label>{{'Label.LOTS15.ReceiptStatus' | translate}}</label>
+                <div class="btn-group d-block" btnRadioGroup formControlName="PaidStatus">
+                  <button type="button" [btnRadio]="paidStatus.Value" *ngFor="let paidStatus of paidStatus"
+                    class="btn btn-outline-warning" tabindex="0" (click)="search()">
+                    {{ paidStatus['Text'+lang.CURRENT]}}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </card>
+      <card header="{{'Label.LOTS15.ReceiptList' | translate}}">
+        <div class="card-content">
+          <div class="row">
+            <div class="col-12">
+              <aaa-table [rows]="loanPaymentsList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                <ngx-datatable-column width="250" prop="CompanyName{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.Branch' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['CompanyName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReceiptDate">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.DateOfReceipt' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row.ReceiptDate | thaidate }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ReceiptNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.ReceiptNumber' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span class="link" (click)="onViewInformation(row.ReceiptHeadId)">{{row.ReceiptNo}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-center'" prop="ContractNo">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.LoanContractNumber' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ContractNo}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="250" [cellClass]="'text-left'" prop="CustomerName{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.Name' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['CustomerName'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column [cellClass]="'text-right'" prop="ReceiptTotalAmount">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.ReceiptAmount' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{row.ReceiptTotalAmount | number : '1.2-2'}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column width="100" [cellClass]="'text-center'" prop="ReceiptStatus{lang}">
+                  <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                    <label class="datatable-header-cell-wrapper"
+                      (click)="sort()">{{'Label.LOTS15.ReceiptStatus' | translate}}</label>
+                  </ng-template>
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    {{ row['ReceiptStatus'+lang.CURRENT] }}
+                  </ng-template>
+                </ngx-datatable-column>
+              </aaa-table>
+            </div>
+          </div>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

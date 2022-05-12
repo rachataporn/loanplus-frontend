@@ -1,0 +1,29 @@
+<modal-layout (onClose)="close()">
+    <div *ngIf="loading" class="d-flex justify-content-center">
+        <div class="loading-icon fa-4x">
+            <i class="fas fa-sync fa-spin"></i>
+        </div>
+    </div>
+    <div *ngIf="loadingComplete">
+        <ngx-slick-carousel class="carousel single" [config]="slideConfigImgProductSingle">
+            <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+                <img class="img-fluid d-block mx-auto" [src]="image.display(slide.ImageProduct,false,800,400)">
+            </div>
+        </ngx-slick-carousel>
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <ngx-slick-carousel #slickModal="slick-carousel" class="carousel multi"
+                    [config]="slideConfigImgProductmulti">
+                    <div ngxSlickItem *ngFor="let slide of slides" class="slide imageFrame">
+                        <img id="imgDetail" width="95%" height="auto" style="padding: 3%"
+                            src="{{ image.display(slide.ImageProduct,true) }}">
+                    </div>
+                </ngx-slick-carousel>
+            </div>
+            <button *ngIf="slides.length" class="btn btn-secondary product-nav prev"><i
+                    class="fas fa-caret-left fa-lg"></i></button>
+            <button *ngIf="slides.length" class="btn btn-secondary product-nav next"><i
+                    class="fas fa-caret-right fa-lg"></i></button>
+        </div>
+    </div>
+</modal-layout>

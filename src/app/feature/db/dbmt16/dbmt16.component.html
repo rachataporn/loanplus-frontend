@@ -1,0 +1,103 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.DBMT16.Search' | translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="search()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="ค้นหา">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <label>{{ 'Label.DBMT16.SystemCode'| translate }}</label>
+                                <ng-select [items]="systemList" bindLabel="TextTha" bindValue="Value"
+                                    placeholder="{{ 'Label.GLOBAL.All'| translate }}" formControlName="System">
+                                </ng-select>
+                            </div>
+                            <div class="col-sm-6 col-12">
+                                <label>{{ 'Label.DBMT16.DocumentType'| translate }}</label>
+                                <input type="text" (keyup.enter)="search()" class="form-control"
+                                    formControlName="InputSearch"
+                                    placeholder="{{ 'Label.DBMT16.PlaceholderSearch'| translate }}">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+            <card header="{{ 'Label.DBMT16.DocumentType'| translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="documentTypeList" [page]="page" 
+                                (onTableEvent)="onTableEvent($event)">
+                                <ngx-datatable-column width="50" [cellClass]="'text-center'" prop="DocumentTypeCode">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.DBMT16.DocumentTypeCode'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link"
+                                            (click)="edit(row.DocumentTypeCode)">{{row.DocumentTypeCode}}</span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" [cellClass]="'text-left'" prop="DocumentTypeName">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.DBMT16.DocumentTypeName'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.DocumentTypeName}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="100" [cellClass]="'text-left'" prop="SystemCode">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.DBMT16.SystemCode'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.SystemCode}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column prop="Active" width="10" [sortable]="false"
+                                    [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">{{ 'Label.DBMT16.Active'| translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <i *ngIf="row.Active" class="fas fa-check"></i>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false" width="50">
+                                    <ng-template ngx-datatable-header-template>
+                                        <label
+                                            class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                        <button type="button" class="btn btn-outline-primary btn-sm"
+                                            (click)="remove(row)">
+                                            <i class="far fa-trash-alt"></i>
+                                        </button>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

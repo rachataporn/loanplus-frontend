@@ -1,0 +1,95 @@
+<modal-layout (onClose)="close()">
+  <card header="{{ 'Label.LOTS01.SecuritiesInformation' | translate }}">
+    <div class="card-menu">
+      <button type="button" (click)="select()" class="btn btn-sm btn-circle btn-secondary" tooltip="{{ 'Label.LOTS01.Action'| translate}}">
+        <i class="fas fa-check"></i>
+      </button>
+    </div>
+    <div class="card-content">
+      <form [formGroup]="searchForm">
+        <div class="row">
+          <div class="form-group col-lg-6">
+                <label>{{ 'Label.LOTS13.Securities'| translate}}</label>
+              <input type="text" (keyup.enter)="search()" class="form-control" formControlName="Keyword"
+                placeholder="{{ 'Label.LOTS13.SecuritiesPlacholder' | translate }}">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label>{{ 'Label.LOTS13.SecuritiesType'| translate}}</label>
+            <ng-select [items]="assetTypeList" bindLabel="TextTha" bindValue="Value" formControlName="SecuritiesType"
+              placeholder="{{'Label.GLOBAL.All'| translate}}">
+            </ng-select>
+          </div>
+          <div class="form-group col-md-3">
+            <label>{{ 'Label.LOTS13.SecuritiesDateFrom'| translate}}</label>
+            <input bsDatepicker class="form-control" type="text" [maxDate]="searchForm.controls['DateTo'].value"
+              formControlName="DateFrom" />
+          </div>
+          <div class="form-group col-md-3">
+            <label>{{ 'Label.LOTS13.SecuritiesDateTo'| translate}}</label>
+            <input bsDatepicker class="form-control" type="text" [minDate]="searchForm.controls['DateFrom'].value"
+              formControlName="DateTo" />
+          </div>
+        </div>
+      </form>
+      <hr>
+
+      <div class="row">
+        <div class="col-12">
+          <aaa-table [rows]="modalList" [rowSelect]="companySelected" [count]="count"
+            (onTableEvent)="onTableEvent($event)">
+            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+              [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="SecuritiesCode" [cellClass]="'text-center'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper"
+                  (click)="sort()">{{ 'Label.LOTS01.SecuritiesCode' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{row.SecuritiesCode}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="CategoryName{lang}" [cellClass]="'text-left'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper"
+                  (click)="sort()">{{ 'Label.LOTS01.SecuritiesTypeCode' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{row['CategoryName'+lang.CURRENT]}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="Description" [cellClass]="'text-left'" [width]="250">
+                <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                  <label class="datatable-header-cell-wrapper"
+                    (click)="sort()">{{ 'Label.LOTS13.SecuritiesDescription' | translate }}</label>
+                </ng-template>
+                <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                  {{row.Description}}
+                </ng-template>
+              </ngx-datatable-column>
+            <ngx-datatable-column prop="EstimateAmount" [cellClass]="'text-right'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper"
+                  (click)="sort()">{{ 'Label.LOTS01.SecuritiesValue' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{row.EstimateAmount | number:'2.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="LoanLimitAmount" [cellClass]="'text-right'">
+              <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                <label class="datatable-header-cell-wrapper"
+                  (click)="sort()">{{ 'Label.LOTS01.LoanAmount' | translate }}</label>
+              </ng-template>
+              <ng-template let-row="row" let-value="value" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                {{row.LoanLimitAmount | number:'2.2-2'}}
+              </ng-template>
+            </ngx-datatable-column>
+          </aaa-table>
+        </div>
+      </div>
+    </div>
+  </card>
+</modal-layout>

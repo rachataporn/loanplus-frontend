@@ -1,0 +1,74 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{'Label.DBMT08.PrefixHeader'| translate}}">
+                <div class="card-content">
+                    <div class="row" [formGroup]="prefixForm" [class.validated]="submitted"  [focusInvalid]="focusToggle">
+                        <div class="form-group col-sm-6 col-6">
+                            <label class="require">{{'Label.DBMT08.PrefixNameTha'| translate}}</label>
+                            <input type="text" class="form-control" formControlName="PrefixNameTha" maxlength="30" (change)="changePrefixName()">
+                            <div class="invalid-feedback">
+                                {{'Message.STD00000' | translate}}
+                        </div>
+                        </div>
+                        <div class="form-group col-sm-6 col-6">
+                            <label>{{'Label.DBMT08.PrefixNameEng'| translate}}</label>
+                            <input type="text" class="form-control" formControlName="PrefixNameEng" maxlength="30">
+                        </div>
+                        <div class="form-group col-sm-6 col-6">
+                            <label>{{'Label.DBMT08.SuffixNameTha'| translate}}</label>
+                            <input type="text" class="form-control" formControlName="SuffixNameTha" maxlength="30">
+
+                        </div>
+                        <div class="form-group col-sm-6 col-6">
+                            <label>{{'Label.DBMT08.SuffixNameEng'| translate}}</label>
+                            <input type="text" class="form-control" formControlName="SuffixNameEng" maxlength="30">
+                        </div>
+
+                        <div class="form-group col-sm-6 col-6">
+                            <label class="require">{{'Label.DBMT08.PersonalityType'| translate}}</label>
+                            <ng-select [items]="system " [bindLabel]="'Text' + lang.CURRENT" bindValue="Value" formControlName="PersonalityType" placeholder="{{'Label.DBMT08.PleaseSelect'| translate}}"></ng-select>
+                            <div class="invalid-feedback">
+                                {{'Message.STD00000' | translate}}
+                        </div>
+                        </div>
+                        <!-- <div class="form-group col-sm-6 col-6">
+                            <label>{{'Label.DBMT08.Active'| translate}}</label>
+                            <br>
+                            <label class="switch switch-label switch-warning">
+                                <input type="checkbox" class="switch-input"  formControlName="Active" >
+                                <span class="switch-slider" data-checked="&#x2713;" data-unchecked="&#x2715;"></span>
+                            </label>
+                        </div> -->
+
+                        <div class="form-group col-sm-2">
+                            <div class="custom-control custom-checkbox" style="margin-top: 30px">
+                                <input class="custom-control-input" type="checkbox" id="Active"
+                                    formControlName="Active">
+                                <label class="custom-control-label" for="Active">
+                                    {{ 'Label.DBMT09.Active' | translate }}
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>
+<footer class="app-footer-btn animated fadeIn">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col text-center">
+          <button class="btn btn-footer" (click)="onSubmit()" [disabled]="saving">
+            <i class="fas fa-cog fa-spin" [hidden]="!saving"></i>
+            <i class="far fa-save" [hidden]="saving"></i> {{ 'Label.GLOBAL.Save'| translate}}</button>
+        </div>
+        <div class="col text-center">
+          <button class="btn btn-footer" [disabled]="saving" (click)="back()">
+            <i class="fas fa-undo-alt"></i> {{ 'Label.GLOBAL.Back'| translate }}</button>
+        </div>
+      </div>
+    </div>
+  </footer>

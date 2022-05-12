@@ -1,0 +1,171 @@
+<div class="animated fadeIn">
+  <div class="row">
+    <div class="col-sm-12">
+      <form #report [formGroup]="searchForm" [class.validated]="submitted" [focusInvalid]="focusToggle">
+        <card header="{{ 'Label.LORP02.SearchReport'| translate}}">
+          <div class="card-menu">
+            <button type="button" (click)="print()" class="btn btn-sm btn-circle btn-secondary"
+              tooltip="{{ 'Label.GLOBAL.Print'| translate}}">
+              <i class="fas fa-cog fa-spin" [hidden]="!printing"></i>
+              <i class="fas fa-print" [hidden]="printing"></i>
+            </button>
+          </div>
+          <div class="card-content">
+
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP10.FromBranch'| translate}}</label>
+                <ng-select [items]="fromBranchList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="FromBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP10.ToBranch'| translate}}</label>
+                <ng-select [items]="toBranchList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="ToBranchCode" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP17.FromLoanType'| translate}}</label>
+                <ng-select [items]="fromLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="FromLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+              <div class="form-group col-sm-6 col-md-6">
+                <label>{{ 'Label.LORP17.ToLoanType'| translate}}</label>
+                <ng-select [items]="toLoanTypeList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ToLoanType" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+            <div class="form-row">
+              <!-- <div class="form-group col-sm-3">
+                <label>{{'Label.LORP10.FromLoanType' | translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="FromLoanType"
+                  holder="{{'Label.LORP02.FromLoanType' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetLoanType" [content]="Lorp10LookupLoantypeFromContent"
+                  formControlName="FromLoanType" [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-3">
+                <label>{{'Label.LORP10.ToLoanType' | translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="ToLoanType"
+                  holder="{{'Label.LORP10.ToLoanType' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetLoanType" [content]="Lorp10LookupLoantypeFromContent"
+                  formControlName="ToLoanType" [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div> -->
+
+              <div class="col-sm-6 col-md-3">
+                <label>{{ 'Label.LORP10.FromContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="FromContractNo"
+                  holder="{{'Label.LORP10.FromContractNo' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetLoanContractNo"
+                  [content]="Lorp10LookupLoanContractFromContent" formControlName="FromContractNo"
+                  [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label>{{ 'Label.LORP10.ToContractNo'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="ToContractNo"
+                  holder="{{'Label.LORP10.ToContractNo' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetLoanContractNo"
+                  [content]="Lorp10LookupLoanContractFromContent" formControlName="ToContractNo"
+                  [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div>
+              <div class="col-sm-6 col-md-3">
+                <label>{{ 'Label.LORP10.FromCustomerCode'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="FromCustomerCode"
+                  holder="{{'Label.LORP10.FromCustomerCode' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetCustomerCode" [content]="Lorp10LookupCostomerCodeContent"
+                  formControlName="FromCustomerCode" [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div>
+              <div class="form-group col-sm-6 col-md-3">
+                <label>{{ 'Label.LORP10.ToCustomerCode'| translate}}</label>
+                <lookup-input lookupName="LoanLookup" [small]="false" keyColumn="ToCustomerCode"
+                  holder="{{'Label.LORP10.ToCustomerCode' | translate}}"
+                  searchUrl="loan/LoanSummaryPaymentReport/GetCustomerCode" [content]="Lorp10LookupCostomerCodeContent"
+                  formControlName="ToCustomerCode" [param]="getParameterForSingleLookup">
+                </lookup-input>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-6">
+                <label class="require">{{ 'Label.LORP02.ReportFormat'| translate}}</label>
+                <ng-select [items]="reportFormatList" [bindLabel]="'Text' + lang.CURRENT" bindValue="Value"
+                  formControlName="ReportFormat" placeholder="{{'Label.GLOBAL.PleaseSelect' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-6">
+                <label>{{ "Label.LORP10.ReportConditions" | translate }}</label>
+                <ng-select [items]="reportConditionList" [bindLabel]="'Text'+lang.CURRENT" bindValue="Value"
+                  formControlName="conditionReport" placeholder="{{'Label.GLOBAL.All' | translate}}">
+                </ng-select>
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-sm-12 col-md-3" *ngIf="this.searchForm.controls.conditionReport.value == 0">
+                <label class="require">{{ 'Label.LORP10.FromDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="StartDate"
+                  [maxDate]="now" bsDatepicker />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+              <div class="form-group col-sm-12 col-md-3" *ngIf="this.searchForm.controls.conditionReport.value == 0">
+                <label class="require">{{ 'Label.LORP10.ToDate'| translate}}</label>
+                <input bsDatepicker type="text" class="form-control text-center" formControlName="EndDate"
+                  [maxDate]="now" bsDatepicker />
+                <div class="invalid-feedback">
+                  {{ "Message.STD00000" | translate }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>{{ "Label.LORP02.LoanType" | translate }}</label>&nbsp;<label
+                  class="text-danger">{{ "Label.LORP02.SelectAll" | translate }}</label>
+                <div formArrayName="ContractStatus">
+                  <div class="custom-control custom-checkbox custom-control-inline"
+                    *ngFor="let item of contractStatus.controls; let i=index" [formGroupName]="i">
+                    <input class="custom-control-input" type="checkbox" [id]="'ChkcontractStatus'+ i"
+                      formControlName="Active">
+                    <label class="custom-control-label" [for]="'ChkcontractStatus'+ i">
+                      {{ item.controls['Text'+lang.CURRENT].value }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </card>
+      </form>
+    </div>
+
+    <div class="col-sm-12">
+      <card header="{{ 'Label.LORP02.ReportViewer'| translate}}">
+        <div class="card-menu">
+        </div>
+        <div class="card-content">
+          <ngx-extended-pdf-viewer [base64Src]="srcResult" [useBrowserLocale]="true" height="80vh"
+            [hidden]="!srcResult">
+          </ngx-extended-pdf-viewer>
+        </div>
+      </card>
+    </div>
+  </div>
+</div>

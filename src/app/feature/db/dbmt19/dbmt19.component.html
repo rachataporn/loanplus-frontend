@@ -1,0 +1,93 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="{{ 'Label.DBMT19.ManageBanner' | translate }}">
+                <div class="card-menu">
+                    <button type="button" (click)="add()" class="btn btn-sm btn-circle btn-secondary"
+                        tooltip="{{ 'Label.GLOBAL.Add' | translate }}">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <div class="input-group">
+                                    <input type="text" (keyup.enter)="search()" class="form-control"
+                                        formControlName="InputSearch"
+                                        placeholder="{{ 'ชื่อ BANNER' | translate }}">
+                                    <div class="input-group-append">
+                                        <button type="button" (click)="search()" class="btn btn-warning">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12">
+                                <aaa-table [rows]="bannerList" [page]="page" (onTableEvent)="onTableEvent($event)">
+                                    <ngx-datatable-column [cellClass]="'text-center'" prop="BannerCode">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'รหัส BANNER' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span class="link"
+                                                (click)="edit(row.Id)">{{row.BannerCode}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-left'" prop="BannerName">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'ชื่อ BANNER' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span>{{row.BannerName}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <!-- <ngx-datatable-column [cellClass]="'text-left'" prop="FaqTopic">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'ชื่อ BANNER' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <span>{{row.BannerName}}</span>
+                                        </ng-template>
+                                    </ngx-datatable-column> -->
+
+                                    <ngx-datatable-column prop="Active" [cellClass]="'text-center'">
+                                        <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                            <label class="datatable-header-cell-wrapper"
+                                                (click)="sort()">{{ 'ใช้งาน' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            <i class="fas fa-check" *ngIf="row.Active == true "></i>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                    <ngx-datatable-column [cellClass]="'text-center'" [sortable]="false">
+                                        <ng-template ngx-datatable-header-template>
+                                            <label
+                                                class="datatable-header-cell-wrapper">{{ 'Label.GLOBAL.Delete' | translate }}</label>
+                                        </ng-template>
+                                        <ng-template let-row="row" let-rowIndex="rowIndex" ngx-datatable-cell-template>
+                                            <button type="button" class="btn btn-outline-primary btn-sm"
+                                                (click)="remove(row.Id, row.RowVersion)">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </ng-template>
+                                    </ngx-datatable-column>
+
+                                </aaa-table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,191 @@
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-sm-12">
+            <card header="บังคับคดี">
+                <div class="card-menu">
+                </div>
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="form-group col-sm-1"></div>
+                            <div class="form-group col-sm-4">
+                                <input type="text" class="form-control" formControlName="input1" placeholder="ค้นหา">
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <ng-select [items]="DDL" bindLabel="text" bindValue="value" placeholder="กรุณาระบุ"
+                                    formControlName="input2">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <button class="btn btn-primary form-group col-sm-12"
+                                    type="button">ดูข้อมูลทั้งหมด</button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <br />
+                    <div class="row">
+                        <div class="col-12">
+                            <aaa-table [rows]="dataList" [count]="count"  [page]="page"
+                                (onTableEvent)="onTableEvent($event)">
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column1" [width]="7">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสสาขา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column1}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column2" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">วันที่</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column2}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column3" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">วันที่ล่าช้า</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column3}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column3" [width]="20">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">เลขที่สัญญา</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column4}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column4" [width]="15">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">รหัสผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template
+                                        style="white-space:nowrap;overflow:hidden;">
+                                        {{row.column5}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-left'" name="column5" [width]="60">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">ชื่อผู้กู้</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column6}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-right'" name="column6" [width]="15">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">ยอดเงินรวม</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column7}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column6" [width]="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">สถานะก่อนหน้า</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column8}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column6" [width]="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper"
+                                            (click)="sort()">สถานะปัจจุบัน</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        {{row.column9}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column6" [width]="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">ใบมอบอำนาจ</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="openFolder(row)"><i
+                                                class="fas fa-file-signature"></i></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column [cellClass]="'text-center'" name="column6" [width]="10">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper" (click)="sort()">ลงผลติดตาม</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="openFolder(row)"><i
+                                                class="fas fa-map-marker-alt"></i></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+
+                                <ngx-datatable-column width="10" [cellClass]="'text-center'">
+                                    <ng-template let-sort="sortFn" ngx-datatable-header-template>
+                                        <label class="datatable-header-cell-wrapper">ดูข้อมูล</label>
+                                    </ng-template>
+                                    <ng-template let-row="row" ngx-datatable-cell-template>
+                                        <span class="link" (click)="openFolder(row)"><i
+                                                class="far fa-folder-open"></i></span>
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </aaa-table>
+                        </div>
+                    </div>
+                </div>
+            </card>
+        </div>
+        <div class="col-sm-12">
+            <card header="พิมพ์รายงานติดตามหนี้ล่าช้า">
+                <div class="card-content">
+                    <form [formGroup]="searchForm">
+                        <div class="row">
+                            <div class="form-group col-sm-3"></div>
+                            <div class="form-group col-sm-2 text-right">
+                                <label>สถานะรายงานที่ต้องการพิมพ์:</label>
+                            </div>
+                            <div class="form-group col-sm-2">
+                                <ng-select [items]="reportDDL" bindLabel="text" bindValue="value"
+                                    placeholder="กรุณาระบุ" formControlName="input3">
+                                </ng-select>
+                            </div>
+                            <div class="form-group col-sm-1">
+                                <button class="btn btn-primary form-group col-sm-12" type="button">
+                                    <i class="fas fa-print"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label style="color: red">*NC ไม่รับสาย, ปิดเครื่อง, คนอื่นรับแทน</label>
+        </div>
+        <div class="col-sm-12">
+            <label style="color: red">*M นัดชำระ</label>
+        </div>
+        <div class="col-sm-12">
+            <label style="color: red">*L เกินนัดชำระ</label>
+        </div>
+        <div class="col-sm-12">
+            <label style="color: red">*O อื่นๆ</label>
+        </div>
+    </div>
+</div>
